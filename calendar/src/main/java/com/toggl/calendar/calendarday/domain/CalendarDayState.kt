@@ -16,9 +16,9 @@ data class CalendarDayState(
     val timeEntries: Map<Long, TimeEntry>,
     val projects: Map<Long, Project>,
     val backStack: BackStack,
+    val calendars: Map<String, Calendar>,
     val events: Map<String, CalendarEvent>,
     val selectedDate: OffsetDateTime,
-    val calendars: List<Calendar>,
     val userPreferences: UserPreferences
 ) {
     companion object {
@@ -30,9 +30,9 @@ data class CalendarDayState(
                 calendarState.timeEntries,
                 calendarState.projects,
                 calendarState.backStack,
+                calendarState.calendars,
                 calendarState.calendarEvents,
                 calendarState.localState.selectedDate,
-                calendarState.localState.calendars,
                 calendarState.userPreferences
             )
         }
@@ -43,10 +43,10 @@ data class CalendarDayState(
                     timeEntries = calendarDayState.timeEntries,
                     projects = calendarDayState.projects,
                     backStack = calendarDayState.backStack,
+                    calendars = calendarDayState.calendars,
                     calendarEvents = calendarDayState.events,
                     localState = calendarState.localState.copy(
-                        selectedDate = calendarDayState.selectedDate,
-                        calendars = calendarDayState.calendars
+                        selectedDate = calendarDayState.selectedDate
                     )
                 )
             } ?: calendarState

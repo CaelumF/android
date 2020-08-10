@@ -7,6 +7,7 @@ import com.toggl.architecture.core.Effect
 import com.toggl.architecture.core.MutableValue
 import com.toggl.architecture.core.Reducer
 import com.toggl.common.feature.navigation.BackStack
+import com.toggl.common.feature.services.calendar.Calendar
 import com.toggl.common.feature.timeentry.TimeEntryAction
 import com.toggl.common.feature.timeentry.TimeEntryActionHolder
 import com.toggl.common.services.permissions.PermissionCheckerService
@@ -41,7 +42,8 @@ fun createSettingsState(
     ),
     shouldRequestCalendarPermission: Boolean = false,
     sendFeedbackRequest: Loadable<Unit> = Loadable.Uninitialized,
-    backStack: BackStack = emptyList()
+    backStack: BackStack = emptyList(),
+    calendars: Map<String, Calendar> = emptyMap()
 ) = SettingsState(
     user = user,
     userPreferences = userPreferences,
@@ -49,7 +51,8 @@ fun createSettingsState(
     shouldRequestCalendarPermission = shouldRequestCalendarPermission,
     externalLocationToShow = null,
     backStack = backStack,
-    localState = SettingsState.LocalState(sendFeedbackRequest)
+    localState = SettingsState.LocalState(sendFeedbackRequest),
+    calendars = calendars
 )
 
 fun createUserPreferences(

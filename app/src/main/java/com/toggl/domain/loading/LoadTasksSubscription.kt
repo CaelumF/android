@@ -12,8 +12,8 @@ class LoadTasksSubscription(
     private val taskRepository: TaskRepository,
     dispatcherProvider: DispatcherProvider
 ) : BaseLoadingSubscription(dispatcherProvider) {
-    override fun subscribe(isUserLoggedIn: Boolean): Flow<LoadingAction> {
-        val projects = if (isUserLoggedIn) taskRepository.loadTasks()
+    override fun subscribe(shouldStartLoading: Boolean): Flow<LoadingAction> {
+        val projects = if (shouldStartLoading) taskRepository.loadTasks()
         else flowOf(emptyList())
         return projects.map { LoadingAction.TasksLoaded(it) }
     }

@@ -1,6 +1,6 @@
 package com.toggl.settings.domain
 
-import com.toggl.common.feature.services.calendar.CalendarService
+import com.toggl.common.feature.extensions.getEnabledCalendars
 import com.toggl.common.services.permissions.PermissionCheckerService
 import com.toggl.models.domain.SettingsType
 import com.toggl.settings.BuildConfig
@@ -12,15 +12,10 @@ import com.toggl.settings.compose.ResOrStr.Str
 import javax.inject.Inject
 
 class SettingsStructureBlueprint @Inject constructor(
-    private val calendarService: CalendarService,
     private val permissionCheckerService: PermissionCheckerService
 ) {
 
     suspend fun calendarSections(state: SettingsState): List<SettingsSectionBlueprint> {
-
-        val userCalendars = calendarService.getUserSelectedCalendars(state.userPreferences)
-        val availableCalendars = calendarService.getAvailableCalendars()
-
         val calendarIntegrationEnabled = permissionCheckerService.hasCalendarPermission() &&
             state.userPreferences.calendarIntegrationEnabled
 
@@ -33,6 +28,9 @@ class SettingsStructureBlueprint @Inject constructor(
         )
 
         if (!calendarIntegrationEnabled) return listOf(headerSection)
+
+        val availableCalendars = state.calendars.values
+        val userCalendars = availableCalendars.getEnabledCalendars(state.userPreferences.calendarIds)
 
         val calendarSections = availableCalendars
             .groupBy { it.sourceName }

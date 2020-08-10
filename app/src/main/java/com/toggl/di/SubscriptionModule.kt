@@ -1,10 +1,12 @@
 package com.toggl.di
 
+import android.content.Context
 import com.toggl.architecture.DispatcherProvider
 import com.toggl.architecture.core.CompositeSubscription
 import com.toggl.architecture.core.Subscription
 import com.toggl.domain.AppAction
 import com.toggl.domain.AppState
+import com.toggl.domain.loading.LoadCalendarsSubscription
 import com.toggl.domain.loading.LoadClientsSubscription
 import com.toggl.domain.loading.LoadProjectsSubscription
 import com.toggl.domain.loading.LoadTagsSubscription
@@ -17,6 +19,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.multibindings.IntoSet
 
 @Module
@@ -84,4 +87,12 @@ object SubscriptionModule {
         dispatcherProvider: DispatcherProvider
     ): Subscription<AppState, AppAction> =
         LoadUserPreferencesSubscription(repository, dispatcherProvider)
+
+    @Provides
+    @IntoSet
+    fun loadCalendarsSubscription(
+        @ApplicationContext context: Context,
+        dispatcherProvider: DispatcherProvider
+    ): Subscription<AppState, AppAction> =
+        LoadCalendarsSubscription(context, dispatcherProvider)
 }

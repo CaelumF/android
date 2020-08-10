@@ -3,6 +3,7 @@ package com.toggl.calendar.calendarday.domain
 import com.toggl.calendar.common.CoroutineTest
 import com.toggl.common.feature.services.calendar.Calendar
 import com.toggl.common.feature.services.calendar.CalendarService
+import com.toggl.models.domain.UserPreferences
 import io.kotest.matchers.types.shouldBeTypeOf
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -15,12 +16,12 @@ import java.time.OffsetDateTime
 @DisplayName("The FetchCalendarEventsEffect effect")
 
 class FetchCalendarEventsEffectTest : CoroutineTest() {
+    private val userPreferences = UserPreferences.default
 
     @Test
     fun `The effect should call the calendar service's getCalendarEvents with the right from and start parameters`() =
         runBlockingTest {
             val calendarService = mockk<CalendarService>()
-            coEvery { calendarService.getUserSelectedCalendars(any()) }.returns(emptyList())
             coEvery { calendarService.getCalendarEvents(any(), any(), any()) }.returns(emptyList())
             val expectedStartTime = mockk<OffsetDateTime>()
             val expectedEndTime = mockk<OffsetDateTime>()
@@ -29,7 +30,8 @@ class FetchCalendarEventsEffectTest : CoroutineTest() {
                 calendarService = calendarService,
                 fromStartDate = expectedStartTime,
                 toEndDate = expectedEndTime,
-                userPreferences = mockk(),
+                calendars = emptyMap(),
+                userPreferences = userPreferences,
                 dispatcherProvider = dispatcherProvider
             )
 
@@ -44,14 +46,14 @@ class FetchCalendarEventsEffectTest : CoroutineTest() {
         runBlockingTest {
             val calendarService = mockk<CalendarService>()
             val expectedCalendars = (1..3).map { Calendar(it.toString(), it.toString(), it.toString()) }
-            coEvery { calendarService.getUserSelectedCalendars(any()) }.returns(expectedCalendars)
             coEvery { calendarService.getCalendarEvents(any(), any(), any()) }.returns(emptyList())
 
             val effect = FetchCalendarEventsEffect(
                 calendarService = calendarService,
                 fromStartDate = mockk(),
                 toEndDate = mockk(),
-                userPreferences = mockk(),
+                calendars = expectedCalendars.associateBy { it.id },
+                userPreferences = userPreferences.copy(calendarIds = listOf("1", "2", "3")),
                 dispatcherProvider = dispatcherProvider
             )
 

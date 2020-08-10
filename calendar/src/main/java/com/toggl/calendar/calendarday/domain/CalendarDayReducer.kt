@@ -56,6 +56,7 @@ class CalendarDayReducer @Inject constructor(
                         calendarService,
                         selectedDate.toBeginningOfTheDay(),
                         selectedDate.toEndOfTheDay(),
+                        calendars,
                         userPreferences,
                         dispatcherProvider
                     )

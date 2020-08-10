@@ -12,8 +12,8 @@ class LoadTagsSubscription(
     private val tagRepository: TagRepository,
     dispatcherProvider: DispatcherProvider
 ) : BaseLoadingSubscription(dispatcherProvider) {
-    override fun subscribe(isUserLoggedIn: Boolean): Flow<LoadingAction> {
-        val projects = if (isUserLoggedIn) tagRepository.loadTags()
+    override fun subscribe(shouldStartLoading: Boolean): Flow<LoadingAction> {
+        val projects = if (shouldStartLoading) tagRepository.loadTags()
         else flowOf(emptyList())
         return projects.map { LoadingAction.TagsLoaded(it) }
     }

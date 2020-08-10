@@ -5,7 +5,6 @@ import com.toggl.calendar.common.validUser
 import com.toggl.common.feature.models.SelectedCalendarItem
 import com.toggl.common.feature.navigation.Route
 import com.toggl.common.feature.navigation.backStackOf
-import com.toggl.common.feature.services.calendar.Calendar
 import com.toggl.models.domain.Client
 import com.toggl.models.domain.EditableTimeEntry
 import com.toggl.models.domain.Project
@@ -15,7 +14,6 @@ fun createInitialState(
     timeEntries: List<TimeEntry> = emptyList(),
     projects: List<Project> = emptyList(),
     clients: List<Client> = emptyList(),
-    calendars: List<Calendar> = emptyList(),
     editableTimeEntry: EditableTimeEntry? = null,
     selectedItem: SelectedCalendarItem =
         if (editableTimeEntry != null) {
@@ -30,5 +28,4 @@ fun createInitialState(
     backStack = backStackOf(Route.ContextualMenu(selectedItem)),
     projects = projects.associateBy { it.id },
     clients = clients.associateBy { it.id },
-    calendars = calendars
 )

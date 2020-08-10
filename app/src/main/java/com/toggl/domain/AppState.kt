@@ -8,6 +8,7 @@ import com.toggl.common.feature.navigation.ExternalLocation
 import com.toggl.common.feature.navigation.Route
 import com.toggl.common.feature.navigation.backStackOf
 import com.toggl.common.feature.navigation.pop
+import com.toggl.common.feature.services.calendar.Calendar
 import com.toggl.common.feature.services.calendar.CalendarEvent
 import com.toggl.models.domain.Client
 import com.toggl.models.domain.Project
@@ -36,6 +37,7 @@ data class AppState(
     val calendarPermissionWasGranted: Boolean = false,
     val shouldRequestCalendarPermission: Boolean = false,
     val calendarEvents: Map<String, CalendarEvent> = mapOf(),
+    val calendars: Map<String, Calendar> = mapOf(),
     val onboardingLocalState: OnboardingState.LocalState = OnboardingState.LocalState(),
     val timerLocalState: TimerState.LocalState = TimerState.LocalState(),
     val calendarLocalState: CalendarState.LocalState = CalendarState.LocalState(),

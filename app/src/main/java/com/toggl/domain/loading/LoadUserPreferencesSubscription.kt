@@ -13,8 +13,8 @@ class LoadUserPreferencesSubscription(
     private val settingsRepository: SettingsRepository,
     private val dispatcherProvider: DispatcherProvider
 ) : BaseLoadingSubscription(dispatcherProvider) {
-    override fun subscribe(isUserLoggedIn: Boolean): Flow<LoadingAction> {
-        val userPreferences = if (isUserLoggedIn) settingsRepository.loadUserPreferences()
+    override fun subscribe(shouldStartLoading: Boolean): Flow<LoadingAction> {
+        val userPreferences = if (shouldStartLoading) settingsRepository.loadUserPreferences()
         else flowOf(UserPreferences.default)
         return userPreferences.map { LoadingAction.UserPreferencesLoaded(it) }
     }
