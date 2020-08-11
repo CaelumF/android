@@ -20,9 +20,9 @@ class MostUsedSuggestionProvider @Inject constructor(
     private val daysToQuery = 42L
     private val thresholdPeriodInMinutes = Duration.ofDays(daysToQuery).toMinutes()
 
-    override suspend fun getSuggestions(suggestionsState: SuggestionsState): List<Suggestion> = withContext(dispatcherProvider.io) {
-        suggestionsState.timeEntries.values
-            .filter { isSuitableForSuggestion(it, suggestionsState.projects) }
+    override suspend fun getSuggestions(suggestionData: SuggestionData): List<Suggestion> = withContext(dispatcherProvider.io) {
+        suggestionData.timeEntries.values
+            .filter { isSuitableForSuggestion(it, suggestionData.projects) }
             .let(::toMostUsedSuggestion)
             .take(maxNumberOfSuggestions)
     }

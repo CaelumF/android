@@ -22,6 +22,7 @@ import com.toggl.onboarding.common.domain.OnboardingState
 import com.toggl.reports.domain.ReportsState
 import com.toggl.settings.domain.SettingsState
 import com.toggl.timer.common.domain.TimerState
+import com.toggl.timer.suggestions.domain.Suggestion
 
 data class AppState(
     val user: Loadable<User> = Loadable.Uninitialized,
@@ -32,6 +33,7 @@ data class AppState(
     val clients: Map<Long, Client> = mapOf(),
     val tags: Map<Long, Tag> = mapOf(),
     val timeEntries: Map<Long, TimeEntry> = mapOf(),
+    val suggestions: List<Suggestion> = listOf(),
     val externalLocationToShow: ExternalLocation? = null,
     val backStack: BackStack = backStackOf(Route.Timer),
     val calendarPermissionWasGranted: Boolean = false,

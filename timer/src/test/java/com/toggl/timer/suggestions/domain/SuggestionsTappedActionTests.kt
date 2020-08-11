@@ -21,8 +21,7 @@ internal class SuggestionTappedTests {
     private val timeService = mockk<TimeService> { every { now() } returns OffsetDateTime.now() }
     private val timeEntry = createTimeEntry(1, "Some description")
     private val initialState = createInitialState(timeEntries = listOf(timeEntry))
-    private val suggestionProvider = mockk<SuggestionProvider>()
-    private val reducer = SuggestionsReducer(timeService, suggestionProvider)
+    private val reducer = SuggestionsReducer(timeService)
 
     @Test
     fun `returns an effect to continue a time entry when receiving most used suggestions`() = runBlockingTest {

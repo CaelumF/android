@@ -30,9 +30,9 @@ class MostUsedSuggestionProviderTests : CoroutineTest() {
         val maxSuggestionNumber = Constants.Suggestions.maxNumberOfMostUsedSuggestions
 
         val timeEntries = (1L..10L).map { createTimeEntry(id = it, description = it.toString()) }
-        val initialState = createInitialState(timeEntries = timeEntries)
+        val sources = createSuggestionSources(timeEntries = timeEntries.associateBy { it.id })
 
-        val suggestions = provider.getSuggestions(initialState)
+        val suggestions = provider.getSuggestions(sources)
 
         suggestions shouldHaveSize maxSuggestionNumber
     }
@@ -40,7 +40,7 @@ class MostUsedSuggestionProviderTests : CoroutineTest() {
     @ParameterizedTest
     @MethodSource("filterEmptyEntries")
     fun `ignores entries without descriptions`(testData: TestData) = runBlockingTest {
-        val suggestions = provider.getSuggestions(createInitialState(timeEntries = testData.entries))
+        val suggestions = provider.getSuggestions(createSuggestionSources(timeEntries = testData.entries.associateBy { it.id }))
             .filterIsInstance<Suggestion.MostUsed>()
 
         suggestions.map { it.timeEntry } shouldBe testData.pickedTimeEntries
@@ -50,7 +50,7 @@ class MostUsedSuggestionProviderTests : CoroutineTest() {
     @MethodSource("timeEntriesByAmount")
     fun `sorts by the amount of entries repeated`(testData: TestData) = runBlockingTest {
 
-        val suggestions = provider.getSuggestions(createInitialState(timeEntries = testData.entries))
+        val suggestions = provider.getSuggestions(createSuggestionSources(timeEntries = testData.entries.associateBy { it.id }))
             .filterIsInstance<Suggestion.MostUsed>()
 
         suggestions.map { it.timeEntry } shouldBe testData.pickedTimeEntries

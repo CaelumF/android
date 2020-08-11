@@ -9,6 +9,7 @@ import com.toggl.models.domain.TimeEntry
 import com.toggl.models.domain.User
 import com.toggl.models.domain.UserPreferences
 import com.toggl.models.domain.Workspace
+import com.toggl.timer.suggestions.domain.Suggestion
 
 sealed class LoadingAction {
     object StartLoading : LoadingAction()
@@ -21,6 +22,7 @@ sealed class LoadingAction {
     data class TimeEntriesLoaded(val timeEntries: List<TimeEntry>) : LoadingAction()
     data class UserPreferencesLoaded(val userPreferences: UserPreferences) : LoadingAction()
     data class CalendarsLoaded(val calendars: List<Calendar>) : LoadingAction()
+    data class SuggestionsLoaded(val suggestions: List<Suggestion>) : LoadingAction()
 }
 
 fun LoadingAction.formatForDebug() =
@@ -35,4 +37,5 @@ fun LoadingAction.formatForDebug() =
         is LoadingAction.UserPreferencesLoaded -> "Loaded $userPreferences"
         is LoadingAction.UserLoaded -> "Loaded $user"
         is LoadingAction.CalendarsLoaded -> "Loaded ${calendars.size} calendars"
+        is LoadingAction.SuggestionsLoaded -> "Loaded ${suggestions.size} suggestions"
     }

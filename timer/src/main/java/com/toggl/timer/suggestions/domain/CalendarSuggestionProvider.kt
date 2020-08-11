@@ -19,19 +19,18 @@ class CalendarSuggestionProvider @Inject constructor(
     private val lookBackTimeSpan = Duration.ofHours(1)
     private val lookAheadTimeSpan = Duration.ofHours(1)
 
-    override suspend fun getSuggestions(suggestionsState: SuggestionsState): List<Suggestion> =
+    override suspend fun getSuggestions(suggestionData: SuggestionData): List<Suggestion> =
         withContext(dispatcherProvider.io) {
             val now = timeService.now()
             val startOfRange = now - lookBackTimeSpan
             val endOfRange = now + lookAheadTimeSpan
-            val calendarEvents = suggestionsState.calendarEvents
 
-            calendarEvents.values
+            suggestionData.calendarEvents.values
                 .asSequence()
                 .filter { it.description.isNotBlank() }
                 .filter { it.startTime in startOfRange..endOfRange }
                 .sortedBy { abs(now.minutesUntil(it.startTime)) }
-                .map { Suggestion.Calendar(it, suggestionsState.user.defaultWorkspaceId) }
+                .map { Suggestion.Calendar(it, suggestionData.workspaceId) }
                 .take(maxNumberOfSuggestions)
                 .toList()
         }

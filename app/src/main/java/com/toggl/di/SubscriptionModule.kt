@@ -9,12 +9,14 @@ import com.toggl.domain.AppState
 import com.toggl.domain.loading.LoadCalendarsSubscription
 import com.toggl.domain.loading.LoadClientsSubscription
 import com.toggl.domain.loading.LoadProjectsSubscription
+import com.toggl.domain.loading.LoadSuggestionsSubscription
 import com.toggl.domain.loading.LoadTagsSubscription
 import com.toggl.domain.loading.LoadTasksSubscription
 import com.toggl.domain.loading.LoadTimeEntriesSubscription
 import com.toggl.domain.loading.LoadUserPreferencesSubscription
 import com.toggl.domain.loading.LoadWorkspacesSubscription
 import com.toggl.repository.Repository
+import com.toggl.timer.suggestions.domain.SuggestionProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -95,4 +97,12 @@ object SubscriptionModule {
         dispatcherProvider: DispatcherProvider
     ): Subscription<AppState, AppAction> =
         LoadCalendarsSubscription(context, dispatcherProvider)
+
+    @Provides
+    @IntoSet
+    fun loadSuggestionsSubscription(
+        suggestionProvider: SuggestionProvider,
+        dispatcherProvider: DispatcherProvider
+    ): Subscription<AppState, AppAction> =
+        LoadSuggestionsSubscription(suggestionProvider, dispatcherProvider)
 }
