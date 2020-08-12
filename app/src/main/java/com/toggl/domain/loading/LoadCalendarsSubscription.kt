@@ -1,13 +1,11 @@
 package com.toggl.domain.loading
 
 import android.content.ContentResolver
-import android.content.Context
 import android.database.ContentObserver
 import android.net.Uri
 import android.provider.CalendarContract
 import com.toggl.architecture.DispatcherProvider
 import com.toggl.common.feature.services.calendar.Calendar
-import com.toggl.common.feature.services.calendar.permissionToReadCalendarWasGranted
 import com.toggl.domain.AppState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +13,48 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
+
+@ExperimentalCoroutinesApi
+class LoadCalendarsSubscription(
+    private val calendarProvider: CalendarProvider,
+    dispatcherProvider: DispatcherProvider
+) : BaseLoadingSubscription(dispatcherProvider) {
+
+    override val startLoadingTrigger: (AppState) -> Boolean
+        get() = { state -> super.startLoadingTrigger(state) && state.calendarPermissionWasGranted }
+
+    override fun subscribe(shouldStartLoading: Boolean): Flow<LoadingAction> {
+        if (!shouldStartLoading)
+            return flowOf(emptyList<Calendar>()).map { LoadingAction.CalendarsLoaded(it) }
+
+        calendarProvider.unregister()
+        return calendarProvider.calendarFlow()
+            .map { LoadingAction.CalendarsLoaded(it) }
+            .onCompletion { calendarProvider.unregister() }
+    }
+}
+
+data class CalendarProvider(private val contentResolver: ContentResolver) {
+
+    private val calendarsUri: Uri = CalendarContract.Calendars.CONTENT_URI
+    private var calendarContentObserver: CalendarContentObserver? = null
+
+    fun calendarFlow(): Flow<List<Calendar>> {
+        val calendarsFlow = MutableStateFlow<List<Calendar>>(emptyList())
+        calendarContentObserver = CalendarContentObserver(contentResolver, calendarsFlow).also { observer ->
+            contentResolver.registerContentObserver(calendarsUri, true, observer)
+            observer.onChange(true)
+        }
+        return calendarsFlow
+    }
+
+    fun unregister() {
+        calendarContentObserver?.let { observer ->
+            contentResolver.unregisterContentObserver(observer)
+        }
+        calendarContentObserver = null
+    }
+}
 
 private class CalendarContentObserver(
     private val contentResolver: ContentResolver,
@@ -55,30 +95,5 @@ private class CalendarContentObserver(
                 }
             }
         }.toList()
-    }
-}
-
-@ExperimentalCoroutinesApi
-class LoadCalendarsSubscription(
-    private val context: Context,
-    dispatcherProvider: DispatcherProvider
-) : BaseLoadingSubscription(dispatcherProvider) {
-
-    private val calendarsUri: Uri = CalendarContract.Calendars.CONTENT_URI
-    override val startLoadingTrigger: (AppState) -> Boolean
-        get() = { state -> super.startLoadingTrigger(state) && state.calendarPermissionWasGranted }
-
-    override fun subscribe(shouldStartLoading: Boolean): Flow<LoadingAction> {
-        if (!shouldStartLoading || !context.permissionToReadCalendarWasGranted())
-            return flowOf(emptyList<Calendar>()).map { LoadingAction.CalendarsLoaded(it) }
-
-        val calendarsFlow = MutableStateFlow<List<Calendar>>(emptyList())
-
-        val calendarContentObserver = CalendarContentObserver(context.contentResolver, calendarsFlow)
-        context.contentResolver.registerContentObserver(calendarsUri, true, calendarContentObserver)
-        calendarContentObserver.onChange(true) // trigger the first load
-
-        return calendarsFlow.map { LoadingAction.CalendarsLoaded(it) }
-            .onCompletion { context.contentResolver.unregisterContentObserver(calendarContentObserver) }
     }
 }

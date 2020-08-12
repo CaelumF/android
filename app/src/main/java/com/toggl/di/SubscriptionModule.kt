@@ -6,6 +6,7 @@ import com.toggl.architecture.core.CompositeSubscription
 import com.toggl.architecture.core.Subscription
 import com.toggl.domain.AppAction
 import com.toggl.domain.AppState
+import com.toggl.domain.loading.CalendarProvider
 import com.toggl.domain.loading.LoadCalendarsSubscription
 import com.toggl.domain.loading.LoadClientsSubscription
 import com.toggl.domain.loading.LoadProjectsSubscription
@@ -96,7 +97,7 @@ object SubscriptionModule {
         @ApplicationContext context: Context,
         dispatcherProvider: DispatcherProvider
     ): Subscription<AppState, AppAction> =
-        LoadCalendarsSubscription(context, dispatcherProvider)
+        LoadCalendarsSubscription(CalendarProvider(context.contentResolver), dispatcherProvider)
 
     @Provides
     @IntoSet
