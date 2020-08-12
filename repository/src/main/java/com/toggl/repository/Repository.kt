@@ -90,7 +90,7 @@ class Repository(
     override fun loadTimeEntries() = timeEntryDao.getAllTimeEntriesWithTags().map { it.map(DatabaseTimeEntryWithTags::toModel) }
 
     override suspend fun createProject(project: CreateProjectDTO): Project {
-        val databaseProject = DatabaseProject(
+        val databaseProject = DatabaseProject.from(
             name = project.name,
             color = project.color,
             active = project.active,
@@ -123,7 +123,7 @@ class Repository(
     override suspend fun workspacesCount(): Int = workspaceDao.count()
 
     override suspend fun createClient(client: Client): Client {
-        val databaseClient = DatabaseClient(
+        val databaseClient = DatabaseClient.from(
             name = client.name,
             serverId = null,
             workspaceId = client.workspaceId

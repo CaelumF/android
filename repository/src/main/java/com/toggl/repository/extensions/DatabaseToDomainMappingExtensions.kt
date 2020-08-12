@@ -21,7 +21,7 @@ import com.toggl.models.validation.Email
 
 infix fun DatabaseTimeEntryWithTags.updateWith(updatedTimeEntry: TimeEntry): DatabaseTimeEntryWithTags = copy(
     timeEntry = timeEntry updateWith updatedTimeEntry,
-    tags // TODO 🤷‍
+    tags = tags // TODO 🤷‍
 )
 
 infix fun DatabaseTimeEntry.updateWith(updatedTimeEntry: TimeEntry): DatabaseTimeEntry = copy(
@@ -63,13 +63,13 @@ fun DatabaseTimeEntry.toModelWithoutTags() = TimeEntry(
 
 fun DatabaseProject.toModel() = Project(
     id,
-    name,
-    color,
-    active,
-    isPrivate,
-    billable,
-    workspaceId,
-    clientId
+    name.current,
+    color.current,
+    active.current,
+    isPrivate.current,
+    billable.current,
+    workspaceId.current,
+    clientId.current
 )
 
 fun DatabaseTag.toModel() = Tag(
@@ -86,17 +86,17 @@ fun DatabaseWorkspace.toModel() = Workspace(
 
 fun DatabaseClient.toModel() = Client(
     id,
-    name,
-    workspaceId
+    name.current,
+    workspaceId.current
 )
 
 fun DatabaseTask.toModel() = Task(
     id,
-    name,
-    active,
-    projectId,
-    workspaceId,
-    userId
+    name.current,
+    active.current,
+    projectId.current,
+    workspaceId.current,
+    userId.current
 )
 
 fun DatabaseUser.toModel() = User(

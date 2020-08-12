@@ -107,14 +107,14 @@ class MockDatabaseInitializer @Inject constructor(
         isDeleted = serverDeletedAt != null
     )
 
-    private fun ApiClient.toDatabaseModel() = DatabaseClient(
+    private fun ApiClient.toDatabaseModel() = DatabaseClient.from(
         id = id,
         serverId = id,
         name = name,
         workspaceId = workspaceId
     )
 
-    private fun ApiProject.toDatabaseModel() = DatabaseProject(
+    private fun ApiProject.toDatabaseModel() = DatabaseProject.from(
         id = id,
         serverId = id,
         name = name,
@@ -126,7 +126,7 @@ class MockDatabaseInitializer @Inject constructor(
         clientId = clientId
     )
 
-    private fun ApiTask.toDatabaseModel() = DatabaseTask(
+    private fun ApiTask.toDatabaseModel() = DatabaseTask.from(
         id = id,
         serverId = id,
         name = name,

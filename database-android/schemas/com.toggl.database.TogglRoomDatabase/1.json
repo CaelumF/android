@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0714688b939ae2df4f6f5b422776c8db",
+    "identityHash": "bb6de41deb062099ee6d948ef25683fb",
     "entities": [
       {
         "tableName": "time_entries",
@@ -235,7 +235,7 @@
       },
       {
         "tableName": "projects",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `serverId` INTEGER, `name` TEXT NOT NULL, `color` TEXT NOT NULL, `active` INTEGER NOT NULL, `isPrivate` INTEGER NOT NULL, `billable` INTEGER, `workspaceId` INTEGER NOT NULL, `clientId` INTEGER, FOREIGN KEY(`workspaceId`) REFERENCES `workspaces`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`clientId`) REFERENCES `clients`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `serverId` INTEGER, `name_current` TEXT NOT NULL, `name_backup` TEXT NOT NULL, `name_status` TEXT NOT NULL, `color_current` TEXT NOT NULL, `color_backup` TEXT NOT NULL, `color_status` TEXT NOT NULL, `active_current` INTEGER NOT NULL, `active_backup` INTEGER NOT NULL, `active_status` TEXT NOT NULL, `isPrivate_current` INTEGER NOT NULL, `isPrivate_backup` INTEGER NOT NULL, `isPrivate_status` TEXT NOT NULL, `billable_current` INTEGER, `billable_backup` INTEGER, `billable_status` TEXT NOT NULL, `workspaceId_current` INTEGER NOT NULL, `workspaceId_backup` INTEGER NOT NULL, `workspaceId_status` TEXT NOT NULL, `clientId_current` INTEGER, `clientId_backup` INTEGER, `clientId_status` TEXT NOT NULL, FOREIGN KEY(`workspaceId_current`) REFERENCES `workspaces`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`clientId_current`) REFERENCES `clients`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -250,46 +250,130 @@
             "notNull": false
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
+            "fieldPath": "name.current",
+            "columnName": "name_current",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "color",
-            "columnName": "color",
+            "fieldPath": "name.backup",
+            "columnName": "name_backup",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "active",
-            "columnName": "active",
+            "fieldPath": "name.status",
+            "columnName": "name_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "color.current",
+            "columnName": "color_current",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "color.backup",
+            "columnName": "color_backup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "color.status",
+            "columnName": "color_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "active.current",
+            "columnName": "active_current",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "isPrivate",
-            "columnName": "isPrivate",
+            "fieldPath": "active.backup",
+            "columnName": "active_backup",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "billable",
-            "columnName": "billable",
+            "fieldPath": "active.status",
+            "columnName": "active_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isPrivate.current",
+            "columnName": "isPrivate_current",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isPrivate.backup",
+            "columnName": "isPrivate_backup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isPrivate.status",
+            "columnName": "isPrivate_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "billable.current",
+            "columnName": "billable_current",
             "affinity": "INTEGER",
             "notNull": false
           },
           {
-            "fieldPath": "workspaceId",
-            "columnName": "workspaceId",
+            "fieldPath": "billable.backup",
+            "columnName": "billable_backup",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "billable.status",
+            "columnName": "billable_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "workspaceId.current",
+            "columnName": "workspaceId_current",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "clientId",
-            "columnName": "clientId",
+            "fieldPath": "workspaceId.backup",
+            "columnName": "workspaceId_backup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "workspaceId.status",
+            "columnName": "workspaceId_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clientId.current",
+            "columnName": "clientId_current",
             "affinity": "INTEGER",
             "notNull": false
+          },
+          {
+            "fieldPath": "clientId.backup",
+            "columnName": "clientId_backup",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clientId.status",
+            "columnName": "clientId_status",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -300,20 +384,20 @@
         },
         "indices": [
           {
-            "name": "index_projects_workspaceId",
+            "name": "index_projects_workspaceId_current",
             "unique": false,
             "columnNames": [
-              "workspaceId"
+              "workspaceId_current"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_projects_workspaceId` ON `${TABLE_NAME}` (`workspaceId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_projects_workspaceId_current` ON `${TABLE_NAME}` (`workspaceId_current`)"
           },
           {
-            "name": "index_projects_clientId",
+            "name": "index_projects_clientId_current",
             "unique": false,
             "columnNames": [
-              "clientId"
+              "clientId_current"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_projects_clientId` ON `${TABLE_NAME}` (`clientId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_projects_clientId_current` ON `${TABLE_NAME}` (`clientId_current`)"
           }
         ],
         "foreignKeys": [
@@ -322,7 +406,7 @@
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
-              "workspaceId"
+              "workspaceId_current"
             ],
             "referencedColumns": [
               "id"
@@ -333,7 +417,7 @@
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
-              "clientId"
+              "clientId_current"
             ],
             "referencedColumns": [
               "id"
@@ -381,7 +465,7 @@
       },
       {
         "tableName": "clients",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `serverId` INTEGER, `name` TEXT NOT NULL, `workspaceId` INTEGER NOT NULL, FOREIGN KEY(`workspaceId`) REFERENCES `workspaces`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `serverId` INTEGER, `name_current` TEXT NOT NULL, `name_backup` TEXT NOT NULL, `name_status` TEXT NOT NULL, `workspaceId_current` INTEGER NOT NULL, `workspaceId_backup` INTEGER NOT NULL, `workspaceId_status` TEXT NOT NULL, FOREIGN KEY(`workspaceId_current`) REFERENCES `workspaces`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -396,15 +480,39 @@
             "notNull": false
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
+            "fieldPath": "name.current",
+            "columnName": "name_current",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "workspaceId",
-            "columnName": "workspaceId",
+            "fieldPath": "name.backup",
+            "columnName": "name_backup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name.status",
+            "columnName": "name_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "workspaceId.current",
+            "columnName": "workspaceId_current",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "workspaceId.backup",
+            "columnName": "workspaceId_backup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "workspaceId.status",
+            "columnName": "workspaceId_status",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -416,12 +524,12 @@
         },
         "indices": [
           {
-            "name": "index_clients_workspaceId",
+            "name": "index_clients_workspaceId_current",
             "unique": false,
             "columnNames": [
-              "workspaceId"
+              "workspaceId_current"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_clients_workspaceId` ON `${TABLE_NAME}` (`workspaceId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_clients_workspaceId_current` ON `${TABLE_NAME}` (`workspaceId_current`)"
           }
         ],
         "foreignKeys": [
@@ -430,7 +538,7 @@
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
-              "workspaceId"
+              "workspaceId_current"
             ],
             "referencedColumns": [
               "id"
@@ -566,7 +674,7 @@
       },
       {
         "tableName": "tasks",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `serverId` INTEGER, `name` TEXT NOT NULL, `active` INTEGER NOT NULL, `projectId` INTEGER NOT NULL, `workspaceId` INTEGER NOT NULL, `userId` INTEGER, FOREIGN KEY(`workspaceId`) REFERENCES `workspaces`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`projectId`) REFERENCES `projects`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `serverId` INTEGER, `name_current` TEXT NOT NULL, `name_backup` TEXT NOT NULL, `name_status` TEXT NOT NULL, `active_current` INTEGER NOT NULL, `active_backup` INTEGER NOT NULL, `active_status` TEXT NOT NULL, `projectId_current` INTEGER NOT NULL, `projectId_backup` INTEGER NOT NULL, `projectId_status` TEXT NOT NULL, `workspaceId_current` INTEGER NOT NULL, `workspaceId_backup` INTEGER NOT NULL, `workspaceId_status` TEXT NOT NULL, `userId_current` INTEGER, `userId_backup` INTEGER, `userId_status` TEXT NOT NULL, FOREIGN KEY(`workspaceId_current`) REFERENCES `workspaces`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`projectId_current`) REFERENCES `projects`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -581,34 +689,94 @@
             "notNull": false
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
+            "fieldPath": "name.current",
+            "columnName": "name_current",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "active",
-            "columnName": "active",
+            "fieldPath": "name.backup",
+            "columnName": "name_backup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name.status",
+            "columnName": "name_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "active.current",
+            "columnName": "active_current",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "projectId",
-            "columnName": "projectId",
+            "fieldPath": "active.backup",
+            "columnName": "active_backup",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "workspaceId",
-            "columnName": "workspaceId",
+            "fieldPath": "active.status",
+            "columnName": "active_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "projectId.current",
+            "columnName": "projectId_current",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "userId",
-            "columnName": "userId",
+            "fieldPath": "projectId.backup",
+            "columnName": "projectId_backup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "projectId.status",
+            "columnName": "projectId_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "workspaceId.current",
+            "columnName": "workspaceId_current",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "workspaceId.backup",
+            "columnName": "workspaceId_backup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "workspaceId.status",
+            "columnName": "workspaceId_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId.current",
+            "columnName": "userId_current",
             "affinity": "INTEGER",
             "notNull": false
+          },
+          {
+            "fieldPath": "userId.backup",
+            "columnName": "userId_backup",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userId.status",
+            "columnName": "userId_status",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -619,20 +787,20 @@
         },
         "indices": [
           {
-            "name": "index_tasks_workspaceId",
+            "name": "index_tasks_workspaceId_current",
             "unique": false,
             "columnNames": [
-              "workspaceId"
+              "workspaceId_current"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_tasks_workspaceId` ON `${TABLE_NAME}` (`workspaceId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_tasks_workspaceId_current` ON `${TABLE_NAME}` (`workspaceId_current`)"
           },
           {
-            "name": "index_tasks_projectId",
+            "name": "index_tasks_projectId_current",
             "unique": false,
             "columnNames": [
-              "projectId"
+              "projectId_current"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_tasks_projectId` ON `${TABLE_NAME}` (`projectId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_tasks_projectId_current` ON `${TABLE_NAME}` (`projectId_current`)"
           }
         ],
         "foreignKeys": [
@@ -641,7 +809,7 @@
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
-              "workspaceId"
+              "workspaceId_current"
             ],
             "referencedColumns": [
               "id"
@@ -652,7 +820,7 @@
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
-              "projectId"
+              "projectId_current"
             ],
             "referencedColumns": [
               "id"
@@ -729,7 +897,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0714688b939ae2df4f6f5b422776c8db')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bb6de41deb062099ee6d948ef25683fb')"
     ]
   }
 }
