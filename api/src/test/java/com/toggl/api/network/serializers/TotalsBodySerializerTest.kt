@@ -21,7 +21,7 @@ class TotalsBodySerializerTest {
             startDate = OffsetDateTime.of(2020, 6, 29, 0, 0, 0, 0, ZoneOffset.UTC),
             endDate = OffsetDateTime.of(2020, 7, 5, 3, 0, 0, 0, ZoneOffset.UTC),
             userIds = listOf(4674715),
-            true
+            withGraph = true
         )
         val jsonSerializer = TotalsBodyJsonAdapter(Moshi.Builder().add(OffsetDateTimeAdapter()).build())
 

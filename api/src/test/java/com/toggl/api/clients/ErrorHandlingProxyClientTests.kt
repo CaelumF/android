@@ -5,6 +5,7 @@ import com.toggl.api.clients.feedback.RetrofitFeedbackApiClient
 import com.toggl.api.common.CoroutineTest
 import com.toggl.api.exceptions.OfflineException
 import com.toggl.api.network.ReportsApi
+import com.toggl.api.network.SyncApi
 import com.toggl.models.validation.Email
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -19,7 +20,9 @@ class ErrorHandlingProxyClientTests : CoroutineTest() {
     private val feedbackApiClient = mockk<RetrofitFeedbackApiClient>()
     private val authenticationApiClient = mockk<RetrofitAuthenticationApiClient>()
     private val reportsApi = mockk<ReportsApi>()
-    private val errorHandlingProxyClient = ErrorHandlingProxyClient(authenticationApiClient, feedbackApiClient, reportsApi)
+    private val syncApi = mockk<SyncApi>()
+    private val errorHandlingProxyClient =
+        ErrorHandlingProxyClient(authenticationApiClient, feedbackApiClient, reportsApi, syncApi)
     private val email = mockk<Email.Valid>()
 
     @Test

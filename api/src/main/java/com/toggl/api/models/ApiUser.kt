@@ -4,7 +4,9 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class ApiUser(
-    val id: Long,
+    val id: Long?,
+    @Json(name = "user_id")
+    val userId: Long?,
     @Json(name = "api_token")
     val apiToken: String,
     @Json(name = "beginning_of_week")

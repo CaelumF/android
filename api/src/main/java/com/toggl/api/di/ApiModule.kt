@@ -3,15 +3,18 @@ package com.toggl.api.di
 import com.squareup.moshi.Moshi
 import com.toggl.api.clients.ErrorHandlingProxyClient
 import com.toggl.api.clients.ReportsApiClient
+import com.toggl.api.clients.SyncApiClient
 import com.toggl.api.clients.authentication.AuthenticationApiClient
 import com.toggl.api.clients.feedback.FeedbackApiClient
 import com.toggl.api.extensions.AppBuildConfig
 import com.toggl.api.network.AuthenticationApi
 import com.toggl.api.network.FeedbackApi
 import com.toggl.api.network.ReportsApi
+import com.toggl.api.network.SyncApi
 import com.toggl.api.network.adapters.DateAdapter
 import com.toggl.api.network.adapters.OffsetDateTimeAdapter
 import com.toggl.api.network.interceptors.AuthInterceptor
+import com.toggl.api.network.interceptors.SyncInterceptor
 import com.toggl.api.network.interceptors.UserAgentInterceptor
 import dagger.Binds
 import dagger.Module
@@ -43,6 +46,13 @@ object ApiModule {
     @Singleton
     @BaseReportsUrl
     fun baseReportsUrl(@BaseUrl baseUrl: String): String = "$baseUrl/reports/api/v3/"
+
+    @Provides
+    @Singleton
+    @BaseSyncUrl
+    fun baseSyncUrl(): String =
+        if (AppBuildConfig.isBuildTypeRelease) "https://sync.toggl.com"
+        else "https://sync.toggl.space"
 
     @Provides
     @Singleton
@@ -78,6 +88,20 @@ object ApiModule {
 
     @Provides
     @Singleton
+    @SyncRetrofit
+    fun syncRetrofit(
+        @BaseSyncUrl baseUrl: String,
+        okHttpClient: OkHttpClient,
+        syncInterceptor: SyncInterceptor,
+        moshi: Moshi
+    ) = Retrofit.Builder()
+        .baseUrl(baseUrl)
+        .client(okHttpClient.newBuilder().addInterceptor(syncInterceptor).build())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .build()
+
+    @Provides
+    @Singleton
     @ReportsRetrofit
     fun reportsRetrofit(
         @BaseReportsUrl baseUrl: String,
@@ -105,6 +129,11 @@ object ApiModule {
     @Singleton
     internal fun reportsApi(@ReportsRetrofit retrofit: Retrofit) =
         retrofit.create(ReportsApi::class.java)
+
+    @Provides
+    @Singleton
+    internal fun syncApi(@SyncRetrofit retrofit: Retrofit) =
+        retrofit.create(SyncApi::class.java)
 }
 
 @Module
@@ -118,4 +147,7 @@ internal abstract class ApiClientModule {
 
     @Binds
     abstract fun reportsApiClient(bind: ErrorHandlingProxyClient): ReportsApiClient
+
+    @Binds
+    abstract fun syncApiClient(bind: ErrorHandlingProxyClient): SyncApiClient
 }

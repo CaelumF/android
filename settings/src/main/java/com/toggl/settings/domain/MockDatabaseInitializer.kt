@@ -151,7 +151,7 @@ class MockDatabaseInitializer @Inject constructor(
     )
 
     private fun ApiUser.toDatabaseModel() = DatabaseUser(
-        serverId = id,
+        serverId = id ?: userId ?: throw IllegalStateException(),
         name = fullname,
         email = email,
         apiToken = apiToken,

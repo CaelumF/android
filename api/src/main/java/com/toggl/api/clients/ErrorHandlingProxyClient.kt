@@ -10,6 +10,8 @@ import com.toggl.api.exceptions.OfflineException
 import com.toggl.api.exceptions.ReportsRangeTooLongException
 import com.toggl.api.models.ProjectSummary
 import com.toggl.api.network.ReportsApi
+import com.toggl.api.network.SyncApi
+import com.toggl.api.network.models.pull.PullResponse
 import com.toggl.api.network.models.reports.ProjectsSummaryBody
 import com.toggl.api.network.models.reports.SearchProjectsBody
 import com.toggl.api.network.models.reports.TotalsBody
@@ -31,8 +33,9 @@ import javax.inject.Singleton
 internal class ErrorHandlingProxyClient @Inject constructor(
     private val authenticationApiClient: RetrofitAuthenticationApiClient,
     private val feedbackApiClient: RetrofitFeedbackApiClient,
-    private val reportsApi: ReportsApi
-) : AuthenticationApiClient, FeedbackApiClient, ReportsApiClient {
+    private val reportsApi: ReportsApi,
+    private val syncApi: SyncApi
+) : AuthenticationApiClient, FeedbackApiClient, ReportsApiClient, SyncApiClient {
     override suspend fun login(email: Email.Valid, password: Password.Valid): User {
         try {
             return authenticationApiClient.login(email, password)
@@ -104,6 +107,14 @@ internal class ErrorHandlingProxyClient @Inject constructor(
         try {
             val body = SearchProjectsBody(idsToSearch)
             return reportsApi.searchProjects(workspaceId, body)
+        } catch (exception: Exception) {
+            throw handledException(exception)
+        }
+    }
+
+    override suspend fun pull(since: OffsetDateTime?): PullResponse {
+        try {
+            return syncApi.pull(since?.toEpochSecond())
         } catch (exception: Exception) {
             throw handledException(exception)
         }
