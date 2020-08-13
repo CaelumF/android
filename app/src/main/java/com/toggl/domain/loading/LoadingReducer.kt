@@ -44,5 +44,6 @@ class LoadingReducer @Inject constructor(
             is LoadingAction.UserPreferencesLoaded -> state.mutateWithoutEffects { copy(userPreferences = action.userPreferences) }
             is LoadingAction.CalendarsLoaded -> state.mutateWithoutEffects { copy(calendars = action.calendars) }
             is LoadingAction.SuggestionsLoaded -> state.mutateWithoutEffects { copy(suggestions = action.suggestions) }
+            is LoadingAction.CalendarEventsLoaded -> state.mutateWithoutEffects { copy(calendarEvents = action.calendarEvents) }
         }
 }

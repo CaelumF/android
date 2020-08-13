@@ -16,6 +16,7 @@ fun mapAppStateToLoadingState(appState: AppState): LoadingState =
         timeEntries = appState.timeEntries.values,
         suggestions = appState.suggestions,
         calendars = appState.calendars.values,
+        calendarEvents = appState.calendarEvents.values,
         userPreferences = appState.userPreferences,
         backStack = appState.backStack
     )
@@ -31,6 +32,7 @@ fun mapLoadingStateToAppState(appState: AppState, loadingState: LoadingState): A
         timeEntries = loadingState.timeEntries.associateBy { it.id },
         suggestions = loadingState.suggestions.toList(),
         calendars = loadingState.calendars.associateBy { it.id },
+        calendarEvents = loadingState.calendarEvents.associateBy { it.id },
         userPreferences = loadingState.userPreferences,
         backStack = loadingState.backStack
     )

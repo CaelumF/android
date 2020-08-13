@@ -3,12 +3,10 @@ package com.toggl.domain.loading
 import com.toggl.architecture.DispatcherProvider
 import com.toggl.models.domain.UserPreferences
 import com.toggl.repository.interfaces.SettingsRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
-@ExperimentalCoroutinesApi
 class LoadUserPreferencesSubscription(
     private val settingsRepository: SettingsRepository,
     private val dispatcherProvider: DispatcherProvider

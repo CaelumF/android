@@ -11,7 +11,6 @@ import com.toggl.settings.compose.extensions.createComposeFullscreenView
 import com.toggl.settings.domain.SingleChoiceSettingSelector
 import com.toggl.settings.ui.common.SingleChoiceDialogWithHeader
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -21,7 +20,6 @@ class SingleChoiceSettingsDialogFragment : DialogFragment() {
     var singleChoiceSettingSelector: SingleChoiceSettingSelector? = null // https://github.com/google/dagger/issues/1883#issuecomment-642565920 🤷‍
     private val store: SettingsStoreViewModel by viewModels()
 
-    @ExperimentalCoroutinesApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

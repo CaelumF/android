@@ -1,6 +1,7 @@
 package com.toggl.domain.loading
 
 import com.toggl.common.feature.services.calendar.Calendar
+import com.toggl.common.feature.services.calendar.CalendarEvent
 import com.toggl.models.domain.Client
 import com.toggl.models.domain.Project
 import com.toggl.models.domain.Tag
@@ -23,6 +24,7 @@ sealed class LoadingAction {
     data class UserPreferencesLoaded(val userPreferences: UserPreferences) : LoadingAction()
     data class CalendarsLoaded(val calendars: List<Calendar>) : LoadingAction()
     data class SuggestionsLoaded(val suggestions: List<Suggestion>) : LoadingAction()
+    data class CalendarEventsLoaded(val calendarEvents: List<CalendarEvent>) : LoadingAction()
 }
 
 fun LoadingAction.formatForDebug() =
@@ -37,5 +39,6 @@ fun LoadingAction.formatForDebug() =
         is LoadingAction.UserPreferencesLoaded -> "Loaded $userPreferences"
         is LoadingAction.UserLoaded -> "Loaded $user"
         is LoadingAction.CalendarsLoaded -> "Loaded ${calendars.size} calendars"
+        is LoadingAction.CalendarEventsLoaded -> "Loaded ${calendarEvents.size} calendar events"
         is LoadingAction.SuggestionsLoaded -> "Loaded ${suggestions.size} suggestions"
     }

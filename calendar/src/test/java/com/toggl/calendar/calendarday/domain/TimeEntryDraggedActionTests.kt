@@ -29,7 +29,7 @@ import kotlin.contracts.ExperimentalContracts
 @DisplayName("The TimeEntryDragged action")
 class TimeEntryDraggedActionTests : CoroutineTest() {
 
-    private val reducer = createCalendarDayReducer(dispatcherProvider = dispatcherProvider)
+    private val reducer = createCalendarDayReducer()
 
     private val startTime = OffsetDateTime.of(2005, 5, 5, 5, 5, 0, 0, ZoneOffset.UTC)
 

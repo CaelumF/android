@@ -3,6 +3,7 @@ package com.toggl.domain.loading
 import com.toggl.architecture.Loadable
 import com.toggl.common.feature.navigation.BackStack
 import com.toggl.common.feature.services.calendar.Calendar
+import com.toggl.common.feature.services.calendar.CalendarEvent
 import com.toggl.models.domain.Client
 import com.toggl.models.domain.Project
 import com.toggl.models.domain.Tag
@@ -23,6 +24,7 @@ data class LoadingState(
     val timeEntries: Collection<TimeEntry>,
     val suggestions: Collection<Suggestion>,
     val calendars: Collection<Calendar>,
+    val calendarEvents: Collection<CalendarEvent>,
     val userPreferences: UserPreferences,
     val backStack: BackStack
 )

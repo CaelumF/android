@@ -29,7 +29,6 @@ import javax.inject.Inject
 import kotlin.contracts.ExperimentalContracts
 
 @AndroidEntryPoint
-
 class CalendarDayFragment : Fragment(R.layout.fragment_calendarday) {
     private val store: CalendarDayStoreViewModel by activityViewModels()
     private val datePickerStore: CalendarDatePickerStoreViewModel by activityViewModels()
@@ -42,7 +41,6 @@ class CalendarDayFragment : Fragment(R.layout.fragment_calendarday) {
     private var currentPage = 0
 
     @ExperimentalContracts
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

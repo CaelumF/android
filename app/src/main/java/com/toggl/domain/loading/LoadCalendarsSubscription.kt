@@ -7,14 +7,12 @@ import android.provider.CalendarContract
 import com.toggl.architecture.DispatcherProvider
 import com.toggl.common.feature.services.calendar.Calendar
 import com.toggl.domain.AppState
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 
-@ExperimentalCoroutinesApi
 class LoadCalendarsSubscription(
     private val calendarProvider: CalendarProvider,
     dispatcherProvider: DispatcherProvider

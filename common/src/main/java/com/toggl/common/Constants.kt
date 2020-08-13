@@ -54,6 +54,10 @@ object Constants {
 
     object Calendar {
         const val datePickerRowItemsCount = 7L
+        object Events {
+            const val numberOfMonthsBack = 2L
+            const val numberOfMonthsAhead = 2L
+        }
     }
 
     object Reports {

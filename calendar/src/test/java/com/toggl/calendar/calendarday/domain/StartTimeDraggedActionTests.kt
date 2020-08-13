@@ -35,7 +35,7 @@ class StartTimeDraggedActionTests : CoroutineTest() {
     private val duration = Duration.ofHours(5)
     private val endTime = startTime.plus(duration)
 
-    private val reducer = createCalendarDayReducer(dispatcherProvider = dispatcherProvider, timeService = timeService)
+    private val reducer = createCalendarDayReducer(timeService = timeService)
 
     init {
         every { timeService.now() }.returns(now)

@@ -2,12 +2,10 @@ package com.toggl.domain.loading
 
 import com.toggl.architecture.DispatcherProvider
 import com.toggl.repository.interfaces.WorkspaceRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
-@ExperimentalCoroutinesApi
 class LoadWorkspacesSubscription(
     private val taskRepository: WorkspaceRepository,
     dispatcherProvider: DispatcherProvider

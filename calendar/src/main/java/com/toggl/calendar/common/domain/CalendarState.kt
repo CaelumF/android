@@ -25,7 +25,7 @@ data class CalendarState(
     val localState: LocalState
 ) : BackStackAwareState<CalendarState> {
     data class LocalState internal constructor(
-        internal val selectedDate: OffsetDateTime,
+        val selectedDate: OffsetDateTime,
         internal val calendarEvents: Map<String, CalendarEvent>,
         internal val availableDates: List<OffsetDateTime>,
         internal val visibleDates: List<OffsetDateTime>
