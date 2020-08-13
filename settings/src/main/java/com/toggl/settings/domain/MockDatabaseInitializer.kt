@@ -1,7 +1,6 @@
 package com.toggl.settings.domain
 
 import android.content.Context
-import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
 import com.toggl.api.models.ApiClient
 import com.toggl.api.models.ApiProject
@@ -12,7 +11,6 @@ import com.toggl.api.models.ApiUser
 import com.toggl.api.models.ApiWorkspace
 import com.toggl.api.network.models.pull.PullResponse
 import com.toggl.api.network.models.pull.PullResponseJsonAdapter
-import com.toggl.common.services.time.TimeService
 import com.toggl.database.dao.ClientDao
 import com.toggl.database.dao.ProjectDao
 import com.toggl.database.dao.TagDao
@@ -27,6 +25,11 @@ import com.toggl.database.models.DatabaseTask
 import com.toggl.database.models.DatabaseTimeEntry
 import com.toggl.database.models.DatabaseUser
 import com.toggl.database.models.DatabaseWorkspace
+import com.toggl.database.properties.BooleanSyncProperty
+import com.toggl.database.properties.IntSyncProperty
+import com.toggl.database.properties.LongSyncProperty
+import com.toggl.database.properties.StringSyncProperty
+import com.toggl.models.domain.UserPreferences
 import com.toggl.models.domain.WorkspaceFeature
 import com.toggl.settings.BuildConfig
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -45,9 +48,7 @@ class MockDatabaseInitializer @Inject constructor(
     private val clientDao: ClientDao,
     private val tagDao: TagDao,
     private val taskDao: TaskDao,
-    private val userDao: UserDao,
-    private val sharedPreferences: SharedPreferences,
-    private val timeService: TimeService
+    private val userDao: UserDao
 ) {
     // 99.9 = 2760
     // 99.5 = 1140
@@ -73,7 +74,7 @@ class MockDatabaseInitializer @Inject constructor(
         val pullResponse: PullResponse = PullResponseJsonAdapter(moshi).fromJson(pullResponseJson)!!
 
         workspaceDao.insertAll(pullResponse.workspaces.map { it.toDatabaseModel() })
-        userDao.insert(pullResponse.user.toDatabaseModel())
+        userDao.set(pullResponse.user.toDatabaseModel())
         clientDao.insertAll(pullResponse.clients.map { it.toDatabaseModel() })
         projectDao.insertAll(pullResponse.projects.map { it.toDatabaseModel() })
         tagDao.insertAll(pullResponse.tags.map { it.toDatabaseModel() })
@@ -152,9 +153,21 @@ class MockDatabaseInitializer @Inject constructor(
 
     private fun ApiUser.toDatabaseModel() = DatabaseUser(
         serverId = id ?: userId ?: throw IllegalStateException(),
-        name = fullname,
-        email = email,
+        name = StringSyncProperty.from(fullname),
+        email = StringSyncProperty.from(email),
         apiToken = apiToken,
-        defaultWorkspaceId = defaultWorkspaceId ?: 0
+        defaultWorkspaceId = LongSyncProperty.from(defaultWorkspaceId ?: 0),
+
+        // User Preferences
+        manualModeEnabled = BooleanSyncProperty.from(UserPreferences.default.manualModeEnabled),
+        twentyFourHourClockEnabled = BooleanSyncProperty.from(UserPreferences.default.twentyFourHourClockEnabled),
+        groupSimilarTimeEntriesEnabled = BooleanSyncProperty.from(UserPreferences.default.groupSimilarTimeEntriesEnabled),
+        cellSwipeActionsEnabled = UserPreferences.default.cellSwipeActionsEnabled,
+        calendarIntegrationEnabled = UserPreferences.default.calendarIntegrationEnabled,
+        calendarIds = UserPreferences.default.calendarIds,
+        dateFormat = StringSyncProperty.from(UserPreferences.default.dateFormat.name),
+        durationFormat = StringSyncProperty.from(UserPreferences.default.durationFormat.name),
+        firstDayOfTheWeek = IntSyncProperty.from(UserPreferences.default.firstDayOfTheWeek.value),
+        smartAlertsOption = StringSyncProperty.from(UserPreferences.default.smartAlertsOption.name)
     )
 }

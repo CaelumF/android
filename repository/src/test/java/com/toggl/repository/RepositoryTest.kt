@@ -1,6 +1,7 @@
 package com.toggl.repository
 
 import android.content.SharedPreferences
+import com.toggl.api.ApiTokenProvider
 import com.toggl.common.services.time.TimeService
 import com.toggl.database.dao.ClientDao
 import com.toggl.database.dao.ProjectDao
@@ -21,7 +22,6 @@ import com.toggl.models.validation.Email
 import com.toggl.repository.dto.StartTimeEntryDTO
 import com.toggl.repository.extensions.toDatabaseModel
 import com.toggl.repository.extensions.toModelWithoutTags
-import com.toggl.repository.interfaces.SettingsRepository
 import com.toggl.repository.interfaces.StartTimeEntryResult
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
@@ -375,7 +375,7 @@ class RepositoryTest : CoroutineTest() {
         repository.set(user)
 
         verify {
-            editor.putString(SettingsRepository.apiToken, token.toString())
+            editor.putString(ApiTokenProvider.apiToken, token.toString())
         }
     }
 }

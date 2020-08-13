@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "bb6de41deb062099ee6d948ef25683fb",
+    "identityHash": "06d90cd6960917bbf9c0b2cef0650869",
     "entities": [
       {
         "tableName": "time_entries",
@@ -830,7 +830,7 @@
       },
       {
         "tableName": "users",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`serverId` INTEGER NOT NULL, `apiToken` TEXT NOT NULL, `email` TEXT NOT NULL, `name` TEXT NOT NULL, `defaultWorkspaceId` INTEGER NOT NULL, PRIMARY KEY(`serverId`), FOREIGN KEY(`defaultWorkspaceId`) REFERENCES `workspaces`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`serverId` INTEGER NOT NULL, `apiToken` TEXT NOT NULL, `cellSwipeActionsEnabled` INTEGER NOT NULL, `calendarIntegrationEnabled` INTEGER NOT NULL, `calendarIds` TEXT NOT NULL, `email_current` TEXT NOT NULL, `email_backup` TEXT NOT NULL, `email_status` TEXT NOT NULL, `name_current` TEXT NOT NULL, `name_backup` TEXT NOT NULL, `name_status` TEXT NOT NULL, `defaultWorkspaceId_current` INTEGER NOT NULL, `defaultWorkspaceId_backup` INTEGER NOT NULL, `defaultWorkspaceId_status` TEXT NOT NULL, `manualModeEnabled_current` INTEGER NOT NULL, `manualModeEnabled_backup` INTEGER NOT NULL, `manualModeEnabled_status` TEXT NOT NULL, `twentyFourHourClockEnabled_current` INTEGER NOT NULL, `twentyFourHourClockEnabled_backup` INTEGER NOT NULL, `twentyFourHourClockEnabled_status` TEXT NOT NULL, `groupSimilarTimeEntriesEnabled_current` INTEGER NOT NULL, `groupSimilarTimeEntriesEnabled_backup` INTEGER NOT NULL, `groupSimilarTimeEntriesEnabled_status` TEXT NOT NULL, `dateFormat_current` TEXT NOT NULL, `dateFormat_backup` TEXT NOT NULL, `dateFormat_status` TEXT NOT NULL, `durationFormat_current` TEXT NOT NULL, `durationFormat_backup` TEXT NOT NULL, `durationFormat_status` TEXT NOT NULL, `firstDayOfTheWeek_current` INTEGER NOT NULL, `firstDayOfTheWeek_backup` INTEGER NOT NULL, `firstDayOfTheWeek_status` TEXT NOT NULL, `smartAlertsOption_current` TEXT NOT NULL, `smartAlertsOption_backup` TEXT NOT NULL, `smartAlertsOption_status` TEXT NOT NULL, PRIMARY KEY(`serverId`), FOREIGN KEY(`defaultWorkspaceId_current`) REFERENCES `workspaces`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "serverId",
@@ -845,21 +845,201 @@
             "notNull": true
           },
           {
-            "fieldPath": "email",
-            "columnName": "email",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "name",
-            "columnName": "name",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "defaultWorkspaceId",
-            "columnName": "defaultWorkspaceId",
+            "fieldPath": "cellSwipeActionsEnabled",
+            "columnName": "cellSwipeActionsEnabled",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "calendarIntegrationEnabled",
+            "columnName": "calendarIntegrationEnabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "calendarIds",
+            "columnName": "calendarIds",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "email.current",
+            "columnName": "email_current",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "email.backup",
+            "columnName": "email_backup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "email.status",
+            "columnName": "email_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name.current",
+            "columnName": "name_current",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name.backup",
+            "columnName": "name_backup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name.status",
+            "columnName": "name_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultWorkspaceId.current",
+            "columnName": "defaultWorkspaceId_current",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultWorkspaceId.backup",
+            "columnName": "defaultWorkspaceId_backup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "defaultWorkspaceId.status",
+            "columnName": "defaultWorkspaceId_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "manualModeEnabled.current",
+            "columnName": "manualModeEnabled_current",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "manualModeEnabled.backup",
+            "columnName": "manualModeEnabled_backup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "manualModeEnabled.status",
+            "columnName": "manualModeEnabled_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "twentyFourHourClockEnabled.current",
+            "columnName": "twentyFourHourClockEnabled_current",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "twentyFourHourClockEnabled.backup",
+            "columnName": "twentyFourHourClockEnabled_backup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "twentyFourHourClockEnabled.status",
+            "columnName": "twentyFourHourClockEnabled_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "groupSimilarTimeEntriesEnabled.current",
+            "columnName": "groupSimilarTimeEntriesEnabled_current",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "groupSimilarTimeEntriesEnabled.backup",
+            "columnName": "groupSimilarTimeEntriesEnabled_backup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "groupSimilarTimeEntriesEnabled.status",
+            "columnName": "groupSimilarTimeEntriesEnabled_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateFormat.current",
+            "columnName": "dateFormat_current",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateFormat.backup",
+            "columnName": "dateFormat_backup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateFormat.status",
+            "columnName": "dateFormat_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "durationFormat.current",
+            "columnName": "durationFormat_current",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "durationFormat.backup",
+            "columnName": "durationFormat_backup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "durationFormat.status",
+            "columnName": "durationFormat_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstDayOfTheWeek.current",
+            "columnName": "firstDayOfTheWeek_current",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstDayOfTheWeek.backup",
+            "columnName": "firstDayOfTheWeek_backup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstDayOfTheWeek.status",
+            "columnName": "firstDayOfTheWeek_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "smartAlertsOption.current",
+            "columnName": "smartAlertsOption_current",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "smartAlertsOption.backup",
+            "columnName": "smartAlertsOption_backup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "smartAlertsOption.status",
+            "columnName": "smartAlertsOption_status",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -871,12 +1051,12 @@
         },
         "indices": [
           {
-            "name": "index_users_defaultWorkspaceId",
+            "name": "index_users_defaultWorkspaceId_current",
             "unique": false,
             "columnNames": [
-              "defaultWorkspaceId"
+              "defaultWorkspaceId_current"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_users_defaultWorkspaceId` ON `${TABLE_NAME}` (`defaultWorkspaceId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_users_defaultWorkspaceId_current` ON `${TABLE_NAME}` (`defaultWorkspaceId_current`)"
           }
         ],
         "foreignKeys": [
@@ -885,7 +1065,7 @@
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
-              "defaultWorkspaceId"
+              "defaultWorkspaceId_current"
             ],
             "referencedColumns": [
               "id"
@@ -897,7 +1077,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bb6de41deb062099ee6d948ef25683fb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '06d90cd6960917bbf9c0b2cef0650869')"
     ]
   }
 }

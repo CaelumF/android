@@ -5,6 +5,7 @@ import com.toggl.architecture.Loadable
 import com.toggl.common.CoroutineTest
 import com.toggl.domain.AppState
 import com.toggl.domain.extensions.createUser
+import com.toggl.models.domain.DateFormat
 import com.toggl.models.domain.User
 import com.toggl.models.domain.UserPreferences
 import com.toggl.repository.interfaces.SettingsRepository
@@ -108,16 +109,16 @@ class LoadUserPreferencesSubscriptionTests : CoroutineTest() {
         subscription.testSubscribe(
             flowOf(
                 notDefaultUserPreferences,
-                defaultUserPreferences.copy(selectedWorkspaceId = 10),
-                defaultUserPreferences.copy(selectedWorkspaceId = 11)
+                defaultUserPreferences.copy(dateFormat = DateFormat.DDMMYYYY_dot),
+                defaultUserPreferences.copy(dateFormat = DateFormat.DDMMYYYY_slash)
             ),
             inputStateFlow = flowOf(
                 AppState(user = loadedUser)
             ),
             expectedOutput = listOf(
                 notDefaultUserPreferences,
-                defaultUserPreferences.copy(selectedWorkspaceId = 10),
-                defaultUserPreferences.copy(selectedWorkspaceId = 11)
+                defaultUserPreferences.copy(dateFormat = DateFormat.DDMMYYYY_dot),
+                defaultUserPreferences.copy(dateFormat = DateFormat.DDMMYYYY_slash)
             )
         )
     }

@@ -53,7 +53,6 @@ class LoadingReducerTests : CoroutineTest() {
         UserPreferences(
             manualModeEnabled = true,
             twentyFourHourClockEnabled = false,
-            selectedWorkspaceId = 1,
             dateFormat = DateFormat.DDMMYYYY_dash,
             durationFormat = DurationFormat.Decimal,
             firstDayOfTheWeek = DayOfWeek.MONDAY,

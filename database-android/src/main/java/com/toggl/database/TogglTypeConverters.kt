@@ -48,4 +48,12 @@ class TogglTypeConverters {
     @TypeConverter
     fun toPropertySyncStatus(value: String): PropertySyncStatus =
         enumValueOf(value)
+
+    @TypeConverter
+    fun fromStringList(value: List<String>?): String? =
+        value?.joinToString(",") { it }
+
+    @TypeConverter
+    fun toStringList(value: String?): List<String>? =
+        value?.split(",")
 }

@@ -40,7 +40,7 @@ class SettingsSelector @Inject constructor(
             SettingsType.Workspace -> SettingsViewModel.ListChoice(
                 context.getString(R.string.workspace),
                 this,
-                workspaces[userPreferences.selectedWorkspaceId]?.name ?: ""
+                workspaces[user.defaultWorkspaceId]?.name ?: ""
             )
             SettingsType.DateFormat -> SettingsViewModel.ListChoice(
                 context.getString(R.string.date_format),

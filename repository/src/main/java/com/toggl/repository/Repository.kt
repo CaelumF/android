@@ -48,7 +48,8 @@ import com.toggl.repository.interfaces.TimeEntryRepository
 import com.toggl.repository.interfaces.UserRepository
 import com.toggl.repository.interfaces.WorkspaceRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import java.time.DayOfWeek
 
@@ -72,15 +73,6 @@ class Repository(
     AppRepository,
     ApiTokenProvider,
     TagRepository {
-    private val sharedPreferencesListener: SharedPreferences.OnSharedPreferenceChangeListener =
-        SharedPreferences.OnSharedPreferenceChangeListener { _, _ ->
-            sharedPreferencesFlow.value = readUserPreferences(sharedPreferences)
-        }
-
-    private val sharedPreferencesFlow: MutableStateFlow<UserPreferences> by lazy {
-        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesListener)
-        MutableStateFlow(readUserPreferences(sharedPreferences))
-    }
 
     override fun loadTags() = tagDao.getAll().map { it.map(DatabaseTag::toModel) }
     override fun loadTasks() = taskDao.getAll().map { it.map(DatabaseTask::toModel) }
@@ -88,6 +80,20 @@ class Repository(
     override fun loadProjects() = projectDao.getAll().map { it.map(DatabaseProject::toModel) }
     override fun loadWorkspaces() = workspaceDao.getAll().map { it.map(DatabaseWorkspace::toModel) }
     override fun loadTimeEntries() = timeEntryDao.getAllTimeEntriesWithTags().map { it.map(DatabaseTimeEntryWithTags::toModel) }
+    override fun loadUserPreferences(): Flow<UserPreferences> = userDao.getFlow().filterNotNull().map { user ->
+        UserPreferences(
+            manualModeEnabled = user.manualModeEnabled.current,
+            twentyFourHourClockEnabled = user.twentyFourHourClockEnabled.current,
+            groupSimilarTimeEntriesEnabled = user.groupSimilarTimeEntriesEnabled.current,
+            cellSwipeActionsEnabled = user.cellSwipeActionsEnabled,
+            calendarIntegrationEnabled = user.calendarIntegrationEnabled,
+            calendarIds = user.calendarIds,
+            dateFormat = DateFormat.valueOf(user.dateFormat.current),
+            durationFormat = DurationFormat.valueOf(user.durationFormat.current),
+            firstDayOfTheWeek = DayOfWeek.of(user.firstDayOfTheWeek.current),
+            smartAlertsOption = SmartAlertsOption.valueOf(user.smartAlertsOption.current)
+        )
+    }.distinctUntilChanged()
 
     override suspend fun createProject(project: CreateProjectDTO): Project {
         val databaseProject = DatabaseProject.from(
@@ -175,25 +181,13 @@ class Repository(
     }
 
     override fun getApiToken(): ApiToken =
-        sharedPreferences.getString(SettingsRepository.apiToken, "")
+        sharedPreferences.getString(ApiTokenProvider.apiToken, "")
             ?.let(ApiToken.Companion::from) ?: ApiToken.Invalid
 
-    override fun loadUserPreferences(): Flow<UserPreferences> = sharedPreferencesFlow
-
     override suspend fun saveUserPreferences(userPreferences: UserPreferences) {
-        sharedPreferences.edit {
-            putBoolean(SettingsRepository.manualModeEnabled, userPreferences.manualModeEnabled)
-            putBoolean(SettingsRepository.twentyFourHourClockEnabled, userPreferences.twentyFourHourClockEnabled)
-            putBoolean(SettingsRepository.groupSimilarTimeEntriesEnabled, userPreferences.groupSimilarTimeEntriesEnabled)
-            putBoolean(SettingsRepository.cellSwipeActionsEnabled, userPreferences.cellSwipeActionsEnabled)
-            putBoolean(SettingsRepository.calendarIntegrationEnabled, userPreferences.calendarIntegrationEnabled)
-            putStringSet(SettingsRepository.calendarIds, userPreferences.calendarIds.toSet())
-            putLong(SettingsRepository.selectedWorkspaceId, userPreferences.selectedWorkspaceId)
-            putString(SettingsRepository.dateFormat, userPreferences.dateFormat.name)
-            putString(SettingsRepository.durationFormat, userPreferences.durationFormat.name)
-            putInt(SettingsRepository.firstDayOfTheWeek, userPreferences.firstDayOfTheWeek.value)
-            putString(SettingsRepository.smartAlertsOption, userPreferences.smartAlertsOption.name)
-        }
+        val user = userDao.get() ?: return
+        val newUser = user updateWith userPreferences
+        userDao.set(newUser)
     }
 
     override suspend fun clearAllData() {
@@ -210,7 +204,7 @@ class Repository(
     }
 
     override suspend fun get(): User? =
-        userDao.getAll().firstOrNull()?.let(DatabaseUser::toModel)
+        userDao.get()?.let(DatabaseUser::toModel)
 
     override suspend fun set(user: User) {
         // Automatically create a default workspace
@@ -227,28 +221,15 @@ class Repository(
         setApiToken(user.apiToken)
     }
 
-    private fun setApiToken(apiToken: ApiToken) {
-        sharedPreferences.edit {
-            putString(SettingsRepository.apiToken, apiToken.toString())
-        }
+    override suspend fun update(updatedUser: User) {
+        val currentUser = userDao.get() ?: return
+        val newUser = currentUser updateWith updatedUser
+        userDao.set(newUser)
     }
 
-    private fun readUserPreferences(sharedPreferences: SharedPreferences): UserPreferences {
-        with(sharedPreferences) {
-            val default = UserPreferences.default
-            return UserPreferences(
-                manualModeEnabled = getBoolean(SettingsRepository.manualModeEnabled, default.manualModeEnabled),
-                twentyFourHourClockEnabled = getBoolean(SettingsRepository.twentyFourHourClockEnabled, default.twentyFourHourClockEnabled),
-                groupSimilarTimeEntriesEnabled = getBoolean(SettingsRepository.groupSimilarTimeEntriesEnabled, default.groupSimilarTimeEntriesEnabled),
-                cellSwipeActionsEnabled = getBoolean(SettingsRepository.cellSwipeActionsEnabled, default.cellSwipeActionsEnabled),
-                calendarIntegrationEnabled = getBoolean(SettingsRepository.calendarIntegrationEnabled, false),
-                calendarIds = getStringSet(SettingsRepository.calendarIds, emptySet())?.toList() ?: emptyList(),
-                selectedWorkspaceId = getLong(SettingsRepository.selectedWorkspaceId, default.selectedWorkspaceId),
-                dateFormat = DateFormat.valueOf(getString(SettingsRepository.dateFormat, default.dateFormat.name)!!),
-                durationFormat = DurationFormat.valueOf(getString(SettingsRepository.durationFormat, default.durationFormat.name)!!),
-                firstDayOfTheWeek = DayOfWeek.of(getInt(SettingsRepository.firstDayOfTheWeek, default.firstDayOfTheWeek.value)),
-                smartAlertsOption = SmartAlertsOption.valueOf(getString(SettingsRepository.smartAlertsOption, default.smartAlertsOption.name)!!)
-            )
+    private fun setApiToken(apiToken: ApiToken) {
+        sharedPreferences.edit {
+            putString(ApiTokenProvider.apiToken, apiToken.toString())
         }
     }
 }

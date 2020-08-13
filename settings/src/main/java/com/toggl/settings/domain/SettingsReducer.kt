@@ -17,11 +17,14 @@ import com.toggl.common.feature.navigation.pop
 import com.toggl.common.feature.navigation.push
 import com.toggl.common.services.permissions.PermissionCheckerService
 import com.toggl.models.domain.PlatformInfo
+import com.toggl.models.domain.User
 import com.toggl.models.domain.UserPreferences
 import com.toggl.repository.interfaces.SettingsRepository
+import com.toggl.repository.interfaces.UserRepository
 import javax.inject.Inject
 
 class SettingsReducer @Inject constructor(
+    private val userRepository: UserRepository,
     private val settingsRepository: SettingsRepository,
     private val permissionCheckerService: PermissionCheckerService,
     private val platformInfo: PlatformInfo,
@@ -38,8 +41,9 @@ class SettingsReducer @Inject constructor(
     ): List<Effect<SettingsAction>> =
         when (action) {
             // Text results
-            is SettingsAction.UpdateEmail -> state.mutateWithoutEffects { copy(user = user.copy(email = action.email)) }
-            is SettingsAction.UpdateName -> state.mutateWithoutEffects { copy(user = user.copy(name = action.name)) }
+            is SettingsAction.UpdateEmail -> state.updateUser { copy(email = action.email) }
+            is SettingsAction.UpdateName -> state.updateUser { copy(name = action.name) }
+            is SettingsAction.UserUpdated -> state.mutateWithoutEffects { copy(user = action.user) }
 
             // Toggles
             is SettingsAction.ManualModeToggled -> state.updatePrefs { copy(manualModeEnabled = !manualModeEnabled) }
@@ -50,7 +54,7 @@ class SettingsReducer @Inject constructor(
             // Dialogs
             is SettingsAction.OpenSelectionDialog -> state.navigateTo(Route.SettingsDialog(action.settingType))
             is SettingsAction.UserPreferencesUpdated -> state.mutateWithoutEffects { copy(userPreferences = action.userPreferences) }
-            is SettingsAction.WorkspaceSelected -> state.updatePrefs { copy(selectedWorkspaceId = action.selectedWorkspaceId) }
+            is SettingsAction.WorkspaceSelected -> state.updateUser { copy(defaultWorkspaceId = action.selectedWorkspaceId) }
             is SettingsAction.DateFormatSelected -> state.updatePrefs { copy(dateFormat = action.dateFormat) }
             is SettingsAction.DurationFormatSelected -> state.updatePrefs { copy(durationFormat = action.durationFormat) }
             is SettingsAction.FirstDayOfTheWeekSelected -> state.updatePrefs { copy(firstDayOfTheWeek = action.firstDayOfTheWeek) }
@@ -130,6 +134,9 @@ class SettingsReducer @Inject constructor(
         else
             updatePrefsEffects
     }
+
+    private fun MutableValue<SettingsState>.updateUser(updateBlock: User.() -> User) =
+        effect(UpdateUserEffect(this().user.updateBlock(), userRepository, dispatcherProvider))
 
     private fun MutableValue<SettingsState>.updatePrefs(updateBlock: UserPreferences.() -> UserPreferences) =
         effect(UpdateUserPreferencesEffect(this().userPreferences.updateBlock(), settingsRepository, dispatcherProvider))

@@ -8,6 +8,7 @@ import com.toggl.models.domain.DurationFormat
 import com.toggl.models.domain.MockDataSetSize
 import com.toggl.models.domain.SettingsType
 import com.toggl.models.domain.SmartAlertsOption
+import com.toggl.models.domain.User
 import com.toggl.models.domain.UserPreferences
 import com.toggl.models.domain.Workspace
 import com.toggl.settings.R
@@ -18,10 +19,11 @@ class SingleChoiceSettingSelector @Inject constructor(
     private val context: Context
 ) : Selector<SettingsState, SingleChoiceSettingViewModel> {
     override suspend fun select(state: SettingsState) =
-        state.backStack.getRouteParam<SettingsType>()?.toViewModel(state.userPreferences, state.workspaces)
+        state.backStack.getRouteParam<SettingsType>()?.toViewModel(state.user, state.userPreferences, state.workspaces)
             ?: SingleChoiceSettingViewModel.Empty
 
     private fun SettingsType.toViewModel(
+        user: User,
         userPreferences: UserPreferences,
         workspaces: Map<Long, Workspace>
     ): SingleChoiceSettingViewModel {
@@ -74,7 +76,7 @@ class SingleChoiceSettingSelector @Inject constructor(
                 settingChoiceListItems = workspaces.entries.map { entry ->
                     ChoiceListItem(
                         entry.value.name,
-                        userPreferences.selectedWorkspaceId == entry.key,
+                        user.defaultWorkspaceId == entry.key,
                         selectedActions = listOf(
                             SettingsAction.WorkspaceSelected(entry.key)
                         )

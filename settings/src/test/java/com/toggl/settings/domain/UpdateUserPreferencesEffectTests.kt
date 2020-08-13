@@ -27,7 +27,6 @@ class UpdateUserPreferencesEffectTests : CoroutineTest() {
             cellSwipeActionsEnabled = true,
             calendarIntegrationEnabled = true,
             calendarIds = listOf("one", "two"),
-            selectedWorkspaceId = 1,
             dateFormat = DateFormat.DDMMYYYY_dash,
             durationFormat = DurationFormat.Decimal,
             firstDayOfTheWeek = DayOfWeek.WEDNESDAY,
@@ -47,7 +46,6 @@ class UpdateUserPreferencesEffectTests : CoroutineTest() {
             cellSwipeActionsEnabled.shouldBeTrue()
             calendarIntegrationEnabled.shouldBeTrue()
             calendarIds shouldBe listOf("one", "two")
-            selectedWorkspaceId shouldBe 1
             dateFormat shouldBe DateFormat.DDMMYYYY_dash
             durationFormat shouldBe DurationFormat.Decimal
             firstDayOfTheWeek shouldBe DayOfWeek.WEDNESDAY
