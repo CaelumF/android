@@ -13,9 +13,8 @@ class PullResponseDeserializerTest {
     fun `the pull response is properly serialized`() {
         val pullResponse = TestDataUtils.getPullResponse()
         val moshi = Moshi.Builder().add(OffsetDateTimeAdapter()).build()
-        val deserializedPullResponse = PullResponseJsonAdapter(moshi).fromJson(pullResponse)
+        val deserializedPullResponse = PullResponseJsonAdapter(moshi).fromJson(pullResponse)!!
         with(deserializedPullResponse) {
-            shouldNotBeNull()
             serverTime > 10
             user.shouldNotBeNull()
             clients.shouldNotBeEmpty()

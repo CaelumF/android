@@ -21,8 +21,8 @@ class TotalsResponseDeserializerTest {
             seconds = 568,
             resolution = Resolution.Day,
             graph = listOf(
-                GraphItem(12, mapOf("0" to 2108, "1" to 28561)),
-                GraphItem(269, mapOf("0" to 548, "1" to 285))
+                GraphItem(12, mapOf("0" to 2108L, "1" to 28561L)),
+                GraphItem(269, mapOf("0" to 548L, "1" to 285L))
             )
         )
     }
