@@ -116,4 +116,7 @@
     <string name="no_project">Sem Projeto</string>
     <string name="reports_error_offline">Falha na conexão de rede</string>
     <string name="reports_error_generic">Algo deu errado</string>
+    <string name="unit_second">s</string>
+    <string name="unit_hour">h</string>
+    <string name="unit_minute">min</string>
 </resources>

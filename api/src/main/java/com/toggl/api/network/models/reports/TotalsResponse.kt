@@ -7,5 +7,6 @@ import com.toggl.api.models.Resolution
 data class TotalsResponse(
     val seconds: Long,
     val graph: List<GraphItem>,
-    val resolution: Resolution
+    val resolution: Resolution,
+    val rates: List<RateInfo>?
 )

@@ -1,16 +1,16 @@
 package com.toggl.settings.ui.common
 
-import androidx.compose.Composable
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.Text
-import androidx.ui.layout.Column
-import androidx.ui.layout.padding
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.Switch
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Switch
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.ui.tooling.preview.Preview
+import com.toggl.common.feature.compose.ThemedPreview
+import com.toggl.common.feature.compose.theme.grid_2
 import com.toggl.models.domain.SettingsType
-import com.toggl.settings.compose.ThemedPreview
-import com.toggl.settings.compose.theme.grid_2
 import com.toggl.settings.domain.SettingsViewModel
 
 @Composable

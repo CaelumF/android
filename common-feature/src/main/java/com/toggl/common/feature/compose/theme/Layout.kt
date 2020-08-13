@@ -1,6 +1,6 @@
-package com.toggl.settings.compose.theme
+package com.toggl.common.feature.compose.theme
 
-import androidx.ui.unit.dp
+import androidx.compose.ui.unit.dp
 
 val grid_0_25 = 2.dp
 val grid_0_5 = 4.dp

@@ -1,12 +1,12 @@
-package com.toggl.settings.compose.theme
+package com.toggl.common.feature.compose.theme
 
-import androidx.compose.Composable
-import androidx.ui.foundation.isSystemInDarkTheme
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.darkColorPalette
-import androidx.ui.material.lightColorPalette
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
+import androidx.compose.runtime.Composable
 
-private val LightThemeColors = lightColorPalette(
+private val LightThemeColors = lightColors(
     primary = Pink,
     primaryVariant = PinkDark,
     onPrimary = PurpleDeep,
@@ -18,7 +18,7 @@ private val LightThemeColors = lightColorPalette(
     error = RedDark
 )
 
-private val DarkThemeColors = darkColorPalette(
+private val DarkThemeColors = darkColors(
     primary = Pink,
     primaryVariant = PinkDark,
     onPrimary = White,
@@ -32,7 +32,7 @@ private val DarkThemeColors = darkColorPalette(
 @Composable
 fun TogglTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
     MaterialTheme(
         colors = if (darkTheme) DarkThemeColors else LightThemeColors,

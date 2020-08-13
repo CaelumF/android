@@ -39,6 +39,7 @@ class ReportsReducer @Inject constructor(
             }
             is ReportsAction.ReportLoaded -> state.setReportData(Loadable.Loaded(action.reportData))
             is ReportsAction.ReportFailed -> state.setReportData(Loadable.Error(action.failure))
+            ReportsAction.AvailableOnOtherPlansTapped -> TODO()
         }
 
     private fun MutableValue<ReportsState>.setReportData(reportData: Loadable<ReportData>): List<Effect<ReportsAction>> =

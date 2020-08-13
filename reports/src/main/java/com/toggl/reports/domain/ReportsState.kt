@@ -4,12 +4,14 @@ import com.toggl.architecture.Loadable
 import com.toggl.models.domain.Client
 import com.toggl.models.domain.Project
 import com.toggl.models.domain.User
+import com.toggl.models.domain.UserPreferences
 import com.toggl.models.domain.Workspace
 import com.toggl.reports.models.ReportData
 import java.time.OffsetDateTime
 
 data class ReportsState(
     val user: User,
+    val preferences: UserPreferences,
     val clients: Map<Long, Client>,
     val projects: Map<Long, Project>,
     val workspaces: Map<Long, Workspace>,

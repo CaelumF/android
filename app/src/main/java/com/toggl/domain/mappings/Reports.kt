@@ -13,6 +13,7 @@ fun mapAppStateToReportsState(appState: AppState): ReportsState? =
             clients = appState.clients,
             projects = appState.projects,
             workspaces = appState.workspaces,
+            preferences = appState.userPreferences,
             localState = appState.reportsLocalState
         )
     }

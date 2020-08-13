@@ -1,9 +1,9 @@
-package com.toggl.settings.compose
+package com.toggl.common.feature.compose
 
 import android.content.Context
 import androidx.annotation.StringRes
-import androidx.compose.Composable
-import androidx.ui.res.stringResource
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 
 sealed class ResOrStr {
     data class Res(@StringRes val stringRes: Int) : ResOrStr()

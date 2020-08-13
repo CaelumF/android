@@ -128,4 +128,14 @@
     <string name="no_project">No project</string>
     <string name="reports_error_offline">Network connection failed</string>
     <string name="reports_error_generic">Something went wrong</string>
+    <string name="unit_second">s</string>
+    <string name="unit_hour">h</string>
+    <string name="unit_minute">min</string>
+    <string name="amount">Amount</string>
+    <string name="advanced_reports">Advanced Reports</string>
+    <string name="advanced_reports_message">Create saved reports\nSchedule your reports\nSet billable hours\nExport PDF, CSV &amp; XLS</string>
+    <string name="available_on_other_plans">Available on other plans</string>
+    <string name="projects">Projects</string>
+    <string name="tracked_hours">Tracked Hours</string>
+    <string name="total">Total</string>
 </resources>

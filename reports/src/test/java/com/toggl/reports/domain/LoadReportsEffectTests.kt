@@ -6,9 +6,11 @@ import com.toggl.api.exceptions.UnauthorizedException
 import com.toggl.api.models.ProjectSummary
 import com.toggl.api.models.Resolution
 import com.toggl.api.network.models.reports.GraphItem
+import com.toggl.api.network.models.reports.RateInfo
 import com.toggl.api.network.models.reports.TotalsResponse
 import com.toggl.models.domain.Project
 import com.toggl.reports.common.CoroutineTest
+import com.toggl.reports.models.Amount
 import com.toggl.reports.models.ChartSegment
 import com.toggl.reports.models.ProjectSummaryReport
 import com.toggl.reports.models.ReportsTotalsGroup
@@ -44,6 +46,10 @@ class LoadReportsEffectTests : CoroutineTest() {
     private val totalsResponse = TotalsResponse(
         seconds = 934948,
         resolution = Resolution.Day,
+        rates = listOf(
+            RateInfo(10, 10000, "USD"),
+            RateInfo(20, 10000, "EUR")
+        ),
         graph = listOf(
             GraphItem(100, mapOf("1" to 10L, "2" to 100L)),
             GraphItem(200, mapOf("1" to 20L, "2" to 200L)),
@@ -94,6 +100,7 @@ class LoadReportsEffectTests : CoroutineTest() {
 
         projectSummaryReport shouldBe ProjectSummaryReport(
             totalSeconds = Duration.ofSeconds(totalSeconds),
+            billableSeconds = Duration.ofSeconds(98982),
             billablePercentage = 16.510757F,
             segments = projectSummaries.map { summary ->
                 val project = projectsInState[summary.projectId] ?: projectsNotInState.single { it.id == summary.projectId }
@@ -111,6 +118,10 @@ class LoadReportsEffectTests : CoroutineTest() {
 
         totalsReport shouldBe TotalsReport(
             resolution = Resolution.Day,
+            amounts = listOf(
+                Amount(16.666668F, "USD"),
+                Amount(33.333336F, "EUR"),
+            ),
             groups = listOf(
                 ReportsTotalsGroup(
                     total = Duration.ofSeconds(100),

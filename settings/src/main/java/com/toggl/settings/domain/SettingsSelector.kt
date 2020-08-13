@@ -2,13 +2,13 @@ package com.toggl.settings.domain
 
 import android.content.Context
 import com.toggl.architecture.core.Selector
+import com.toggl.common.feature.compose.toStr
 import com.toggl.common.services.permissions.PermissionCheckerService
 import com.toggl.models.domain.SettingsType
 import com.toggl.models.domain.User
 import com.toggl.models.domain.UserPreferences
 import com.toggl.models.domain.Workspace
 import com.toggl.settings.R
-import com.toggl.settings.compose.toStr
 import javax.inject.Inject
 
 typealias SectionBlueprintProvider = suspend (SettingsState) -> List<SettingsSectionBlueprint>

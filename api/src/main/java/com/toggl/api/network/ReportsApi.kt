@@ -1,11 +1,11 @@
 package com.toggl.api.network
 
+import com.toggl.api.models.ApiProject
 import com.toggl.api.models.ProjectSummary
 import com.toggl.api.network.models.reports.ProjectsSummaryBody
 import com.toggl.api.network.models.reports.SearchProjectsBody
 import com.toggl.api.network.models.reports.TotalsBody
 import com.toggl.api.network.models.reports.TotalsResponse
-import com.toggl.models.domain.Project
 import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -27,5 +27,5 @@ internal interface ReportsApi {
     suspend fun searchProjects(
         @Path("workspaceId") workspaceId: Long,
         @Body searchProjectsBody: SearchProjectsBody
-    ): List<Project>
+    ): List<ApiProject>
 }
