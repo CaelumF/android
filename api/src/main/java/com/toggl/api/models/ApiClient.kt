@@ -11,3 +11,14 @@ data class ApiClient(
     @Json(name = "wid")
     val workspaceId: Long,
 )
+
+@JsonClass(generateAdapter = true)
+data class SyncApiClient(
+    val id: Long?,
+    @Json(name = "server_deleted_at")
+    val serverDeletedAt: Any?,
+    val name: String?,
+    @Json(name = "wid")
+    val workspaceId: Long?,
+)
+

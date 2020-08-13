@@ -7,7 +7,6 @@ data class ApiTask(
     val id: Long,
     @Json(name = "server_deleted_at")
     val serverDeletedAt: Any?,
-
     val name: String,
     val active: Boolean,
     @Json(name = "project_id")
@@ -16,4 +15,19 @@ data class ApiTask(
     val userId: Long?,
     @Json(name = "workspace_id")
     val workspaceId: Long
+)
+
+@JsonClass(generateAdapter = true)
+data class SyncApiTask(
+    val id: Long?,
+    @Json(name = "server_deleted_at")
+    val serverDeletedAt: Any?,
+    val name: String?,
+    val active: Boolean?,
+    @Json(name = "project_id")
+    val projectId: Long?,
+    @Json(name = "user_id")
+    val userId: Long?,
+    @Json(name = "workspace_id")
+    val workspaceId: Long?
 )

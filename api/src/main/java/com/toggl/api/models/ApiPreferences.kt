@@ -19,3 +19,19 @@ data class ApiPreferences(
     @Json(name = "CollapseTimeEntries")
     val collapseTimeEntries: Boolean
 )
+
+
+@JsonClass(generateAdapter = true)
+data class SyncApiPreferences(
+    @Json(name = "timeofday_format")
+    val timeOfDayFormat: String?,
+
+    @Json(name = "date_format")
+    val dateFormat: DateFormat?,
+
+    @Json(name = "duration_format")
+    val durationFormat: DurationFormat?,
+
+    @Json(name = "CollapseTimeEntries")
+    val collapseTimeEntries: Boolean?
+)
