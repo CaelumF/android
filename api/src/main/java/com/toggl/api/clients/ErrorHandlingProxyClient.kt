@@ -9,6 +9,12 @@ import com.toggl.api.exceptions.ForbiddenException.Companion.remainingLoginAttem
 import com.toggl.api.exceptions.OfflineException
 import com.toggl.api.exceptions.ReportsRangeTooLongException
 import com.toggl.api.models.ProjectSummary
+import com.toggl.api.models.SyncApiPreferences
+import com.toggl.api.models.SyncApiProject
+import com.toggl.api.models.SyncApiTag
+import com.toggl.api.models.SyncApiTask
+import com.toggl.api.models.SyncApiUser
+import com.toggl.api.models.SyncApiWorkspace
 import com.toggl.api.network.ReportsApi
 import com.toggl.api.network.SyncApi
 import com.toggl.api.network.models.sync.PullResponse
@@ -16,6 +22,9 @@ import com.toggl.api.network.models.reports.ProjectsSummaryBody
 import com.toggl.api.network.models.reports.SearchProjectsBody
 import com.toggl.api.network.models.reports.TotalsBody
 import com.toggl.api.network.models.reports.TotalsResponse
+import com.toggl.api.network.models.sync.PushAction
+import com.toggl.api.network.models.sync.PushBody
+import com.toggl.api.network.models.sync.PushResponse
 import com.toggl.common.Constants
 import com.toggl.models.domain.FeedbackData
 import com.toggl.models.domain.PlatformInfo
@@ -26,6 +35,7 @@ import com.toggl.models.validation.Password
 import retrofit2.HttpException
 import java.net.UnknownHostException
 import java.time.OffsetDateTime
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -115,6 +125,26 @@ internal class ErrorHandlingProxyClient @Inject constructor(
     override suspend fun pull(since: OffsetDateTime?): PullResponse {
         try {
             return syncApi.pull(since?.toEpochSecond())
+        } catch (exception: Exception) {
+            throw handledException(exception)
+        }
+    }
+
+    override suspend fun push(uuid: UUID): PushResponse {
+        try {
+            // TODO: Add actual data
+            val body = PushBody(
+                timeEntries = null,
+                workspaces = null,
+                projects = null,
+                clients = null,
+                tasks = null,
+                tags = null,
+                preferences = null,
+                user = null,
+            )
+
+            return syncApi.push(uuid.toString(), body)
         } catch (exception: Exception) {
             throw handledException(exception)
         }
