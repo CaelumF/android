@@ -1,4 +1,4 @@
-package com.toggl.api.network.models.pull
+package com.toggl.api.network.models.sync
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

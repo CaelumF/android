@@ -9,8 +9,8 @@ import com.toggl.api.models.ApiTask
 import com.toggl.api.models.ApiTimeEntry
 import com.toggl.api.models.ApiUser
 import com.toggl.api.models.ApiWorkspace
-import com.toggl.api.network.models.pull.PullResponse
-import com.toggl.api.network.models.pull.PullResponseJsonAdapter
+import com.toggl.api.network.models.sync.PullResponse
+import com.toggl.api.network.models.sync.PullResponseJsonAdapter
 import com.toggl.database.dao.ClientDao
 import com.toggl.database.dao.ProjectDao
 import com.toggl.database.dao.TagDao

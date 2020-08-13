@@ -11,7 +11,7 @@ import com.toggl.api.exceptions.ReportsRangeTooLongException
 import com.toggl.api.models.ProjectSummary
 import com.toggl.api.network.ReportsApi
 import com.toggl.api.network.SyncApi
-import com.toggl.api.network.models.pull.PullResponse
+import com.toggl.api.network.models.sync.PullResponse
 import com.toggl.api.network.models.reports.ProjectsSummaryBody
 import com.toggl.api.network.models.reports.SearchProjectsBody
 import com.toggl.api.network.models.reports.TotalsBody

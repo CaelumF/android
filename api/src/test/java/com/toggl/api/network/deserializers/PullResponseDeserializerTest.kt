@@ -3,7 +3,7 @@ package com.toggl.api.network.deserializers
 import com.squareup.moshi.Moshi
 import com.toggl.api.common.TestDataUtils
 import com.toggl.api.network.adapters.OffsetDateTimeAdapter
-import com.toggl.api.network.models.pull.PullResponseJsonAdapter
+import com.toggl.api.network.models.sync.PullResponseJsonAdapter
 import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import org.junit.jupiter.api.Test
