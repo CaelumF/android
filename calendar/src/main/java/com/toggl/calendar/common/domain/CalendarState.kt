@@ -19,18 +19,18 @@ data class CalendarState(
     val projects: Map<Long, Project>,
     val clients: Map<Long, Client>,
     val backStack: BackStack,
+    val calendars: Map<String, Calendar>,
     val calendarEvents: Map<String, CalendarEvent>,
     val userPreferences: UserPreferences,
     val localState: LocalState
 ) : BackStackAwareState<CalendarState> {
     data class LocalState internal constructor(
-        internal val selectedDate: OffsetDateTime,
+        val selectedDate: OffsetDateTime,
         internal val calendarEvents: Map<String, CalendarEvent>,
-        internal val calendars: List<Calendar>,
         internal val availableDates: List<OffsetDateTime>,
         internal val visibleDates: List<OffsetDateTime>
     ) {
-        constructor() : this(OffsetDateTime.now(), mapOf(), listOf(), listOf(), listOf())
+        constructor() : this(OffsetDateTime.now(), mapOf(), listOf(), listOf())
     }
 
     override fun popBackStack(): CalendarState =

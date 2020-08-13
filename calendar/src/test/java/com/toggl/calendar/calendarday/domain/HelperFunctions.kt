@@ -17,8 +17,8 @@ fun createInitialState(
     projects: List<Project> = listOf(),
     selectedItem: SelectedCalendarItem? = null,
     date: OffsetDateTime = OffsetDateTime.now(),
-    calendars: List<Calendar> = listOf(),
-    userPreferences: UserPreferences = UserPreferences.default
+    userPreferences: UserPreferences = UserPreferences.default,
+    calendars: Map<String, Calendar> = emptyMap()
 ) = CalendarDayState(
     user = validUser,
     timeEntries = timeEntries.associateBy { it.id },
@@ -26,6 +26,6 @@ fun createInitialState(
     backStack = if (selectedItem == null) emptyList() else backStackOf(Route.ContextualMenu(selectedItem)),
     events = calendarEvents.associateBy { it.id },
     selectedDate = date,
-    calendars = calendars,
-    userPreferences = userPreferences
+    userPreferences = userPreferences,
+    calendars = calendars
 )

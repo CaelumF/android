@@ -28,6 +28,7 @@ data class TimerState(
     val projects: Map<Long, Project>,
     val workspaces: Map<Long, Workspace>,
     val timeEntries: Map<Long, TimeEntry>,
+    val suggestions: List<Suggestion>,
     val backStack: BackStack,
     val calendarEvents: Map<String, CalendarEvent>,
     val localState: LocalState
@@ -41,7 +42,6 @@ data class TimerState(
         internal val cursorPosition: Int,
         internal val customColor: HSVColor,
         internal val maxNumberOfSuggestions: Int,
-        internal val suggestions: List<Suggestion>,
         internal val projectAutocompleteQuery: ProjectAutocompleteQuery,
         internal val projectAutoCompleteSuggestions: List<AutocompleteSuggestion.ProjectSuggestions>
     ) {
@@ -54,7 +54,6 @@ data class TimerState(
             cursorPosition = 0,
             customColor = HSVColor.defaultCustomColor,
             maxNumberOfSuggestions = Constants.Suggestions.maxNumberOfSuggestions,
-            suggestions = emptyList(),
             projectAutocompleteQuery = ProjectAutocompleteQuery.None,
             projectAutoCompleteSuggestions = emptyList()
         )

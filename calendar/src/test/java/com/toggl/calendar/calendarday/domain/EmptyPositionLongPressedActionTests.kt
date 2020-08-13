@@ -24,7 +24,7 @@ import kotlin.contracts.ExperimentalContracts
 @DisplayName("The EmptyPositionLongPressed action")
 class EmptyPositionLongPressedActionTests : CoroutineTest() {
     private val initialState = createInitialState()
-    private val reducer = createCalendarDayReducer(dispatcherProvider = dispatcherProvider)
+    private val reducer = createCalendarDayReducer()
 
     @Test
     fun `should set selectedItem with the start time`() = runBlockingTest {

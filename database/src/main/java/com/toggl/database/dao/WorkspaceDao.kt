@@ -20,7 +20,7 @@ interface WorkspaceDao {
     fun getOne(id: Long): DatabaseWorkspace
 
     @Insert
-    fun insertAll(vararg databaseWorkspaces: DatabaseWorkspace): List<Long>
+    fun insertAll(databaseWorkspaces: List<DatabaseWorkspace>): List<Long>
 
     @Insert
     fun insert(databaseWorkspace: DatabaseWorkspace): Long

@@ -2,9 +2,15 @@ import com.toggl.buildsrc.Libs
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'de.mannodermaus.android-junit5'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+
+kapt {
+    correctErrorTypes = true
+    useBuildCache = true
+}
 
 android {
     compileSdkVersion buildConfig.compileSdk
@@ -17,6 +23,12 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
     }
 
     buildTypes {
@@ -33,6 +45,26 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
     }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerVersion Libs.AndroidX.Compose.compiler
+        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.version
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += [
+                "-Xallow-jvm-ir-dependencies",
+                "-Xskip-prerelease-check",
+                "-Xskip-metadata-version-check"
+        ]
+    }
 }
 
 dependencies {
@@ -43,10 +75,20 @@ dependencies {
 
     api Libs.Google.firebaseAnalytics
     api Libs.Microsoft.appCenterAnalytics
-    api Libs.Google.gson
-    api Libs.Square.retrofit
-    api Libs.Square.gsonConverter
 
+    implementation Libs.AndroidX.Compose.runtime
+    implementation Libs.AndroidX.Compose.UI.core
+    implementation Libs.AndroidX.Compose.UI.foundation
+    implementation Libs.AndroidX.Compose.UI.animation
+    implementation Libs.AndroidX.Compose.UI.icons
+    implementation Libs.AndroidX.Compose.UI.material
+    implementation Libs.AndroidX.Compose.UI.tooling
+    implementation Libs.AndroidX.Compose.UI.layout
+
+    api Libs.Square.Retrofit.retrofit
+    api Libs.Square.Retrofit.moshiConverter
+    api Libs.Square.Moshi.core
+    kapt Libs.Square.Moshi.codegen
     implementation Libs.Hilt.hilt
     kapt Libs.Hilt.compiler
 

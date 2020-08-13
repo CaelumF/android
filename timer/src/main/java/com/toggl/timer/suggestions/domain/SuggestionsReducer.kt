@@ -3,10 +3,8 @@ package com.toggl.timer.suggestions.domain
 import com.toggl.architecture.core.Effect
 import com.toggl.architecture.core.MutableValue
 import com.toggl.architecture.core.Reducer
-import com.toggl.architecture.extensions.effect
 import com.toggl.architecture.extensions.effectOf
 import com.toggl.architecture.extensions.noEffect
-import com.toggl.common.feature.extensions.mutateWithoutEffects
 import com.toggl.common.feature.services.calendar.toEditableTimeEntry
 import com.toggl.common.feature.timeentry.TimeEntryAction
 import com.toggl.common.services.time.TimeService
@@ -17,7 +15,6 @@ import javax.inject.Singleton
 @Singleton
 class SuggestionsReducer @Inject constructor(
     private val timeService: TimeService,
-    private val suggestionProvider: SuggestionProvider
 ) : Reducer<SuggestionsState, SuggestionsAction> {
 
     override fun reduce(
@@ -25,8 +22,6 @@ class SuggestionsReducer @Inject constructor(
         action: SuggestionsAction
     ): List<Effect<SuggestionsAction>> =
         when (action) {
-            SuggestionsAction.LoadSuggestions -> effect(LoadSuggestionEffect(suggestionProvider, state()))
-            is SuggestionsAction.SuggestionsLoaded -> state.mutateWithoutEffects { copy(suggestions = action.suggestions) }
             is SuggestionsAction.TimeEntryHandling -> noEffect()
             is SuggestionsAction.SuggestionTapped -> effectOf(
                 SuggestionsAction.TimeEntryHandling(

@@ -24,7 +24,7 @@ class WorkspaceSelectedActionTests : CoroutineTest() {
             SettingsAction.WorkspaceSelected(selectedWorkspaceId = 1)
         ) { effects ->
             effects.shouldBeSingleton()
-            effects.first().shouldBeInstanceOf<UpdateUserPreferencesEffect>()
+            effects.first().shouldBeInstanceOf<UpdateUserEffect>()
         }
     }
 

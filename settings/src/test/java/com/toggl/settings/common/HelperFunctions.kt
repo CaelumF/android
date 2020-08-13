@@ -7,6 +7,7 @@ import com.toggl.architecture.core.Effect
 import com.toggl.architecture.core.MutableValue
 import com.toggl.architecture.core.Reducer
 import com.toggl.common.feature.navigation.BackStack
+import com.toggl.common.feature.services.calendar.Calendar
 import com.toggl.common.feature.timeentry.TimeEntryAction
 import com.toggl.common.feature.timeentry.TimeEntryActionHolder
 import com.toggl.common.services.permissions.PermissionCheckerService
@@ -19,6 +20,7 @@ import com.toggl.models.domain.UserPreferences
 import com.toggl.models.validation.ApiToken
 import com.toggl.models.validation.Email
 import com.toggl.repository.interfaces.SettingsRepository
+import com.toggl.repository.interfaces.UserRepository
 import com.toggl.settings.domain.FeedbackDataBuilder
 import com.toggl.settings.domain.SettingsReducer
 import com.toggl.settings.domain.SettingsState
@@ -41,7 +43,8 @@ fun createSettingsState(
     ),
     shouldRequestCalendarPermission: Boolean = false,
     sendFeedbackRequest: Loadable<Unit> = Loadable.Uninitialized,
-    backStack: BackStack = emptyList()
+    backStack: BackStack = emptyList(),
+    calendars: Map<String, Calendar> = emptyMap()
 ) = SettingsState(
     user = user,
     userPreferences = userPreferences,
@@ -49,7 +52,8 @@ fun createSettingsState(
     shouldRequestCalendarPermission = shouldRequestCalendarPermission,
     externalLocationToShow = null,
     backStack = backStack,
-    localState = SettingsState.LocalState(sendFeedbackRequest)
+    localState = SettingsState.LocalState(sendFeedbackRequest),
+    calendars = calendars
 )
 
 fun createUserPreferences(
@@ -59,7 +63,6 @@ fun createUserPreferences(
     groupSimilarTimeEntriesEnabled: Boolean = false,
     calendarIntegrationEnabled: Boolean = false,
     calendarIds: List<String> = emptyList(),
-    selectedWorkspaceId: Long = 1,
     dateFormat: DateFormat = DateFormat.DDMMYYYY_dash,
     durationFormat: DurationFormat = DurationFormat.Classic,
     firstDayOfTheWeek: DayOfWeek = DayOfWeek.WEDNESDAY,
@@ -70,7 +73,6 @@ fun createUserPreferences(
     cellSwipeActionsEnabled = cellSwipeActionsEnabled,
     groupSimilarTimeEntriesEnabled = groupSimilarTimeEntriesEnabled,
     calendarIntegrationEnabled = calendarIntegrationEnabled,
-    selectedWorkspaceId = selectedWorkspaceId,
     dateFormat = dateFormat,
     durationFormat = durationFormat,
     firstDayOfTheWeek = firstDayOfTheWeek,
@@ -85,6 +87,7 @@ fun createSettingsReducer(
     feedbackDataBuilder: FeedbackDataBuilder = mockk(),
     feedbackApiClient: FeedbackApiClient = mockk(),
     signOutEffect: SignOutEffect = mockk(),
+    userRepository: UserRepository = mockk(),
     dispatcherProvider: DispatcherProvider
 ) = SettingsReducer(
     settingsRepository = settingsRepository,
@@ -93,6 +96,8 @@ fun createSettingsReducer(
     signOutEffect = signOutEffect,
     feedbackApiClient = feedbackApiClient,
     feedbackDataBuilder = feedbackDataBuilder,
+    userRepository = userRepository,
+    mockDatabaseInitializer = mockk(),
     dispatcherProvider = dispatcherProvider
 )
 

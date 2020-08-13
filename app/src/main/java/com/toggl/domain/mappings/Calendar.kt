@@ -12,6 +12,7 @@ fun mapAppStateToCalendarState(appState: AppState): CalendarState =
         appState.projects,
         appState.clients,
         appState.backStack,
+        appState.calendars,
         appState.calendarEvents,
         appState.userPreferences,
         appState.calendarLocalState
@@ -19,6 +20,7 @@ fun mapAppStateToCalendarState(appState: AppState): CalendarState =
 
 fun mapCalendarStateToAppState(appState: AppState, calendarState: CalendarState): AppState =
     appState.copy(
+        calendars = calendarState.calendars,
         backStack = calendarState.backStack,
         projects = calendarState.projects,
         timeEntries = calendarState.timeEntries,

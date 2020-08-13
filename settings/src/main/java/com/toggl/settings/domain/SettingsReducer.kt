@@ -32,6 +32,7 @@ class SettingsReducer @Inject constructor(
     private val signOutEffect: SignOutEffect,
     private val feedbackDataBuilder: FeedbackDataBuilder,
     private val feedbackApiClient: FeedbackApiClient,
+    private val mockDatabaseInitializer: MockDatabaseInitializer,
     private val dispatcherProvider: DispatcherProvider
 ) : Reducer<SettingsState, SettingsAction> {
 
@@ -41,8 +42,9 @@ class SettingsReducer @Inject constructor(
     ): List<Effect<SettingsAction>> =
         when (action) {
             // Text results
-            is SettingsAction.UpdateEmail -> state.mutateWithoutEffects { copy(user = user.copy(email = action.email)) }
-            is SettingsAction.UpdateName -> state.mutateWithoutEffects { copy(user = user.copy(name = action.name)) }
+            is SettingsAction.UpdateEmail -> state.updateUser { copy(email = action.email) }
+            is SettingsAction.UpdateName -> state.updateUser { copy(name = action.name) }
+            is SettingsAction.UserUpdated -> state.mutateWithoutEffects { copy(user = action.user) }
 
             // Toggles
             is SettingsAction.ManualModeToggled -> state.updatePrefs { copy(manualModeEnabled = !manualModeEnabled) }
@@ -54,11 +56,12 @@ class SettingsReducer @Inject constructor(
             is SettingsAction.OpenTextPickerDialog -> state.navigateTo(Route.SettingsTextPicker(action.settingType))
             is SettingsAction.OpenSelectionDialog -> state.navigateTo(Route.SettingsDialog(action.settingType))
             is SettingsAction.UserPreferencesUpdated -> state.mutateWithoutEffects { copy(userPreferences = action.userPreferences) }
-            is SettingsAction.WorkspaceSelected -> state.updatePrefs { copy(selectedWorkspaceId = action.selectedWorkspaceId) }
+            is SettingsAction.WorkspaceSelected -> state.updateUser { copy(defaultWorkspaceId = action.selectedWorkspaceId) }
             is SettingsAction.DateFormatSelected -> state.updatePrefs { copy(dateFormat = action.dateFormat) }
             is SettingsAction.DurationFormatSelected -> state.updatePrefs { copy(durationFormat = action.durationFormat) }
             is SettingsAction.FirstDayOfTheWeekSelected -> state.updatePrefs { copy(firstDayOfTheWeek = action.firstDayOfTheWeek) }
             is SettingsAction.SmartAlertsOptionSelected -> state.updatePrefs { copy(smartAlertsOption = action.smartAlertsOption) }
+            is SettingsAction.MockDataSetSelected -> effect(InsertMockDataEffect(action.mockDataSetSize.amount, mockDatabaseInitializer, dispatcherProvider))
             is SettingsAction.FinishedEditingSetting -> {
                 state.updateSendFeedbackRequestStateWithoutEffects(Loadable.Uninitialized)
                 state.mutateWithoutEffects { copy(backStack = backStack.pop()) }
@@ -134,11 +137,8 @@ class SettingsReducer @Inject constructor(
             updatePrefsEffects
     }
 
-    private fun MutableValue<SettingsState>.updateUser(updateBlock: User.() -> User) {
-        mutate { copy (user = user.updateBlock()) } returnEffect effect(
-            UpdateUserEffect(this().user, userRepository, dispatcherProvider)
-        )
-    }
+    private fun MutableValue<SettingsState>.updateUser(updateBlock: User.() -> User) =
+        effect(UpdateUserEffect(this().user.updateBlock(), userRepository, dispatcherProvider))
 
     private fun MutableValue<SettingsState>.updatePrefs(updateBlock: UserPreferences.() -> UserPreferences) =
         effect(UpdateUserPreferencesEffect(this().userPreferences.updateBlock(), settingsRepository, dispatcherProvider))

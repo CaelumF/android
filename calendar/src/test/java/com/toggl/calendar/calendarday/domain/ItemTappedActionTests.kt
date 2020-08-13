@@ -27,7 +27,7 @@ import kotlin.contracts.ExperimentalContracts
 internal class ItemTappedActionTests : CoroutineTest() {
 
     private val initialState = createInitialState()
-    private val reducer = createCalendarDayReducer(dispatcherProvider = dispatcherProvider)
+    private val reducer = createCalendarDayReducer()
 
     private val timeEntry = createTimeEntry(1)
     private val calendarEvent = CalendarEvent("1", OffsetDateTime.now(), Duration.ofSeconds(10), "", "", "")

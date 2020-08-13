@@ -7,4 +7,6 @@ dependencies {
     implementation project(':common')
     implementation Libs.Kotlin.stdlib
     api Libs.AndroidX.Room.common
+    api Libs.Square.Moshi.core
+    kapt Libs.Square.Moshi.codegen
 }

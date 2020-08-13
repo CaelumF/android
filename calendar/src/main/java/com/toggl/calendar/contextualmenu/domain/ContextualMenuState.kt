@@ -9,7 +9,6 @@ import com.toggl.common.feature.navigation.Route
 import com.toggl.common.feature.navigation.getRouteParam
 import com.toggl.common.feature.navigation.pop
 import com.toggl.common.feature.navigation.setRouteParam
-import com.toggl.common.feature.services.calendar.Calendar
 import com.toggl.models.domain.Client
 import com.toggl.models.domain.Project
 import com.toggl.models.domain.TimeEntry
@@ -20,7 +19,6 @@ data class ContextualMenuState(
     val timeEntries: Map<Long, TimeEntry>,
     val projects: Map<Long, Project>,
     val clients: Map<Long, Client>,
-    val calendars: List<Calendar>,
     val backStack: BackStack,
     val selectedItem: SelectedCalendarItem
 ) : BackStackAwareState<ContextualMenuState> {
@@ -34,7 +32,6 @@ data class ContextualMenuState(
                 calendarState.timeEntries,
                 calendarState.projects,
                 calendarState.clients,
-                calendarState.localState.calendars,
                 calendarState.backStack,
                 selectedItem
             )

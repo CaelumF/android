@@ -21,22 +21,21 @@ import java.time.OffsetDateTime
 
 @DisplayName("The FeedbackDataBuilder helper generated feedback data")
 class FeedbackDataBuilderTest : CoroutineTest() {
-    val repository = mockk<Repository>()
-    val timeService = mockk<TimeService>()
-    val completelyModifiedUserPrefs = UserPreferences(
+    private val repository = mockk<Repository>()
+    private val timeService = mockk<TimeService>()
+    private val completelyModifiedUserPrefs = UserPreferences(
         manualModeEnabled = true,
         twentyFourHourClockEnabled = true,
         groupSimilarTimeEntriesEnabled = false,
         cellSwipeActionsEnabled = false,
         calendarIntegrationEnabled = true,
         calendarIds = listOf("1"),
-        selectedWorkspaceId = 2,
         dateFormat = DateFormat.DDMMYYYY_dot,
         durationFormat = DurationFormat.Classic,
         firstDayOfTheWeek = DayOfWeek.SATURDAY,
         smartAlertsOption = SmartAlertsOption.MinutesBefore10
     )
-    val feedbackDataBuilder: FeedbackDataBuilder = FeedbackDataBuilder(
+    private val feedbackDataBuilder: FeedbackDataBuilder = FeedbackDataBuilder(
         repository,
         timeService
     )

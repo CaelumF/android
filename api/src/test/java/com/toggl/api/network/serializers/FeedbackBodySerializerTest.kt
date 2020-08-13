@@ -1,8 +1,10 @@
 package com.toggl.api.network.serializers
 
+import com.squareup.moshi.Moshi
 import com.toggl.api.network.models.feedback.FeedbackBody
+import com.toggl.api.network.models.feedback.FeedbackBodyJsonAdapter
+import com.toggl.api.network.models.feedback.toKeyValue
 import io.kotest.matchers.shouldBe
-import io.mockk.mockk
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
@@ -16,11 +18,11 @@ class FeedbackBodySerializerTest {
             "device" to "SomePhone",
             "some random key" to "some also random value"
         )
-        val feedbackBody = FeedbackBody(expectedEmail, expectedMessage, data)
-        val jsonSerializer = FeedbackBodySerializer()
+        val feedbackBody = FeedbackBody(expectedEmail, expectedMessage, data.toKeyValue())
+        val jsonSerializer = FeedbackBodyJsonAdapter(Moshi.Builder().build())
 
-        val json = jsonSerializer.serialize(feedbackBody, mockk(), mockk())
+        val json = jsonSerializer.toJson(feedbackBody)
 
-        json.toString() shouldBe "{\"email\":\"$expectedEmail\",\"message\":\"$expectedMessage\",\"data\":[{\"key\":\"device\",\"value\":\"${data["device"]}\"},{\"key\":\"some random key\",\"value\":\"${data["some random key"]}\"}]}"
+        json shouldBe """{"email":"$expectedEmail","message":"$expectedMessage","data":[{"key":"device","value":"${data["device"]}"},{"key":"some random key","value":"${data["some random key"]}"}]}"""
     }
 }

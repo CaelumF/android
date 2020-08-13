@@ -10,7 +10,8 @@ data class CalendarEvent(
     val duration: Duration,
     val description: String,
     val color: String?,
-    val calendarId: String
+    val calendarId: String,
+    val calendarName: String = ""
 )
 
 fun CalendarEvent.toEditableTimeEntry(workspaceId: Long) =

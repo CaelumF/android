@@ -17,7 +17,7 @@ interface TagDao {
     fun getOne(id: Long): DatabaseTag
 
     @Insert
-    fun insertAll(vararg databaseTag: DatabaseTag): List<Long>
+    fun insertAll(databaseTag: List<DatabaseTag>): List<Long>
 
     @Insert
     fun insert(databaseTag: DatabaseTag): Long

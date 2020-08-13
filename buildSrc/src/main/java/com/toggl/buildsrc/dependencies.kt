@@ -14,7 +14,6 @@ object Libs {
     object Android {
         const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.0.9"
         const val customTabs = "com.android.support:customtabs:23.3.0"
-
     }
 
     object Test {
@@ -77,9 +76,9 @@ object Libs {
         const val activityKtx = "androidx.activity:activity-ktx:1.2.0-alpha06"
 
         object Compose {
-            const val version = "0.1.0-dev15"
+            const val version = "0.1.0-dev16"
             const val runtime = "androidx.compose.runtime:runtime:$version"
-            const val compiler = "1.4.0-dev-withExperimentalGoogleExtensions-20200720"
+            const val compiler = "1.4.0-rc"
             object UI {
                 const val core = "androidx.compose.ui:ui:$version"
                 const val layout = "androidx.compose.foundation:foundation-layout:$version"
@@ -157,7 +156,15 @@ object Libs {
     }
 
     object Square {
-        const val retrofit = "com.squareup.retrofit2:retrofit:2.9.0"
-        const val gsonConverter = "com.squareup.retrofit2:converter-gson:2.9.0"
+        object Retrofit {
+            private const val version = "2.9.0"
+            const val retrofit = "com.squareup.retrofit2:retrofit:$version"
+            const val moshiConverter = "com.squareup.retrofit2:converter-moshi:$version"
+        }
+        object Moshi {
+            private const val version = "1.9.3"
+            const val core = "com.squareup.moshi:moshi:$version"
+            const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$version"
+        }
     }
 }

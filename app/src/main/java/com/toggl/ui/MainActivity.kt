@@ -25,8 +25,6 @@ import com.toggl.common.feature.navigation.handleBackPressesEmitting
 import com.toggl.domain.AppAction
 import com.toggl.domain.AppState
 import com.toggl.domain.Tab
-import com.toggl.timer.common.domain.TimerAction
-import com.toggl.timer.suggestions.domain.SuggestionsAction
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.channels.BroadcastChannel
@@ -108,11 +106,6 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
             return
 
         bottom_navigation.selectedItemId = itemToSelect
-    }
-
-    override fun onResume() {
-        super.onResume()
-        store.dispatch(AppAction.Timer(TimerAction.Suggestions(SuggestionsAction.LoadSuggestions)))
     }
 
     private fun setUpNavigation(): NavHostController {

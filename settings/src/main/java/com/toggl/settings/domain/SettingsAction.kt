@@ -2,8 +2,10 @@ package com.toggl.settings.domain
 
 import com.toggl.models.domain.DateFormat
 import com.toggl.models.domain.DurationFormat
+import com.toggl.models.domain.MockDataSetSize
 import com.toggl.models.domain.SettingsType
 import com.toggl.models.domain.SmartAlertsOption
+import com.toggl.models.domain.User
 import com.toggl.models.domain.UserPreferences
 import com.toggl.models.validation.Email
 import java.time.DayOfWeek
@@ -16,6 +18,7 @@ sealed class SettingsAction {
     data class DurationFormatSelected(val durationFormat: DurationFormat) : SettingsAction()
     data class FirstDayOfTheWeekSelected(val firstDayOfTheWeek: DayOfWeek) : SettingsAction()
     data class SmartAlertsOptionSelected(val smartAlertsOption: SmartAlertsOption) : SettingsAction()
+    data class MockDataSetSelected(val mockDataSetSize: MockDataSetSize) : SettingsAction()
     object ManualModeToggled : SettingsAction()
     object Use24HourClockToggled : SettingsAction()
     object CellSwipeActionsToggled : SettingsAction()
@@ -36,6 +39,7 @@ sealed class SettingsAction {
     object FinishedEditingSetting : SettingsAction()
     data class OpenSelectionDialog(val settingType: SettingsType) : SettingsAction()
     data class OpenTextPickerDialog(val settingType: SettingsType.TextSetting) : SettingsAction()
+    data class UserUpdated(val user: User) : SettingsAction()
     object OpenAboutTapped : SettingsAction()
     object OpenPrivacyPolicyTapped : SettingsAction()
     object OpenTermsOfServiceTapped : SettingsAction()
@@ -77,4 +81,6 @@ fun SettingsAction.formatForDebug() =
         SettingsAction.OpenLicencesTapped -> "Open licences tapped"
         SettingsAction.OpenHelpTapped -> "Open help tapped"
         is SettingsAction.OpenTextPickerDialog -> "Text dialog opened for setting $settingType"
+        is SettingsAction.MockDataSetSelected -> "Mock data set selected $mockDataSetSize"
+        is SettingsAction.UserUpdated -> "User updated to $user"
     }

@@ -1,7 +1,9 @@
 package com.toggl.api.models
 
+import com.squareup.moshi.Json
+
 enum class Resolution {
-    Day,
-    Week,
-    Month
+    @Json(name = "day") Day,
+    @Json(name = "week") Week,
+    @Json(name = "month") Month
 }

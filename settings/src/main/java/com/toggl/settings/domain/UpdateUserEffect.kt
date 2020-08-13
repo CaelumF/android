@@ -12,9 +12,8 @@ class UpdateUserEffect(
     private val dispatcherProvider: DispatcherProvider
 ) : Effect<SettingsAction> {
 
-    override suspend fun execute(): SettingsAction? =
-        withContext(dispatcherProvider.io) {
-            userRepository.set(newUser)
-            null
-        }
+    override suspend fun execute(): SettingsAction = withContext(dispatcherProvider.io) {
+        userRepository.update(newUser)
+        SettingsAction.UserUpdated(newUser)
+    }
 }

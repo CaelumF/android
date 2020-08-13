@@ -20,6 +20,7 @@ import com.toggl.onboarding.passwordreset.domain.SendPasswordResetEmailEffect
 import com.toggl.onboarding.signup.domain.SignUpAction
 import com.toggl.onboarding.signup.domain.SignUpReducer
 import com.toggl.onboarding.signup.domain.SignUpState
+import com.toggl.onboarding.signup.domain.SignUserUpEffect
 import com.toggl.onboarding.sso.domain.SsoAction
 import com.toggl.onboarding.sso.domain.SsoReducer
 import com.toggl.onboarding.sso.domain.SsoState
@@ -91,6 +92,15 @@ object OnboardingApplicationModule {
             oneMoreTryBeforeAccountLocked = context.getString(R.string.one_more_try_before_account_locked),
             accountIsLocked = context.getString(R.string.account_is_locked),
             genericLoginError = context.getString(R.string.generic_login_error),
+            offline = context.getString(R.string.offline_error)
+        )
+
+    @Provides
+    @Singleton
+    internal fun signUpErrorMessages(@ApplicationContext context: Context) =
+        SignUserUpEffect.ErrorMessages(
+            emailIsAlreadyUsedError = context.getString(R.string.email_is_already_used),
+            genericSignUpError = context.getString(R.string.generic_signup_error),
             offline = context.getString(R.string.offline_error)
         )
 

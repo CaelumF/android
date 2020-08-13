@@ -2,6 +2,7 @@ package com.toggl.api.clients.feedback
 
 import com.toggl.api.network.FeedbackApi
 import com.toggl.api.network.models.feedback.FeedbackBody
+import com.toggl.api.network.models.feedback.toKeyValue
 import com.toggl.models.domain.FeedbackData
 import com.toggl.models.domain.PlatformInfo
 import com.toggl.models.domain.User
@@ -38,7 +39,7 @@ internal class RetrofitFeedbackApiClient @Inject constructor(
             "TimezoneIdentifier" to platformInfo.timezoneIdentifier,
             "BuildNumber" to platformInfo.buildNumber,
             "InstallLocation" to platformInfo.installLocation.name
-        )
+        ).toKeyValue()
 
         feedbackApi.sendFeedback(
             feedbackBody = FeedbackBody(user.email.toString(), message, data)

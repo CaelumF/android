@@ -111,4 +111,14 @@
     <string name="account_is_locked">Email ou senha incorreta. Conta bloqueada por 5 minutos. O dono da conta foi notificado.</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancelar</string>
+    <string name="email_is_already_used">Sinto muito, parece que estamos tendo algum problema ao tentar criar sua conta.\nPor favor, tente novamente.</string>
+    <string name="generic_signup_error">Já existe um usuário com esse email.</string>
+    <string name="invalid_email_error">Por favor digite um email válido</string>
+    <string name="no_email_error">Por favor, digite seu email</string>
+    <string name="no_project">Sem Projeto</string>
+    <string name="reports_error_offline">Falha na conexão de rede</string>
+    <string name="reports_error_generic">Algo deu errado</string>
+    <string name="unit_second">s</string>
+    <string name="unit_hour">h</string>
+    <string name="unit_minute">min</string>
 </resources>

@@ -2,9 +2,9 @@ package com.toggl.reports.domain
 
 import java.time.OffsetDateTime
 
-class DateRangeSelection(
+data class DateRangeSelection(
     val startDate: OffsetDateTime,
-    val endDate: OffsetDateTime,
+    val endDate: OffsetDateTime?,
     val source: SelectionSource
 )
 

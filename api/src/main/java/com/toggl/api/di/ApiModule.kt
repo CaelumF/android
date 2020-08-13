@@ -1,24 +1,21 @@
 package com.toggl.api.di
 
-import com.google.gson.GsonBuilder
+import com.squareup.moshi.Moshi
 import com.toggl.api.clients.ErrorHandlingProxyClient
+import com.toggl.api.clients.ReportsApiClient
+import com.toggl.api.clients.SyncApiClient
 import com.toggl.api.clients.authentication.AuthenticationApiClient
 import com.toggl.api.clients.feedback.FeedbackApiClient
-import com.toggl.api.clients.reports.ReportsApiClient
 import com.toggl.api.extensions.AppBuildConfig
 import com.toggl.api.network.AuthenticationApi
 import com.toggl.api.network.FeedbackApi
 import com.toggl.api.network.ReportsApi
-import com.toggl.api.network.deserializers.TotalsResponseDeserializer
-import com.toggl.api.network.deserializers.UserDeserializer
+import com.toggl.api.network.SyncApi
+import com.toggl.api.network.adapters.DateAdapter
+import com.toggl.api.network.adapters.OffsetDateTimeAdapter
 import com.toggl.api.network.interceptors.AuthInterceptor
+import com.toggl.api.network.interceptors.SyncInterceptor
 import com.toggl.api.network.interceptors.UserAgentInterceptor
-import com.toggl.api.network.models.feedback.FeedbackBody
-import com.toggl.api.network.models.reports.TotalsBody
-import com.toggl.api.network.models.reports.TotalsResponse
-import com.toggl.api.network.serializers.FeedbackBodySerializer
-import com.toggl.api.network.serializers.TotalsBodySerializer
-import com.toggl.models.domain.User
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -26,7 +23,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -52,6 +49,13 @@ object ApiModule {
 
     @Provides
     @Singleton
+    @BaseSyncUrl
+    fun baseSyncUrl(): String =
+        if (AppBuildConfig.isBuildTypeRelease) "https://sync.toggl.com"
+        else "https://sync.toggl.space"
+
+    @Provides
+    @Singleton
     fun okHttpClient(
         userAgentInterceptor: UserAgentInterceptor,
         authInterceptor: AuthInterceptor
@@ -62,41 +66,52 @@ object ApiModule {
 
     @Provides
     @Singleton
+    fun moshi() = Moshi.Builder()
+        .add(OffsetDateTimeAdapter())
+        .add(DateAdapter())
+        .build()
+
+    @Provides
+    @Singleton
     @ApiRetrofit
     fun apiRetrofit(
         @BaseApiUrl baseUrl: String,
-        okHttpClient: OkHttpClient
+        okHttpClient: OkHttpClient,
+        moshi: Moshi
     ): Retrofit {
-        val converterFactory = GsonBuilder()
-            .registerTypeAdapter(FeedbackBody::class.java, FeedbackBodySerializer())
-            .registerTypeAdapter(User::class.java, UserDeserializer())
-            .create()
-            .let(GsonConverterFactory::create)
-
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttpClient)
-            .addConverterFactory(converterFactory)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
+
+    @Provides
+    @Singleton
+    @SyncRetrofit
+    fun syncRetrofit(
+        @BaseSyncUrl baseUrl: String,
+        okHttpClient: OkHttpClient,
+        syncInterceptor: SyncInterceptor,
+        moshi: Moshi
+    ) = Retrofit.Builder()
+        .baseUrl(baseUrl)
+        .client(okHttpClient.newBuilder().addInterceptor(syncInterceptor).build())
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .build()
 
     @Provides
     @Singleton
     @ReportsRetrofit
     fun reportsRetrofit(
         @BaseReportsUrl baseUrl: String,
-        okHttpClient: OkHttpClient
+        okHttpClient: OkHttpClient,
+        moshi: Moshi
     ): Retrofit {
-        val converterFactory = GsonBuilder()
-            .registerTypeAdapter(TotalsBody::class.java, TotalsBodySerializer())
-            .registerTypeAdapter(TotalsResponse::class.java, TotalsResponseDeserializer())
-            .create()
-            .let(GsonConverterFactory::create)
-
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttpClient)
-            .addConverterFactory(converterFactory)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
 
@@ -114,6 +129,11 @@ object ApiModule {
     @Singleton
     internal fun reportsApi(@ReportsRetrofit retrofit: Retrofit) =
         retrofit.create(ReportsApi::class.java)
+
+    @Provides
+    @Singleton
+    internal fun syncApi(@SyncRetrofit retrofit: Retrofit) =
+        retrofit.create(SyncApi::class.java)
 }
 
 @Module
@@ -127,4 +147,7 @@ internal abstract class ApiClientModule {
 
     @Binds
     abstract fun reportsApiClient(bind: ErrorHandlingProxyClient): ReportsApiClient
+
+    @Binds
+    abstract fun syncApiClient(bind: ErrorHandlingProxyClient): SyncApiClient
 }

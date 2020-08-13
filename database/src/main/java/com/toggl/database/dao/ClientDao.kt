@@ -17,7 +17,7 @@ interface ClientDao {
     fun getOne(id: Long): DatabaseClient
 
     @Insert
-    fun insertAll(vararg clients: DatabaseClient): List<Long>
+    fun insertAll(clients: List<DatabaseClient>): List<Long>
 
     @Insert
     fun insert(client: DatabaseClient): Long

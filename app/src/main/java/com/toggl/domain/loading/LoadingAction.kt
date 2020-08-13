@@ -1,5 +1,7 @@
 package com.toggl.domain.loading
 
+import com.toggl.common.feature.services.calendar.Calendar
+import com.toggl.common.feature.services.calendar.CalendarEvent
 import com.toggl.models.domain.Client
 import com.toggl.models.domain.Project
 import com.toggl.models.domain.Tag
@@ -8,6 +10,7 @@ import com.toggl.models.domain.TimeEntry
 import com.toggl.models.domain.User
 import com.toggl.models.domain.UserPreferences
 import com.toggl.models.domain.Workspace
+import com.toggl.timer.suggestions.domain.Suggestion
 
 sealed class LoadingAction {
     object StartLoading : LoadingAction()
@@ -19,6 +22,9 @@ sealed class LoadingAction {
     data class TasksLoaded(val tasks: List<Task>) : LoadingAction()
     data class TimeEntriesLoaded(val timeEntries: List<TimeEntry>) : LoadingAction()
     data class UserPreferencesLoaded(val userPreferences: UserPreferences) : LoadingAction()
+    data class CalendarsLoaded(val calendars: List<Calendar>) : LoadingAction()
+    data class SuggestionsLoaded(val suggestions: List<Suggestion>) : LoadingAction()
+    data class CalendarEventsLoaded(val calendarEvents: List<CalendarEvent>) : LoadingAction()
 }
 
 fun LoadingAction.formatForDebug() =
@@ -32,4 +38,7 @@ fun LoadingAction.formatForDebug() =
         is LoadingAction.TasksLoaded -> "Loaded ${tasks.size} tasks"
         is LoadingAction.UserPreferencesLoaded -> "Loaded $userPreferences"
         is LoadingAction.UserLoaded -> "Loaded $user"
+        is LoadingAction.CalendarsLoaded -> "Loaded ${calendars.size} calendars"
+        is LoadingAction.CalendarEventsLoaded -> "Loaded ${calendarEvents.size} calendar events"
+        is LoadingAction.SuggestionsLoaded -> "Loaded ${suggestions.size} suggestions"
     }

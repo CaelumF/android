@@ -12,14 +12,16 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 abstract class BaseLoadingSubscription(private val dispatcherProvider: DispatcherProvider) : Subscription<AppState, AppAction> {
+    open val startLoadingTrigger: (AppState) -> Boolean = { state -> state.user is Loadable.Loaded }
+
     override fun subscribe(state: Flow<AppState>): Flow<AppAction.Loading> =
-        state.map { it.user is Loadable.Loaded }
+        state.map { startLoadingTrigger(it) }
             .distinctUntilChanged()
-            .flatMapLatest { isLoggedIn ->
+            .flatMapLatest { shouldStartLoading ->
                 withContext(dispatcherProvider.io) {
-                    subscribe(isLoggedIn).map { AppAction.Loading(it) }
+                    subscribe(shouldStartLoading).map { AppAction.Loading(it) }
                 }
             }
 
-    abstract fun subscribe(isUserLoggedIn: Boolean): Flow<LoadingAction>
+    abstract fun subscribe(shouldStartLoading: Boolean): Flow<LoadingAction>
 }

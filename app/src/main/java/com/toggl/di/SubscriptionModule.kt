@@ -1,22 +1,32 @@
 package com.toggl.di
 
+import android.content.Context
 import com.toggl.architecture.DispatcherProvider
 import com.toggl.architecture.core.CompositeSubscription
 import com.toggl.architecture.core.Subscription
+import com.toggl.common.Constants
+import com.toggl.common.services.time.TimeService
 import com.toggl.domain.AppAction
 import com.toggl.domain.AppState
+import com.toggl.domain.loading.CalendarEventsProvider
+import com.toggl.domain.loading.CalendarProvider
+import com.toggl.domain.loading.LoadCalendarsEventsSubscription
+import com.toggl.domain.loading.LoadCalendarsSubscription
 import com.toggl.domain.loading.LoadClientsSubscription
 import com.toggl.domain.loading.LoadProjectsSubscription
+import com.toggl.domain.loading.LoadSuggestionsSubscription
 import com.toggl.domain.loading.LoadTagsSubscription
 import com.toggl.domain.loading.LoadTasksSubscription
 import com.toggl.domain.loading.LoadTimeEntriesSubscription
 import com.toggl.domain.loading.LoadUserPreferencesSubscription
 import com.toggl.domain.loading.LoadWorkspacesSubscription
 import com.toggl.repository.Repository
+import com.toggl.timer.suggestions.domain.SuggestionProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.multibindings.IntoSet
 
 @Module
@@ -84,4 +94,37 @@ object SubscriptionModule {
         dispatcherProvider: DispatcherProvider
     ): Subscription<AppState, AppAction> =
         LoadUserPreferencesSubscription(repository, dispatcherProvider)
+
+    @Provides
+    @IntoSet
+    fun loadSuggestionsSubscription(
+        suggestionProvider: SuggestionProvider,
+        dispatcherProvider: DispatcherProvider
+    ): Subscription<AppState, AppAction> =
+        LoadSuggestionsSubscription(suggestionProvider, dispatcherProvider)
+
+    @Provides
+    @IntoSet
+    fun loadCalendarsSubscription(
+        @ApplicationContext context: Context,
+        dispatcherProvider: DispatcherProvider
+    ): Subscription<AppState, AppAction> =
+        LoadCalendarsSubscription(CalendarProvider(context.contentResolver), dispatcherProvider)
+
+    @Provides
+    @IntoSet
+    fun loadCalendarsEventsSubscription(
+        @ApplicationContext context: Context,
+        timeService: TimeService,
+        dispatcherProvider: DispatcherProvider
+    ): Subscription<AppState, AppAction> =
+        LoadCalendarsEventsSubscription(
+            timeService,
+            { minusMonths(Constants.Calendar.Events.numberOfMonthsBack) },
+            { plusMonths(Constants.Calendar.Events.numberOfMonthsAhead) },
+            CalendarEventsProvider(
+                context.contentResolver,
+                dispatcherProvider
+            )
+        )
 }

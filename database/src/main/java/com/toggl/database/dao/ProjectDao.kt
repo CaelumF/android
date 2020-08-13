@@ -17,7 +17,7 @@ interface ProjectDao {
     fun getOne(id: Long): DatabaseProject
 
     @Insert
-    fun insertAll(vararg databaseProjects: DatabaseProject): List<Long>
+    fun insertAll(databaseProjects: List<DatabaseProject>): List<Long>
 
     @Insert
     fun insert(databaseProject: DatabaseProject): Long

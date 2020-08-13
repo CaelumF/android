@@ -62,4 +62,7 @@
   <color name="onboarding_tab_indicator_deselected">#33FFFFFF</color>
   <color name="onboarding_loading_indicator">#CBF2F0</color>
   <color name="onboardingTogglLogoText">#000000</color>
+
+  <!-- Reports -->
+  <color name="no_project_color">#B5BCC0</color>
 </resources>

@@ -52,9 +52,9 @@ class CalendarSuggestionProviderTest : CoroutineTest() {
                 ""
             )
         }
-        val initialState = createInitialState(calendarEvents = calendarEvents.associateBy { it.id })
+        val sources = createSuggestionSources(calendarEvents = calendarEvents.associateBy { it.id })
 
-        val suggestions = calendarSuggestionsProvider.getSuggestions(initialState)
+        val suggestions = calendarSuggestionsProvider.getSuggestions(sources)
         suggestions.shouldHaveSize(121) // out of bounds (123 - 2 == 121)
         suggestions.forEach { suggestion ->
             suggestion.should { it is Suggestion.Calendar && it.calendarEvent.startTime > expectedStartOfRange && it.calendarEvent.startTime < expectedEndOfRange }
@@ -65,9 +65,9 @@ class CalendarSuggestionProviderTest : CoroutineTest() {
     fun `does not include calendar events without a description`() = runBlockingTest {
 
         val calendarEvents = listOf(createCalendarEvent(description = "", startTime = now))
-        val initialState = createInitialState(calendarEvents = calendarEvents.associateBy { it.id })
+        val sources = createSuggestionSources(calendarEvents = calendarEvents.associateBy { it.id })
 
-        val suggestions = provider.getSuggestions(initialState)
+        val suggestions = provider.getSuggestions(sources)
 
         suggestions.shouldBeEmpty()
     }
@@ -77,9 +77,9 @@ class CalendarSuggestionProviderTest : CoroutineTest() {
         val user = createUser()
         val calendarEvents =
             listOf("This is valid", "This is also valid").map { createCalendarEvent(description = it, startTime = now) }
-        val initialState = createInitialState(user = user, calendarEvents = calendarEvents.associateBy { it.id })
+        val sources = createSuggestionSources(workspaceId = user.defaultWorkspaceId, calendarEvents = calendarEvents.associateBy { it.id })
 
-        val suggestions = provider.getSuggestions(initialState)
+        val suggestions = provider.getSuggestions(sources)
 
         suggestions.all { it is Suggestion.Calendar && it.workspaceId == user.defaultWorkspaceId }.shouldBeTrue()
     }
@@ -90,9 +90,9 @@ class CalendarSuggestionProviderTest : CoroutineTest() {
         val user = createUser()
         val calendarEvents =
             listOf("This is valid", "This is also valid").map { createCalendarEvent(description = it, startTime = now) }
-        val initialState = createInitialState(user = user, calendarEvents = calendarEvents.associateBy { it.id })
+        val sources = createSuggestionSources(workspaceId = user.defaultWorkspaceId, calendarEvents = calendarEvents.associateBy { it.id })
 
-        val suggestions = provider.getSuggestions(initialState)
+        val suggestions = provider.getSuggestions(sources)
 
         suggestions shouldHaveSize maxSuggestionNumber
     }
@@ -100,8 +100,8 @@ class CalendarSuggestionProviderTest : CoroutineTest() {
     @ParameterizedTest
     @MethodSource("calendarEvents")
     fun `sorts by the distance between the event start and now`(testData: CalendarTestData) = runBlockingTest {
-        val suggestionsState = createInitialState(calendarEvents = testData.events.associateBy { it.id })
-        val suggestion = provider.getSuggestions(suggestionsState).filterIsInstance<Suggestion.Calendar>().single()
+        val sources = createSuggestionSources(calendarEvents = testData.events.associateBy { it.id })
+        val suggestion = provider.getSuggestions(sources).filterIsInstance<Suggestion.Calendar>().single()
 
         suggestion.calendarEvent shouldBe testData.closestEvent
     }

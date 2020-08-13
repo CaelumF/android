@@ -21,6 +21,7 @@ import com.toggl.common.feature.services.analytics.parameters.TimeEntryStopOrigi
 import com.toggl.common.feature.timeentry.extensions.isRepresentingGroup
 import com.toggl.domain.AppAction
 import com.toggl.domain.AppState
+import com.toggl.domain.loading.LoadingAction
 import com.toggl.models.common.SwipeDirection
 import com.toggl.models.domain.EditableTimeEntry
 import com.toggl.onboarding.common.domain.OnboardingAction
@@ -53,16 +54,39 @@ class AnalyticsReducer @Inject constructor(
                 is OnboardingAction.Login -> onboardingAction.action.toEvents()
                 else -> emptyList()
             }
+            is AppAction.Loading -> when (val loadingAction = action) {
+                is LoadingAction.SuggestionsLoaded -> loadingAction.toEvents(state)
+                else -> emptyList()
+            }
             is AppAction.Timer -> when (val timerAction = action) {
                 is TimerAction.StartEditTimeEntry -> timerAction.action.toEvents(state)
                 is TimerAction.TimeEntriesLog -> timerAction.action.toEvents()
                 is TimerAction.RunningTimeEntry -> timerAction.action.toEvents()
-                is TimerAction.Suggestions -> timerAction.action.toEvents(state)
+                is TimerAction.Suggestions -> timerAction.action.toEvents()
                 else -> emptyList()
             }
             is AppAction.Settings -> action.toEvents(state)
             else -> emptyList()
         }
+
+    private fun LoadingAction.SuggestionsLoaded.toEvents(state: MutableValue<AppState>): List<Event> {
+        val randomForestCount = 0
+        val calendarCount = suggestions.filterIsInstance<Suggestion.Calendar>().size
+        val mostUsedCount = suggestions.filterIsInstance<Suggestion.MostUsed>().size
+        val providerCounts = mapOf(
+            "Calendar" to calendarCount.toString(),
+            "RandomForest" to randomForestCount.toString(),
+            "MostUsedTimeEntries" to mostUsedCount.toString()
+        )
+        val calendarAuthorized = state().calendarPermissionWasGranted
+        val workspaceCount = state().workspaces.size
+        val calendarProviderState = when {
+            !calendarAuthorized -> CalendarSuggestionProviderState.Unauthorized
+            calendarCount > 0 -> CalendarSuggestionProviderState.SuggestionsAvailable
+            else -> CalendarSuggestionProviderState.NoEvents
+        }
+        return listOf(Event.suggestionsPresented(suggestions.size, providerCounts, calendarProviderState, workspaceCount))
+    }
 
     private fun LoginAction.toEvents(): List<Event> =
         listOfNotNull(
@@ -118,7 +142,7 @@ class AnalyticsReducer @Inject constructor(
             }
         )
 
-    private fun SuggestionsAction.toEvents(state: MutableValue<AppState>): List<Event> =
+    private fun SuggestionsAction.toEvents(): List<Event> =
         when (this) {
             is SuggestionsAction.SuggestionTapped -> when (suggestion) {
                 is Suggestion.MostUsed -> listOf(Event.suggestionStarted(SuggestionProviderType.MostUsedTimeEntries))
@@ -131,24 +155,6 @@ class AnalyticsReducer @Inject constructor(
                         Event.calendarSuggestionContinueEvent(offset)
                     )
                 }
-            }
-            is SuggestionsAction.SuggestionsLoaded -> {
-                val randomForestCount = 0
-                val calendarCount = suggestions.filterIsInstance<Suggestion.Calendar>().size
-                val mostUsedCount = suggestions.filterIsInstance<Suggestion.MostUsed>().size
-                val providerCounts = mapOf(
-                    "Calendar" to calendarCount.toString(),
-                    "RandomForest" to randomForestCount.toString(),
-                    "MostUsedTimeEntries" to mostUsedCount.toString()
-                )
-                val calendarAuthorized = state().calendarPermissionWasGranted
-                val workspaceCount = state().workspaces.size
-                val calendarProviderState = when {
-                    !calendarAuthorized -> CalendarSuggestionProviderState.Unauthorized
-                    calendarCount > 0 -> CalendarSuggestionProviderState.SuggestionsAvailable
-                    else -> CalendarSuggestionProviderState.NoEvents
-                }
-                listOf(Event.suggestionsPresented(suggestions.size, providerCounts, calendarProviderState, workspaceCount))
             }
             else -> emptyList()
         }

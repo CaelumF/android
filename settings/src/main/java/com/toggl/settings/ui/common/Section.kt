@@ -1,24 +1,24 @@
 package com.toggl.settings.ui.common
 
-import androidx.compose.Composable
-import androidx.ui.core.Alignment
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.Text
-import androidx.ui.foundation.clickable
-import androidx.ui.layout.Arrangement
-import androidx.ui.layout.Column
-import androidx.ui.layout.Row
-import androidx.ui.layout.fillMaxWidth
-import androidx.ui.layout.height
-import androidx.ui.layout.padding
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.ripple.RippleIndication
-import androidx.ui.res.stringResource
-import androidx.ui.unit.dp
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ripple.RippleIndication
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.toggl.common.feature.compose.theme.grid_1
+import com.toggl.common.feature.compose.theme.grid_2
 import com.toggl.models.domain.SettingsType
 import com.toggl.settings.R
-import com.toggl.settings.compose.theme.grid_1
-import com.toggl.settings.compose.theme.grid_2
 import com.toggl.settings.domain.SettingsAction
 import com.toggl.settings.domain.SettingsSectionViewModel
 import com.toggl.settings.domain.SettingsViewModel
@@ -30,9 +30,7 @@ fun Section(
     modifier: Modifier = Modifier,
     dispatcher: (SettingsAction) -> Unit
 ) {
-    val columnModifier = Modifier
-        .padding(top = grid_1, bottom = grid_1)
-        .plus(modifier)
+    val columnModifier = Modifier.padding(top = grid_1, bottom = grid_1) then modifier
 
     Column(modifier = columnModifier) {
         if (withTitle) {
@@ -72,6 +70,8 @@ internal fun SettingsRow(
         SettingsType.CalendarPermissionInfo -> null
         is SettingsType.SingleChoiceSetting -> SettingsAction.OpenSelectionDialog(settingsType)
         is SettingsType.TextSetting -> SettingsAction.OpenTextPickerDialog(settingsType)
+        // debug
+        SettingsType.InsertMockData -> SettingsAction.OpenSelectionDialog(settingsType)
     }
 
     val onClick = tapAction?.let { { dispatcher(it) } }
@@ -84,9 +84,7 @@ internal fun SettingsRow(
             )
         else Modifier
 
-    val rowModifier = Modifier
-        .height(48.dp)
-        .fillMaxWidth() + clickModifier
+    val rowModifier = Modifier.height(48.dp).fillMaxWidth() then clickModifier
 
     Row(
         modifier = rowModifier,

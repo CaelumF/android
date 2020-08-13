@@ -92,7 +92,6 @@ object AppModule {
 @InstallIn(ActivityRetainedComponent::class)
 object AppViewModelModule {
     @Provides
-
     fun onboardingStore(store: Store<AppState, AppAction>): Store<OnboardingState, OnboardingAction> =
         store.view(
             mapToLocalState = ::mapAppStateToOnboardingState,
@@ -100,7 +99,6 @@ object AppViewModelModule {
         )
 
     @Provides
-
     fun timerStore(store: Store<AppState, AppAction>): Store<TimerState, TimerAction> =
         store.view(
             mapToLocalState = ::mapAppStateToTimerState,
@@ -108,15 +106,13 @@ object AppViewModelModule {
         )
 
     @Provides
-
     fun reportsStore(store: Store<AppState, AppAction>): Store<ReportsState, ReportsAction> =
-        store.view(
+        store.optionalView(
             mapToLocalState = ::mapAppStateToReportsState,
             mapToGlobalAction = ::mapReportsActionToAppAction
         )
 
     @Provides
-
     fun calendarStore(store: Store<AppState, AppAction>): Store<CalendarState, CalendarAction> =
         store.view(
             mapToLocalState = ::mapAppStateToCalendarState,
@@ -124,7 +120,6 @@ object AppViewModelModule {
         )
 
     @Provides
-
     fun settingsStore(store: Store<AppState, AppAction>): Store<SettingsState, SettingsAction> =
         store.optionalView(
             mapToLocalState = ::mapAppStateToSettingsState,

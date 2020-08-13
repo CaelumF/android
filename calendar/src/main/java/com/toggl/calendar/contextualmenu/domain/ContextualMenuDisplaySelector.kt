@@ -43,12 +43,8 @@ class ContextualMenuDisplaySelector @Inject constructor() : Selector<ContextualM
             description = calendarEvent.description,
             periodLabel = period,
             calendarColor = calendarEvent.color,
-            calendarName = getCalendarName(calendarEvent.calendarId)
+            calendarName = calendarEvent.calendarName
         )
-    }
-
-    private fun ContextualMenuState.getCalendarName(calendarId: String): String? {
-        return calendars.find { it.id == calendarId }?.name
     }
 
     private fun ContextualMenuState.getProjectViewModel(projectId: Long?): ProjectViewModel? =

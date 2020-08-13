@@ -105,6 +105,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/password_label" />
 
+        <TextView
+            android:id="@+id/error_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/grid_2"
+            android:gravity="start"
+            android:textColor="@color/error"
+            android:textSize="15sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/password_strength_criteria"
+            tools:text="An error has errored its way into making this error" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sign_up_button"
             android:layout_width="match_parent"
@@ -117,7 +131,20 @@
             app:backgroundTint="@color/primary_dark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/password_strength_criteria" />
+            app:layout_constraintTop_toBottomOf="@id/error_label" />
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/loading_indicator"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="12dp"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            app:layout_constraintBottom_toBottomOf="@id/sign_up_button"
+            app:layout_constraintLeft_toLeftOf="@id/sign_up_button"
+            app:layout_constraintRight_toRightOf="@id/sign_up_button"
+            app:layout_constraintTop_toTopOf="@id/sign_up_button" />
 
         <TextView
             android:id="@+id/login_button"

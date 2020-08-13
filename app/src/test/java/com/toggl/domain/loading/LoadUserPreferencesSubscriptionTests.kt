@@ -5,13 +5,13 @@ import com.toggl.architecture.Loadable
 import com.toggl.common.CoroutineTest
 import com.toggl.domain.AppState
 import com.toggl.domain.extensions.createUser
+import com.toggl.models.domain.DateFormat
 import com.toggl.models.domain.User
 import com.toggl.models.domain.UserPreferences
 import com.toggl.repository.interfaces.SettingsRepository
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
@@ -19,7 +19,6 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-@ExperimentalCoroutinesApi
 @DisplayName("The LoadUserPreferencesSubscription")
 class LoadUserPreferencesSubscriptionTests : CoroutineTest() {
     private val repository = mockk<SettingsRepository>()
@@ -110,16 +109,16 @@ class LoadUserPreferencesSubscriptionTests : CoroutineTest() {
         subscription.testSubscribe(
             flowOf(
                 notDefaultUserPreferences,
-                defaultUserPreferences.copy(selectedWorkspaceId = 10),
-                defaultUserPreferences.copy(selectedWorkspaceId = 11)
+                defaultUserPreferences.copy(dateFormat = DateFormat.DDMMYYYY_dot),
+                defaultUserPreferences.copy(dateFormat = DateFormat.DDMMYYYY_slash)
             ),
             inputStateFlow = flowOf(
                 AppState(user = loadedUser)
             ),
             expectedOutput = listOf(
                 notDefaultUserPreferences,
-                defaultUserPreferences.copy(selectedWorkspaceId = 10),
-                defaultUserPreferences.copy(selectedWorkspaceId = 11)
+                defaultUserPreferences.copy(dateFormat = DateFormat.DDMMYYYY_dot),
+                defaultUserPreferences.copy(dateFormat = DateFormat.DDMMYYYY_slash)
             )
         )
     }

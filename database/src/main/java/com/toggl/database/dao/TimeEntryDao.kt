@@ -26,7 +26,7 @@ interface TimeEntryDao {
     @Transaction
     fun startTimeEntry(databaseTimeEntryWithTags: DatabaseTimeEntryWithTags): StartTimeEntryDatabaseResult {
         val (timeEntry, tags) = databaseTimeEntryWithTags
-        val stoppedTimeEntries = stopRunningTimeEntries(timeEntry.startTime)
+        val stoppedTimeEntries = stopRunningTimeEntries(timeEntry.startTime.current)
         val id = insertTimeEntry(timeEntry)
         insertAllTimeEntryTagsPairs(
             tags.map {
@@ -54,22 +54,22 @@ interface TimeEntryDao {
     @Transaction
     fun stopRunningTimeEntries(now: OffsetDateTime): List<DatabaseTimeEntry> {
         return getAllRunningTimeEntries()
-            .map { it.copy(duration = Duration.between(it.startTime, now)) }
+            .map { it.copy(duration = it.duration.copy(current = Duration.between(it.startTime.current, now))) }
             .also(this::updateAllTimeEntries)
     }
 
-    @Query("SELECT * FROM time_entries WHERE NOT isDeleted AND duration is null")
+    @Query("SELECT * FROM time_entries WHERE NOT isDeleted_current AND duration_current is null")
     fun getAllRunningTimeEntries(): List<DatabaseTimeEntry>
 
-    @Query("SELECT * FROM time_entries WHERE NOT isDeleted AND id = :id")
+    @Query("SELECT * FROM time_entries WHERE NOT isDeleted_current AND id = :id")
     fun getOneTimeEntry(id: Long): DatabaseTimeEntry
 
     @Transaction
-    @Query("SELECT * FROM time_entries WHERE NOT isDeleted AND id = :id")
+    @Query("SELECT * FROM time_entries WHERE NOT isDeleted_current AND id = :id")
     fun getOneTimeEntryWithTags(id: Long): DatabaseTimeEntryWithTags
 
     @Insert
-    fun insertAllTimeEntries(vararg databaseTimeEntries: DatabaseTimeEntry): List<Long>
+    fun insertAllTimeEntries(databaseTimeEntries: List<DatabaseTimeEntry>): List<Long>
 
     @Insert
     fun insertTimeEntry(databaseTimeEntries: DatabaseTimeEntry): Long
@@ -85,10 +85,10 @@ interface TimeEntryDao {
 
     // TimeEntries & Tags
 
-    @Query("SELECT * FROM time_entries WHERE NOT isDeleted")
+    @Query("SELECT * FROM time_entries WHERE NOT isDeleted_current")
     fun getAllTimeEntriesWithTags(): Flow<List<DatabaseTimeEntryWithTags>>
 
-    @Query("SELECT count(*) FROM time_entries WHERE NOT isDeleted")
+    @Query("SELECT count(*) FROM time_entries WHERE NOT isDeleted_current")
     fun count(): Int
 
     @Transaction
@@ -106,6 +106,14 @@ interface TimeEntryDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAllTimeEntryTagsPairs(databaseTimeEntryTags: List<DatabaseTimeEntryTag>)
 
+    fun clear() {
+        clearTimeEntryTag()
+        clearTimeEntries()
+    }
+
     @Query("DELETE FROM time_entries")
-    fun clear()
+    fun clearTimeEntries()
+
+    @Query("DELETE FROM time_entries_tags")
+    fun clearTimeEntryTag()
 }

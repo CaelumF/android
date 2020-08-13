@@ -4,11 +4,16 @@ abstract class ApiException(val errorMessage: String) : Exception() {
     private val badJsonLocalisedError = "Encountered unexpected error."
 
     companion object {
+        private const val userAlreadyExistsApiErrorMessage = "user with this email already exists"
+
         fun from(statusCode: Int, localizedErrorMessage: String?, numberOfAttemptsLeft: Int?) =
             when (statusCode) {
                 // Client errors
                 ApiDeprecatedException.httpCode -> ApiDeprecatedException(localizedErrorMessage)
-                BadRequestException.httpCode -> BadRequestException(localizedErrorMessage)
+                BadRequestException.httpCode -> {
+                    if (localizedErrorMessage == userAlreadyExistsApiErrorMessage) EmailIsAlreadyUsedException()
+                    else BadRequestException(localizedErrorMessage)
+                }
                 ClientDeprecatedException.httpCode -> ClientDeprecatedException(localizedErrorMessage)
                 ForbiddenException.httpCode -> ForbiddenException(localizedErrorMessage, numberOfAttemptsLeft)
                 NotFoundException.httpCode -> NotFoundException(localizedErrorMessage)

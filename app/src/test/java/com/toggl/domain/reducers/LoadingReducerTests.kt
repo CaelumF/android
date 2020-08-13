@@ -49,11 +49,10 @@ class LoadingReducerTests : CoroutineTest() {
     )
 
     private val emptyState = LoadingState(
-        Loadable.Uninitialized, listOf(), listOf(), listOf(), listOf(), listOf(), listOf(),
+        Loadable.Uninitialized, listOf(), listOf(), listOf(), listOf(), listOf(), listOf(), listOf(), listOf(), listOf(),
         UserPreferences(
             manualModeEnabled = true,
             twentyFourHourClockEnabled = false,
-            selectedWorkspaceId = 1,
             dateFormat = DateFormat.DDMMYYYY_dash,
             durationFormat = DurationFormat.Decimal,
             firstDayOfTheWeek = DayOfWeek.MONDAY,

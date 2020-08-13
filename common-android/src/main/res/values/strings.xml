@@ -123,4 +123,21 @@
     <string name="account_is_locked">Incorrect email or password. Account is locked for 5 minutes. Account owner has been notified.</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="email_is_already_used">User with this email already exists.</string>
+    <string name="generic_signup_error">Sorry, we\'re having trouble signing you up.\nPlease try again.</string>
+    <string name="invalid_email_error">Please enter a valid email address</string>
+    <string name="no_email_error">Please enter an email address</string>
+    <string name="no_project">No project</string>
+    <string name="reports_error_offline">Network connection failed</string>
+    <string name="reports_error_generic">Something went wrong</string>
+    <string name="unit_second">s</string>
+    <string name="unit_hour">h</string>
+    <string name="unit_minute">min</string>
+    <string name="amount">Amount</string>
+    <string name="advanced_reports">Advanced Reports</string>
+    <string name="advanced_reports_message">Create saved reports\nSchedule your reports\nSet billable hours\nExport PDF, CSV &amp; XLS</string>
+    <string name="available_on_other_plans">Available on other plans</string>
+    <string name="projects">Projects</string>
+    <string name="tracked_hours">Tracked Hours</string>
+    <string name="total">Total</string>
 </resources>

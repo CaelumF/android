@@ -17,7 +17,7 @@ interface TaskDao {
     fun getOne(id: Long): DatabaseTask
 
     @Insert
-    fun insertAll(vararg tasks: DatabaseTask): List<Long>
+    fun insertAll(tasks: List<DatabaseTask>): List<Long>
 
     @Insert
     fun insert(task: DatabaseTask): Long

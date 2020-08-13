@@ -8,10 +8,12 @@ import com.toggl.models.validation.ApiToken
 import com.toggl.models.validation.Email
 import com.toggl.models.validation.Password
 import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions
 
 val validPassword = Password.from("avalidpassword") as Password.Valid
+val strongPassword = Password.from("avalidpassword111AAA") as Password.Strong
 val validEmail = Email.from("validemail@toggl.com") as Email.Valid
 val validUser = User(
     id = 0,
@@ -63,6 +65,14 @@ suspend fun <State, Action> Reducer<State, Action>.testReduceNoEffects(
     initialState: State,
     action: Action
 ) = testReduce(initialState, action, ::assertNoEffectsWereReturned)
+
+suspend fun <State, Action> Reducer<State, Action>.testReduceNoOp(
+    initialState: State,
+    action: Action
+) = testReduce(initialState, action) { state, effects ->
+    state shouldBe initialState
+    effects.shouldBeEmpty()
+}
 
 @Suppress("UNUSED_PARAMETER")
 suspend fun <State, Action> assertNoEffectsWereReturned(state: State, effect: List<Effect<Action>>) {

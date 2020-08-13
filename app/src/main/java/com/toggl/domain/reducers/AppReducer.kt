@@ -62,7 +62,7 @@ fun createAppReducer(
             mapToGlobalState = ::mapTimerStateToAppState,
             mapToGlobalAction = ::mapTimerActionToAppAction
         ),
-        reportsReducer.pullback(
+        reportsReducer.optionalPullback(
             mapToLocalState = ::mapAppStateToReportsState,
             mapToLocalAction = AppAction::unwrap,
             mapToGlobalState = ::mapReportsStateToAppState,

@@ -3,9 +3,11 @@ package com.toggl.settings.domain
 import com.toggl.settings.common.CoroutineTest
 import com.toggl.settings.common.createSettingsReducer
 import com.toggl.settings.common.createSettingsState
-import com.toggl.settings.common.testReduceNoEffects
+import com.toggl.settings.common.testReduceEffects
 import com.toggl.settings.common.testReduceState
+import io.kotest.matchers.collections.shouldBeSingleton
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -16,17 +18,18 @@ class UpdateNameActionTests : CoroutineTest() {
     private val reducer = createSettingsReducer(dispatcherProvider = dispatcherProvider)
 
     @Test
-    fun `shouldn't return any effects`() = runBlockingTest {
-        reducer.testReduceNoEffects(initialState, SettingsAction.UpdateName("new"))
+    fun `returns an effect to update the user`() = runBlockingTest {
+        reducer.testReduceEffects(
+            initialState,
+            SettingsAction.UpdateName("new")
+        ) { effects ->
+            effects.shouldBeSingleton()
+            effects.first().shouldBeInstanceOf<UpdateUserEffect>()
+        }
     }
 
     @Test
-    fun `should change user's name`() = runBlockingTest {
-        reducer.testReduceState(
-            initialState,
-            SettingsAction.UpdateName("new")
-        ) { state ->
-            state.user.name shouldBe "new"
-        }
+    fun `shouldn't change the state`() = runBlockingTest {
+        reducer.testReduceState(initialState, SettingsAction.UpdateName("new")) { state -> state shouldBe initialState }
     }
 }

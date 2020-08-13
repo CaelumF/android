@@ -10,8 +10,8 @@ class LoadTimeEntriesSubscription(
     private val timeEntryRepository: TimeEntryRepository,
     dispatcherProvider: DispatcherProvider
 ) : BaseLoadingSubscription(dispatcherProvider) {
-    override fun subscribe(isUserLoggedIn: Boolean): Flow<LoadingAction> {
-        val timeEntries = if (isUserLoggedIn) timeEntryRepository.loadTimeEntries()
+    override fun subscribe(shouldStartLoading: Boolean): Flow<LoadingAction> {
+        val timeEntries = if (shouldStartLoading) timeEntryRepository.loadTimeEntries()
         else flowOf(emptyList())
         return timeEntries.map { LoadingAction.TimeEntriesLoaded(it) }
     }

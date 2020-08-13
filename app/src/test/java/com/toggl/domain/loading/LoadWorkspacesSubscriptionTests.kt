@@ -11,7 +11,6 @@ import com.toggl.repository.interfaces.WorkspaceRepository
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
@@ -19,7 +18,6 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-@ExperimentalCoroutinesApi
 @DisplayName("The LoadWorkspacesSubscription")
 class LoadWorkspacesSubscriptionTests : CoroutineTest() {
     private val repository = mockk<WorkspaceRepository>()

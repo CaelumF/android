@@ -38,19 +38,20 @@ android {
     buildTypes {
         adhoc {}
     }
-
 }
 
 dependencies {
     coreLibraryDesugaring Libs.Android.desugarJdkLibs
     api project(':models')
     implementation project(':common')
+    implementation project(':database')
 
     implementation Libs.Kotlin.stdlib
     implementation Libs.Coroutines.core
-    api Libs.Square.retrofit
-    api Libs.Google.gson
-    api Libs.Square.gsonConverter
+    api Libs.Square.Retrofit.retrofit
+    api Libs.Square.Retrofit.moshiConverter
+    api Libs.Square.Moshi.core
+    kapt Libs.Square.Moshi.codegen
     implementation Libs.Hilt.hilt
     kapt Libs.Hilt.compiler
 

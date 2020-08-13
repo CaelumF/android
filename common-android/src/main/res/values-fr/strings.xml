@@ -110,4 +110,14 @@
     <string name="account_is_locked">Email ou mot de passe incorrect. Compte bloqué pendant 5 minutes. Le propriétaire du compte a été notifié.</string>
     <string name="ok">Ok</string>
     <string name="cancel">Annuler</string>
+    <string name="generic_signup_error">Désolé, nous ne parvenons pas à vous inscrire.\nVeuillez réessayer.</string>
+    <string name="email_is_already_used">Un utilisateur avec ce courriel existe déjà.</string>
+    <string name="no_email_error">Veuillez entrer une adresse email</string>
+    <string name="invalid_email_error">Veuillez entrer une adresse email valide</string>
+    <string name="no_project">Aucun projet</string>
+    <string name="reports_error_offline">La connexión au réseau a échoué</string>
+    <string name="reports_error_generic">Quelque chose a mal tourné</string>
+    <string name="unit_second">sec</string>
+    <string name="unit_hour">h</string>
+    <string name="unit_minute">min</string>
 </resources>

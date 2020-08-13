@@ -8,6 +8,7 @@ import com.toggl.common.feature.navigation.ExternalLocation
 import com.toggl.common.feature.navigation.Route
 import com.toggl.common.feature.navigation.backStackOf
 import com.toggl.common.feature.navigation.pop
+import com.toggl.common.feature.services.calendar.Calendar
 import com.toggl.common.feature.services.calendar.CalendarEvent
 import com.toggl.models.domain.Client
 import com.toggl.models.domain.Project
@@ -18,8 +19,10 @@ import com.toggl.models.domain.User
 import com.toggl.models.domain.UserPreferences
 import com.toggl.models.domain.Workspace
 import com.toggl.onboarding.common.domain.OnboardingState
+import com.toggl.reports.domain.ReportsState
 import com.toggl.settings.domain.SettingsState
 import com.toggl.timer.common.domain.TimerState
+import com.toggl.timer.suggestions.domain.Suggestion
 
 data class AppState(
     val user: Loadable<User> = Loadable.Uninitialized,
@@ -30,15 +33,18 @@ data class AppState(
     val clients: Map<Long, Client> = mapOf(),
     val tags: Map<Long, Tag> = mapOf(),
     val timeEntries: Map<Long, TimeEntry> = mapOf(),
+    val suggestions: List<Suggestion> = listOf(),
     val externalLocationToShow: ExternalLocation? = null,
     val backStack: BackStack = backStackOf(Route.Timer),
     val calendarPermissionWasGranted: Boolean = false,
     val shouldRequestCalendarPermission: Boolean = false,
     val calendarEvents: Map<String, CalendarEvent> = mapOf(),
+    val calendars: Map<String, Calendar> = mapOf(),
     val onboardingLocalState: OnboardingState.LocalState = OnboardingState.LocalState(),
     val timerLocalState: TimerState.LocalState = TimerState.LocalState(),
     val calendarLocalState: CalendarState.LocalState = CalendarState.LocalState(),
-    val settingsLocalState: SettingsState.LocalState = SettingsState.LocalState()
+    val settingsLocalState: SettingsState.LocalState = SettingsState.LocalState(),
+    val reportsLocalState: ReportsState.LocalState = ReportsState.LocalState()
 ) : BackStackAwareState<AppState> {
     override fun popBackStack(): AppState =
         copy(backStack = backStack.pop())

@@ -107,4 +107,10 @@
     <string name="account_is_locked">メールまたはパスワードが間違っています。アカウントがロックされました。アカウントの持ち主に通知されました。</string>
     <string name="ok">OK</string>
     <string name="cancel">キャンセル</string>
+    <string name="email_is_already_used">入力されたメールアドレスのユーザーはすでに存在します</string>
+    <string name="generic_signup_error">登録に失敗しました\nもう一度お試しください</string>
+    <string name="no_project">プロジェクトなし</string>
+    <string name="unit_second">秒</string>
+    <string name="unit_hour">時間</string>
+    <string name="unit_minute">分</string>
 </resources>
