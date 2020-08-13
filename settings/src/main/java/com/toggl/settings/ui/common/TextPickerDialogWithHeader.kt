@@ -1,36 +1,36 @@
 package com.toggl.settings.ui.common
 
-import androidx.compose.Composable
-import androidx.compose.collectAsState
-import androidx.compose.getValue
-import androidx.compose.setValue
-import androidx.compose.state
-import androidx.ui.core.Alignment
-import androidx.ui.core.Modifier
-import androidx.ui.foundation.Box
-import androidx.ui.foundation.Dialog
-import androidx.ui.foundation.Text
-import androidx.ui.foundation.TextField
-import androidx.ui.input.TextFieldValue
-import androidx.ui.layout.Column
-import androidx.ui.layout.Row
-import androidx.ui.layout.fillMaxWidth
-import androidx.ui.layout.padding
-import androidx.ui.layout.preferredHeight
-import androidx.ui.material.MaterialTheme
-import androidx.ui.material.TextButton
-import androidx.ui.res.stringResource
+import androidx.compose.foundation.Box
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.preferredHeight
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.TextButton
+import androidx.compose.material.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.state
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.window.Dialog
 import androidx.ui.tooling.preview.Preview
+import com.toggl.common.feature.compose.ThemedPreview
+import com.toggl.common.feature.compose.theme.Shapes
+import com.toggl.common.feature.compose.theme.TogglTheme
+import com.toggl.common.feature.compose.theme.grid_3
+import com.toggl.common.feature.compose.theme.grid_8
 import com.toggl.models.domain.SettingsType
 import com.toggl.models.domain.User
 import com.toggl.models.validation.ApiToken
 import com.toggl.models.validation.Email
 import com.toggl.settings.R
-import com.toggl.settings.compose.ThemedPreview
-import com.toggl.settings.compose.theme.Shapes
-import com.toggl.settings.compose.theme.TogglTheme
-import com.toggl.settings.compose.theme.grid_3
-import com.toggl.settings.compose.theme.grid_8
 import com.toggl.settings.domain.SettingsAction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -76,20 +76,24 @@ internal fun TextPickerContent(
     }.collectAsState(initial = "")
 
     var textState by state { TextFieldValue(initialText) }
-    Column(modifier = Modifier.padding(grid_3) + Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier.padding(grid_3).fillMaxWidth()) {
+
+        val label = stringResource(
+            when (setting) {
+                SettingsType.TextSetting.Name -> R.string.name
+                SettingsType.TextSetting.Email -> R.string.email
+            }
+        )
+
         Text(
-            text = stringResource(
-                when (setting) {
-                    SettingsType.TextSetting.Name -> R.string.name
-                    SettingsType.TextSetting.Email -> R.string.email
-                }
-            ),
+            text = label,
             style = MaterialTheme.typography.h6,
             color = MaterialTheme.colors.onBackground,
             modifier = Modifier.preferredHeight(grid_8)
         )
         TextField(
             value = textState,
+            label = { Text(text = label) },
             onValueChange = { textState = it },
             modifier = Modifier.fillMaxWidth()
         )
