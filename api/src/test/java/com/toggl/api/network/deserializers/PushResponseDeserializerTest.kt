@@ -49,6 +49,18 @@ class PushResponseDeserializerTest {
         }
     }
 
+    @Test
+    fun `the push response is properly deserialized when it contains errors`() {
+        val moshi = Moshi.Builder().add(OffsetDateTimeAdapter()).build()
+        val deserializedPushResponse = PushResponseJsonAdapter(moshi).fromJson(pushResponseWithErrorsJson)!!
+        with(deserializedPushResponse) {
+            clients shouldHaveSize 3
+            clients[0].payload!!.success.shouldBeFalse()
+            clients[1].payload!!.success.shouldBeFalse()
+            clients[2].payload!!.success.shouldBeFalse()
+        }
+    }
+
     companion object {
         @Language("JSON")
         private const val pushResponseJson = """
@@ -246,6 +258,52 @@ class PushResponseDeserializerTest {
                     "duration_format": "classic"
                 }
             }
+        }"""
+
+        @Language("JSON")
+        private const val pushResponseWithErrorsJson = """
+        {
+            "clients": [
+                {
+                    "type": "create",
+                    "meta": {"client_assigned_id": "-123"},
+                    "payload": {
+                        "success": false,
+                        "result": {
+                            "error_message": {
+                                "code": 123,
+                                "default_message": "Creating failed."
+                            }
+                        }
+                    }
+                },
+                {
+                    "type": "update",
+                    "meta": {"id": "456"},
+                    "payload": {
+                        "success": false,
+                        "result": {
+                            "error_message": {
+                                "code": 456,
+                                "default_message": "Updating failed."
+                            }
+                        }
+                    }
+                },
+                {
+                    "type": "delete",
+                    "meta": {"id": "789"},
+                    "payload": {
+                        "success": false,
+                        "result": {
+                            "error_message": {
+                                "code": 789,
+                                "default_message": "Deleting failed."
+                            }
+                        }
+                    }
+                }
+            ]
         }"""
     }
 }
