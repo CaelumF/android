@@ -137,7 +137,7 @@ class MockDatabaseInitializer @Inject constructor(
         userId = userId
     )
 
-    private fun ApiTag.toDatabaseModel() = DatabaseTag(
+    private fun ApiTag.toDatabaseModel() = DatabaseTag.from(
         id = id,
         serverId = id,
         name = name,
@@ -147,7 +147,7 @@ class MockDatabaseInitializer @Inject constructor(
     private fun ApiWorkspace.toDatabaseModel() = DatabaseWorkspace(
         id = id,
         serverId = id,
-        name = name,
+        name = StringSyncProperty.from(name),
         features = listOf(WorkspaceFeature.Pro)
     )
 

@@ -18,6 +18,7 @@ import com.toggl.database.models.DatabaseTask
 import com.toggl.database.models.DatabaseTimeEntryWithTags
 import com.toggl.database.models.DatabaseUser
 import com.toggl.database.models.DatabaseWorkspace
+import com.toggl.database.properties.StringSyncProperty
 import com.toggl.database.properties.updateWith
 import com.toggl.models.domain.Client
 import com.toggl.models.domain.DateFormat
@@ -113,7 +114,7 @@ class Repository(
     }
 
     override suspend fun createTag(tag: Tag): Tag {
-        val databaseTag = DatabaseTag(
+        val databaseTag = DatabaseTag.from(
             name = tag.name,
             serverId = null,
             workspaceId = tag.workspaceId
@@ -212,7 +213,7 @@ class Repository(
             DatabaseWorkspace(
                 id = user.defaultWorkspaceId,
                 serverId = user.defaultWorkspaceId,
-                name = "Auto created workspace",
+                name = StringSyncProperty.from("Auto created workspace"),
                 features = listOf(WorkspaceFeature.Pro)
             )
         )

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "06d90cd6960917bbf9c0b2cef0650869",
+    "identityHash": "a4394db37b94c6a47f052401fed8f89a",
     "entities": [
       {
         "tableName": "time_entries",
@@ -427,7 +427,7 @@
       },
       {
         "tableName": "workspaces",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `serverId` INTEGER, `name` TEXT NOT NULL, `features` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `serverId` INTEGER, `features` TEXT NOT NULL, `name_current` TEXT NOT NULL, `name_backup` TEXT NOT NULL, `name_status` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -442,14 +442,26 @@
             "notNull": false
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
+            "fieldPath": "features",
+            "columnName": "features",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "features",
-            "columnName": "features",
+            "fieldPath": "name.current",
+            "columnName": "name_current",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name.backup",
+            "columnName": "name_backup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name.status",
+            "columnName": "name_status",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -548,7 +560,7 @@
       },
       {
         "tableName": "tags",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `serverId` INTEGER, `name` TEXT NOT NULL, `workspaceId` INTEGER NOT NULL, FOREIGN KEY(`workspaceId`) REFERENCES `workspaces`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `serverId` INTEGER, `name_current` TEXT NOT NULL, `name_backup` TEXT NOT NULL, `name_status` TEXT NOT NULL, `workspaceId_current` INTEGER NOT NULL, `workspaceId_backup` INTEGER NOT NULL, `workspaceId_status` TEXT NOT NULL, FOREIGN KEY(`workspaceId_current`) REFERENCES `workspaces`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -563,15 +575,39 @@
             "notNull": false
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
+            "fieldPath": "name.current",
+            "columnName": "name_current",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "workspaceId",
-            "columnName": "workspaceId",
+            "fieldPath": "name.backup",
+            "columnName": "name_backup",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name.status",
+            "columnName": "name_status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "workspaceId.current",
+            "columnName": "workspaceId_current",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "workspaceId.backup",
+            "columnName": "workspaceId_backup",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "workspaceId.status",
+            "columnName": "workspaceId_status",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -583,12 +619,12 @@
         },
         "indices": [
           {
-            "name": "index_tags_workspaceId",
+            "name": "index_tags_workspaceId_current",
             "unique": false,
             "columnNames": [
-              "workspaceId"
+              "workspaceId_current"
             ],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_tags_workspaceId` ON `${TABLE_NAME}` (`workspaceId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_tags_workspaceId_current` ON `${TABLE_NAME}` (`workspaceId_current`)"
           }
         ],
         "foreignKeys": [
@@ -597,7 +633,7 @@
             "onDelete": "NO ACTION",
             "onUpdate": "NO ACTION",
             "columns": [
-              "workspaceId"
+              "workspaceId_current"
             ],
             "referencedColumns": [
               "id"
@@ -1077,7 +1113,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '06d90cd6960917bbf9c0b2cef0650869')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a4394db37b94c6a47f052401fed8f89a')"
     ]
   }
 }
