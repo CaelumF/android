@@ -37,7 +37,7 @@ class RouterTests : CoroutineTest() {
 
     private val router = Router(deepLinks)
     private val navController = mockk<NavController> {
-        every { navigate(any<Uri>()) } returns Unit
+        every { navigate(any<Uri>(), any()) } returns Unit
         every { popBackStack() } returns true
     }
 
@@ -52,8 +52,8 @@ class RouterTests : CoroutineTest() {
         router.processNewBackStack(stack, navController)
 
         verifyOrder {
-            navController.navigate(deepLinks.startEditDialog)
-            navController.navigate(deepLinks.projectDialog)
+            navController.navigate(deepLinks.startEditDialog, any())
+            navController.navigate(deepLinks.projectDialog, any())
         }
     }
 
@@ -72,8 +72,8 @@ class RouterTests : CoroutineTest() {
         router.processNewBackStack(newStack, navController)
 
         verifyOrder {
-            navController.navigate(deepLinks.startEditDialog)
-            navController.navigate(deepLinks.projectDialog)
+            navController.navigate(deepLinks.startEditDialog, any())
+            navController.navigate(deepLinks.projectDialog, any())
             navController.popBackStack()
         }
     }
@@ -94,8 +94,8 @@ class RouterTests : CoroutineTest() {
         router.processNewBackStack(newStack, navController)
 
         verifyOrder {
-            navController.navigate(deepLinks.startEditDialog)
-            navController.navigate(deepLinks.projectDialog)
+            navController.navigate(deepLinks.startEditDialog, any())
+            navController.navigate(deepLinks.projectDialog, any())
         }
     }
 
@@ -110,7 +110,7 @@ class RouterTests : CoroutineTest() {
 
         verifyOrder {
             navController.popBackStack()
-            navController.navigate(deepLinks.login)
+            navController.navigate(deepLinks.login, any())
         }
     }
 
@@ -128,8 +128,8 @@ class RouterTests : CoroutineTest() {
         router.processNewBackStack(newStack, navController)
 
         verifyOrder {
-            navController.navigate(deepLinks.startEditDialog)
-            navController.navigate(deepLinks.projectDialog)
+            navController.navigate(deepLinks.startEditDialog, any())
+            navController.navigate(deepLinks.projectDialog, any())
             navController.popBackStack()
             navController.popBackStack()
         }

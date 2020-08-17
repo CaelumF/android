@@ -1,7 +1,10 @@
 package com.toggl.common.feature.navigation
 
 import android.net.Uri
+import androidx.navigation.NavOptions
+import androidx.navigation.navOptions
 import com.toggl.common.DeepLinkUrls
+import com.toggl.common.feature.R
 import com.toggl.common.feature.models.SelectedCalendarItem
 import com.toggl.models.domain.EditableProject
 import com.toggl.models.domain.EditableTimeEntry
@@ -56,8 +59,63 @@ fun Route.isSameTypeAs(otherRoute: Route) =
         is Route.SettingsTextPicker -> otherRoute is Route.SettingsTextPicker
     }
 
-fun Route.deepLink(deepLinks: DeepLinkUrls): Uri {
-    return when (this) {
+private val defaultOptions = navOptions {
+    anim {
+        enter = R.anim.fragment_open_enter
+        exit = R.anim.fragment_open_exit
+        popEnter = R.anim.fragment_close_enter
+        popExit = R.anim.fragment_close_exit
+    }
+}
+
+private val reportsOptions = navOptions {
+    anim {
+        enter = R.anim.fragment_open_enter
+        exit = R.anim.fragment_open_exit
+        popEnter = R.anim.fragment_open_enter
+        popExit = R.anim.fragment_open_exit
+    }
+}
+
+private val calendarOptions = navOptions {
+    anim {
+        popEnter = R.anim.fragment_open_enter
+        popExit = R.anim.fragment_open_exit
+    }
+}
+
+private val rootFragmentOptions = navOptions {
+    launchSingleTop = true
+    anim {
+        enter = R.anim.fragment_open_enter
+        exit = R.anim.fragment_open_exit
+        popEnter = R.anim.fragment_close_enter
+        popExit = R.anim.fragment_close_exit
+    }
+}
+
+fun Route.navigationOptions(): NavOptions? =
+    when (this) {
+        Route.Welcome -> rootFragmentOptions
+        Route.Login -> defaultOptions
+        Route.SignUp -> defaultOptions
+        Route.PasswordReset -> defaultOptions
+        is Route.Project -> null
+        Route.Timer -> rootFragmentOptions
+        is Route.StartEdit -> null
+        Route.Reports -> reportsOptions
+        Route.Calendar -> calendarOptions
+        is Route.ContextualMenu -> null
+        Route.Settings -> defaultOptions
+        is Route.SettingsDialog -> null
+        Route.CalendarSettings -> defaultOptions
+        Route.Feedback -> defaultOptions
+        Route.About -> defaultOptions
+        Route.Licences -> defaultOptions
+    }
+
+fun Route.deepLink(deepLinks: DeepLinkUrls): Uri =
+    when (this) {
         Route.Welcome -> deepLinks.welcome
         Route.Login -> deepLinks.login
         Route.SignUp -> deepLinks.signUp
@@ -76,4 +134,3 @@ fun Route.deepLink(deepLinks: DeepLinkUrls): Uri {
         Route.Licences -> deepLinks.licences
         is Route.SettingsTextPicker -> deepLinks.textPickerDialog
     }
-}
