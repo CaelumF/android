@@ -6,10 +6,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class Router @Inject constructor(private val deepLinkUrls: DeepLinkUrls) {
+class Router @Inject constructor(
+    private val deepLinkUrls: DeepLinkUrls
+) {
     private var currentBackStack: BackStack = backStackOf(Route.Timer)
 
-    @Suppress("UNCHECKED_CAST")
     fun processNewBackStack(
         newBackStack: BackStack,
         navController: NavController
@@ -25,15 +26,17 @@ class Router @Inject constructor(private val deepLinkUrls: DeepLinkUrls) {
             val numberOfValidOperations = oldBackStack.size - neededPopOperations.size
 
             for (i in numberOfValidOperations until newBackStack.size) {
-                val deepLink = newBackStack[i].deepLink(deepLinkUrls)
-                val route = BackStackOperation.Push(deepLink)
-                yield(route)
+                val newRoute = newBackStack[i]
+                val deepLink = newRoute.deepLink(deepLinkUrls)
+                val navOptions = newRoute.navigationOptions()
+                val operation = BackStackOperation.Push(deepLink, navOptions)
+                yield(operation)
             }
         }
 
         for (operation in operations) {
             when (operation) {
-                is BackStackOperation.Push -> navController.navigate(operation.deepLink)
+                is BackStackOperation.Push -> navController.navigate(operation.deepLink, operation.navOptions)
                 BackStackOperation.Pop -> navController.popBackStack()
             }
         }
