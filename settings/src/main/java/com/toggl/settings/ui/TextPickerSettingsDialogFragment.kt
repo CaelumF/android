@@ -13,6 +13,7 @@ import com.toggl.settings.ui.common.TextPickerDialogWithHeader
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 
 @AndroidEntryPoint
 class TextPickerSettingsDialogFragment : DialogFragment() {
@@ -25,7 +26,7 @@ class TextPickerSettingsDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? = createComposeFullscreenView {
         TextPickerDialogWithHeader(
-            setting = store.state.map { it.backStack.getRouteParam<SettingsType.TextSetting>() ?: throw IllegalStateException() },
+            setting = store.state.mapNotNull { it.backStack.getRouteParam<SettingsType.TextSetting>() },
             user = store.state.map { it.user },
             dispatcher = store::dispatch
         )
