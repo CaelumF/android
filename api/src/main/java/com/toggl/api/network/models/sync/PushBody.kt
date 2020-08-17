@@ -7,9 +7,9 @@ import com.toggl.api.models.SyncApiPreferences
 import com.toggl.api.models.SyncApiProject
 import com.toggl.api.models.SyncApiTag
 import com.toggl.api.models.SyncApiTask
+import com.toggl.api.models.SyncApiTimeEntry
 import com.toggl.api.models.SyncApiUser
 import com.toggl.api.models.SyncApiWorkspace
-import com.toggl.api.models.SyncApiTimeEntry
 
 @JsonClass(generateAdapter = true)
 data class PushBody(
@@ -26,10 +26,10 @@ data class PushBody(
 
 fun PushBody.isEmpty() =
     (timeEntries == null || timeEntries.none()) &&
-    (tags == null || tags.none())  &&
-    (projects == null || projects.none())  &&
-    (clients == null || clients.none())  &&
-    (tasks == null || tasks.none())  &&
-    (workspaces == null || workspaces.none())  &&
-    preferences == null  &&
-    user == null
+        (tags == null || tags.none()) &&
+        (projects == null || projects.none()) &&
+        (clients == null || clients.none()) &&
+        (tasks == null || tasks.none()) &&
+        (workspaces == null || workspaces.none()) &&
+        preferences == null &&
+        user == null

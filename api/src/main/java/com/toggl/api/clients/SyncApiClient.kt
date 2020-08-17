@@ -7,5 +7,5 @@ import java.util.UUID
 
 interface SyncApiClient {
     suspend fun pull(since: OffsetDateTime? = null): PullResponse
-    suspend fun push(uuid: UUID, ): PushResponse
+    suspend fun push(uuid: UUID): PushResponse
 }

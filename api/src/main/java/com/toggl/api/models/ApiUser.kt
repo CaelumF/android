@@ -31,4 +31,3 @@ data class SyncApiUser(
     val email: String?,
     val fullname: String?
 )
-

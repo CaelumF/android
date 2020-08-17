@@ -3,6 +3,7 @@ package com.toggl.api.network.deserializers
 import com.squareup.moshi.Moshi
 import com.toggl.api.network.adapters.OffsetDateTimeAdapter
 import com.toggl.api.network.models.sync.PushResponseJsonAdapter
+import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldHaveSize
 import org.intellij.lang.annotations.Language
@@ -63,7 +64,8 @@ class PushResponseDeserializerTest {
 
     companion object {
         @Language("JSON")
-        private const val pushResponseJson = """
+        private const val pushResponseJson =
+            """
         {
             "clients": [
                 {
@@ -261,7 +263,8 @@ class PushResponseDeserializerTest {
         }"""
 
         @Language("JSON")
-        private const val pushResponseWithErrorsJson = """
+        private const val pushResponseWithErrorsJson =
+            """
         {
             "clients": [
                 {

@@ -21,4 +21,3 @@ data class SyncApiClient(
     @Json(name = "wid")
     val workspaceId: Long?,
 )
-

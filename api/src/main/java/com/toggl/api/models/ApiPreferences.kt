@@ -20,7 +20,6 @@ data class ApiPreferences(
     val collapseTimeEntries: Boolean
 )
 
-
 @JsonClass(generateAdapter = true)
 data class SyncApiPreferences(
     @Json(name = "timeofday_format")
