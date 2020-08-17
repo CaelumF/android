@@ -26,7 +26,7 @@ class TextPickerSettingsDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? = createComposeFullscreenView {
         TextPickerDialogWithHeader(
-            setting = store.state.mapNotNull { it.backStack.getRouteParam<SettingsType.TextSetting>() },
+            settingFlow = store.state.mapNotNull { it.backStack.getRouteParam<SettingsType.TextSetting>() },
             user = store.state.map { it.user },
             dispatcher = store::dispatch
         )

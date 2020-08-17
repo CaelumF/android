@@ -112,6 +112,7 @@ fun Route.navigationOptions(): NavOptions? =
         Route.Feedback -> defaultOptions
         Route.About -> defaultOptions
         Route.Licences -> defaultOptions
+        is Route.SettingsTextPicker -> null
     }
 
 fun Route.deepLink(deepLinks: DeepLinkUrls): Uri =

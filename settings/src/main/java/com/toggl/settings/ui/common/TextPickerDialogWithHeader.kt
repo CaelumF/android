@@ -6,10 +6,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextButton
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,29 +24,35 @@ import com.toggl.common.feature.compose.ThemedPreview
 import com.toggl.common.feature.compose.theme.Shapes
 import com.toggl.common.feature.compose.theme.TogglTheme
 import com.toggl.common.feature.compose.theme.grid_3
-import com.toggl.common.feature.compose.theme.grid_8
 import com.toggl.models.domain.SettingsType
 import com.toggl.models.domain.User
-import com.toggl.models.validation.ApiToken
 import com.toggl.models.validation.Email
 import com.toggl.settings.R
 import com.toggl.settings.domain.SettingsAction
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
 @Composable
 internal fun TextPickerDialogWithHeader(
-    setting: Flow<SettingsType.TextSetting>,
+    settingFlow: Flow<SettingsType.TextSetting>,
     user: Flow<User>,
     dispatcher: (SettingsAction) -> Unit = {}
 ) {
     Dialog(
         onCloseRequest = { dispatcher(SettingsAction.FinishedEditingSetting) }
     ) {
+
+        val setting by settingFlow.collectAsState(initial = SettingsType.TextSetting.Name)
+        val initialValue by user.map {
+            when (setting) {
+                SettingsType.TextSetting.Name -> it.name
+                SettingsType.TextSetting.Email -> it.email.toString()
+            }
+        }.collectAsState(initial = "")
+
         TogglTheme {
             Box(shape = Shapes.medium, backgroundColor = MaterialTheme.colors.background) {
-                TextPickerContent(setting, user, dispatcher)
+                TextPickerContent(setting, initialValue, dispatcher)
             }
         }
     }
@@ -55,12 +60,10 @@ internal fun TextPickerDialogWithHeader(
 
 @Composable
 internal fun TextPickerContent(
-    settingFlow: Flow<SettingsType.TextSetting>,
-    user: Flow<User>,
+    setting: SettingsType.TextSetting,
+    initialValue: String,
     dispatcher: (SettingsAction) -> Unit = {}
 ) {
-    val setting by settingFlow.collectAsState(initial = SettingsType.TextSetting.Name)
-
     val validateText: (String) -> Boolean = { text ->
         when (setting) {
             SettingsType.TextSetting.Name -> text.isNotBlank()
@@ -68,14 +71,7 @@ internal fun TextPickerContent(
         }
     }
 
-    val initialText by user.map {
-        when (setting) {
-            SettingsType.TextSetting.Name -> it.name
-            SettingsType.TextSetting.Email -> it.email.toString()
-        }
-    }.collectAsState(initial = "")
-
-    var textState by state { TextFieldValue(initialText) }
+    var textState by state { TextFieldValue(initialValue) }
     Column(modifier = Modifier.padding(grid_3).fillMaxWidth()) {
 
         val label = stringResource(
@@ -85,13 +81,7 @@ internal fun TextPickerContent(
             }
         )
 
-        Text(
-            text = label,
-            style = MaterialTheme.typography.h6,
-            color = MaterialTheme.colors.onBackground,
-            modifier = Modifier.preferredHeight(grid_8)
-        )
-        TextField(
+        OutlinedTextField(
             value = textState,
             label = { Text(text = label) },
             onValueChange = { textState = it },
@@ -106,6 +96,7 @@ internal fun TextPickerContent(
                 onClick = {
                     if (validateText(textState.text)) {
                         dispatcher(SettingsAction.UpdateName(textState.text))
+                        dispatcher(SettingsAction.FinishedEditingSetting)
                     }
                 }
             ) {
@@ -115,21 +106,13 @@ internal fun TextPickerContent(
     }
 }
 
-private val validUser = User(
-    id = 0,
-    apiToken = ApiToken.from("12345678901234567890123456789012") as ApiToken.Valid,
-    defaultWorkspaceId = 1,
-    email = Email.from("valid.mail@toggl.com") as Email.Valid,
-    name = "User name"
-)
-
 @Preview("Text picker light theme")
 @Composable
 fun PreviewTextPickerDialogWithHeaderLight() {
     ThemedPreview {
         TextPickerContent(
-            flowOf(SettingsType.TextSetting.Email),
-            flowOf(validUser)
+            SettingsType.TextSetting.Name,
+            "somemail@mail.com"
         ) { }
     }
 }
@@ -139,8 +122,8 @@ fun PreviewTextPickerDialogWithHeaderLight() {
 fun PreviewTextPickerDialogWithHeaderDark() {
     ThemedPreview(darkTheme = true) {
         TextPickerContent(
-            flowOf(SettingsType.TextSetting.Name),
-            flowOf(validUser)
+            SettingsType.TextSetting.Name,
+            "Name"
         ) { }
     }
 }
