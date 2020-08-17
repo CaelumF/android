@@ -14,7 +14,7 @@ data class PushAction<out T>(
 data class MetaInfo(
     val id: Long?,
     @Json(name = "client_assigned_id")
-    val clientAssignedId: Long?,
+    val clientAssignedId: String?,
     @Json(name = "workspace_id")
     val workspaceId: Long?,
     @Json(name = "project_id")
