@@ -47,10 +47,10 @@ class SettingsSelectorTests : CoroutineTest() {
         sections.size shouldBe SettingsStructureBlueprint.mainSections.size
 
         with(sections[0]) {
-            verify<SettingsViewModel.ListChoice>(0, SettingsType.Name) {
+            verify<SettingsViewModel.ListChoice>(0, SettingsType.TextSetting.Name) {
                 // TODO
             }
-            verify<SettingsViewModel.ListChoice>(1, SettingsType.Email) {
+            verify<SettingsViewModel.ListChoice>(1, SettingsType.TextSetting.Email) {
                 // TODO
             }
             verify<SettingsViewModel.ListChoice>(2, SettingsType.Workspace) {
