@@ -165,6 +165,7 @@ object Libs {
         object Moshi {
             private const val version = "1.9.3"
             const val core = "com.squareup.moshi:moshi:$version"
+            const val adapters =  "com.squareup.moshi:moshi-adapters:$version"
             const val codegen = "com.squareup.moshi:moshi-kotlin-codegen:$version"
         }
     }

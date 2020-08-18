@@ -1,9 +1,12 @@
 package com.toggl.api.network.deserializers
 
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.toggl.api.network.adapters.OffsetDateTimeAdapter
+import com.toggl.api.network.models.sync.ActionResult
+import com.toggl.api.network.models.sync.ErrorResult
 import com.toggl.api.network.models.sync.PushResponseJsonAdapter
-import io.kotest.matchers.booleans.shouldBeFalse
+import com.toggl.api.network.models.sync.SuccessResult
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.collections.shouldHaveSize
 import org.intellij.lang.annotations.Language
@@ -12,41 +15,37 @@ import org.junit.jupiter.api.Test
 class PushResponseDeserializerTest {
     @Test
     fun `the push response is properly serialized`() {
-        val moshi = Moshi.Builder().add(OffsetDateTimeAdapter()).build()
+        val moshi = Moshi.Builder()
+            .add(OffsetDateTimeAdapter())
+            .add(
+                PolymorphicJsonAdapterFactory.of(ActionResult::class.java, "success")
+                    .withSubtype(SuccessResult::class.java, "true")
+                    .withSubtype(ErrorResult::class.java, "false")
+            ).build()
+
         val deserializedPushResponse = PushResponseJsonAdapter(moshi).fromJson(pushResponseJson)!!
         with(deserializedPushResponse) {
 
             clients shouldHaveSize 3
-            clients[0].payload!!.success.shouldBeTrue()
-            clients[1].payload!!.success.shouldBeTrue()
-            clients[2].payload!!.success.shouldBeTrue()
+            clients.all { it.payload is SuccessResult }.shouldBeTrue()
 
             projects shouldHaveSize 3
-            projects[0].payload!!.success.shouldBeTrue()
-            projects[1].payload!!.success.shouldBeTrue()
-            projects[2].payload!!.success.shouldBeTrue()
+            projects.all { it.payload is SuccessResult }.shouldBeTrue()
 
             tags shouldHaveSize 3
-            tags[0].payload!!.success.shouldBeTrue()
-            tags[1].payload!!.success.shouldBeTrue()
-            tags[2].payload!!.success.shouldBeTrue()
+            tags.all { it.payload is SuccessResult }.shouldBeTrue()
 
             tasks shouldHaveSize 3
-            tasks[0].payload!!.success.shouldBeTrue()
-            tasks[1].payload!!.success.shouldBeTrue()
-            tasks[2].payload!!.success.shouldBeTrue()
+            tasks.all { it.payload is SuccessResult }.shouldBeTrue()
 
             timeEntries shouldHaveSize 3
-            timeEntries[0].payload!!.success.shouldBeTrue()
-            timeEntries[1].payload!!.success.shouldBeTrue()
-            timeEntries[2].payload!!.success.shouldBeTrue()
+            timeEntries.all { it.payload is SuccessResult }.shouldBeTrue()
 
             workspaces shouldHaveSize 2
-            workspaces[0].payload!!.success.shouldBeTrue()
-            workspaces[1].payload!!.success.shouldBeTrue()
+            workspaces.all { it.payload is SuccessResult }.shouldBeTrue()
 
-            user.success.shouldBeTrue()
-            preferences.success.shouldBeTrue()
+            (user is SuccessResult).shouldBeTrue()
+            (preferences is SuccessResult).shouldBeTrue()
         }
     }
 
@@ -56,9 +55,7 @@ class PushResponseDeserializerTest {
         val deserializedPushResponse = PushResponseJsonAdapter(moshi).fromJson(pushResponseWithErrorsJson)!!
         with(deserializedPushResponse) {
             clients shouldHaveSize 3
-            clients[0].payload!!.success.shouldBeFalse()
-            clients[1].payload!!.success.shouldBeFalse()
-            clients[2].payload!!.success.shouldBeFalse()
+            clients.all { it.payload is ErrorResult }.shouldBeTrue()
         }
     }
 

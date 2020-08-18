@@ -51,6 +51,7 @@ dependencies {
     api Libs.Square.Retrofit.retrofit
     api Libs.Square.Retrofit.moshiConverter
     api Libs.Square.Moshi.core
+    implementation Libs.Square.Moshi.adapters
     kapt Libs.Square.Moshi.codegen
     implementation Libs.Hilt.hilt
     kapt Libs.Hilt.compiler
