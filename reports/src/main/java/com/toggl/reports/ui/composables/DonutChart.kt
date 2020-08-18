@@ -2,6 +2,10 @@ package com.toggl.reports.ui.composables
 
 import android.graphics.Paint
 import android.graphics.Rect
+import androidx.compose.animation.core.FloatPropKey
+import androidx.compose.animation.core.transitionDefinition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.transition
 import androidx.compose.foundation.Box
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ContentGravity
@@ -18,8 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.drawCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.toRadians
 import com.toggl.common.extensions.adjustForUserTheme
 import com.toggl.common.feature.compose.theme.grid_3
@@ -28,56 +32,94 @@ import com.toggl.reports.domain.DonutSlice
 import kotlin.math.cos
 import kotlin.math.sin
 
+private const val arcAngleCorrection = 90F
+private const val labelAngleCorrection = 270F
 private const val innerCircleFactor = 0.6F
-private const val minimumSegmentPercentageToShowLabel = 0.04F
+private const val minimumSegmentPercentageToShowLabel = 4F
 private const val sliceLabelCenterRadius = (1 + innerCircleFactor) / 2
+private const val start = "start"
+private const val end = "end"
 
 @Composable
-fun DonutChart(segments: List<DonutSlice>) {
+fun DonutChart(slices: List<DonutSlice>) {
 
     Column {
         GroupHeader(text = stringResource(R.string.projects))
 
         Box(gravity = ContentGravity.Center) {
-            val innerCircleColor = MaterialTheme.colors.background
-            val canvasModifier = Modifier.fillMaxWidth().aspectRatio(1F).padding(grid_3)
+            val context = ContextAmbient.current
+            val bounds = remember { Rect() }
+            val textPaint = remember {
+                Paint().apply {
+                    textSize = context.resources.getDimension(R.dimen.reports_donut_chat_percentage)
+                    color = Color.White.toArgb()
+                }
+            }
+
+            val angleProperty = remember { FloatPropKey() }
+            val donutTransitionDefinition = remember {
+                transitionDefinition<String> {
+                    state(start) { this[angleProperty] = 0f }
+                    state(end) { this[angleProperty] = 360f }
+
+                    transition(start to end) { angleProperty using tween() }
+                }
+            }
 
             val isInDarkTheme = isSystemInDarkTheme()
-            val bounds = remember { Rect() }
-            val textPaint = remember { Paint() }
-            textPaint.textSize = 11.sp.value
-            textPaint.color = MaterialTheme.colors.surface.toArgb()
+            val transitionState = transition(definition = donutTransitionDefinition, initState = start, toState = end)
+            val backgroundColor = MaterialTheme.colors.background
+            val surfaceColor = MaterialTheme.colors.surface
 
-            Canvas(modifier = canvasModifier) {
-                val innerCircleRadius = this.size.width * innerCircleFactor / 2
+            Canvas(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1F)
+                    .padding(grid_3)
+            ) {
+                val transitionAngle = transitionState[angleProperty]
 
-                for (segment in segments) {
+                drawCircle(surfaceColor, size.width / 2)
+
+                for (slice in slices) {
+                    val sweepAngleDiff = slice.endAngle - transitionAngle
+                    val sliceIsTheLastInAnimation = sweepAngleDiff >= 0
+                    val actualSweepAngle =
+                        if (!sliceIsTheLastInAnimation) slice.sweepAngle
+                        else slice.sweepAngle - sweepAngleDiff
 
                     drawArc(
-                        Color(segment.color.adjustForUserTheme(isInDarkTheme)),
-                        segment.startAngle,
-                        segment.sweepAngle,
+                        Color(slice.color.adjustForUserTheme(isInDarkTheme)),
+                        slice.startAngle - arcAngleCorrection,
+                        actualSweepAngle,
                         true
                     )
 
-                    if (segment.percentage < minimumSegmentPercentageToShowLabel)
-                        continue
+                    if (sliceIsTheLastInAnimation)
+                        break
+                }
 
-                    val labelAngle = (segment.startAngle + segment.sweepAngle / 2).toRadians()
-
+                for (slice in slices.filterNot { it.isTooSmallToShowLabel() }) {
+                    val text = String.format("%.2f%%", slice.percentage)
+                    val labelAngle = (labelAngleCorrection + slice.startAngle + slice.sweepAngle / 2).toRadians()
                     val x = center.x * (1 + sliceLabelCenterRadius * cos(labelAngle))
                     val y = center.y * (1 + sliceLabelCenterRadius * sin(labelAngle))
 
-                    val text = String.format("%.2f%%", segment.percentage)
                     drawCanvas { canvas, _ ->
                         textPaint.getTextBounds(text, 0, text.length, bounds)
+                        val offsetX = bounds.width() / 2
                         val offsetY = bounds.height() / 2
-                        canvas.nativeCanvas.drawText(text, x, y + offsetY, textPaint)
+                        canvas.nativeCanvas.drawText(text, x - offsetX, y + offsetY, textPaint)
                     }
                 }
 
-                drawCircle(innerCircleColor, innerCircleRadius)
+                drawCircle(backgroundColor, size.width * innerCircleFactor / 2)
             }
         }
     }
 }
+
+private val DonutSlice.endAngle get() = startAngle + sweepAngle
+
+private fun DonutSlice.isTooSmallToShowLabel() =
+    percentage < minimumSegmentPercentageToShowLabel
