@@ -14,5 +14,4 @@ fun emptyWelcomeState() = WelcomeState(
     WelcomeScreenConfiguration.Regular
 )
 
-fun createWelcomeReducer(
-) = WelcomeReducer()
+fun createWelcomeReducer() = WelcomeReducer()
