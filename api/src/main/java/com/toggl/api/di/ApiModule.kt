@@ -1,7 +1,6 @@
 package com.toggl.api.di
 
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
 import com.toggl.api.clients.ErrorHandlingProxyClient
 import com.toggl.api.clients.ReportsApiClient
 import com.toggl.api.clients.SyncApiClient
@@ -17,9 +16,6 @@ import com.toggl.api.network.adapters.OffsetDateTimeAdapter
 import com.toggl.api.network.interceptors.AuthInterceptor
 import com.toggl.api.network.interceptors.SyncInterceptor
 import com.toggl.api.network.interceptors.UserAgentInterceptor
-import com.toggl.api.network.models.sync.ActionResult
-import com.toggl.api.network.models.sync.ErrorResult
-import com.toggl.api.network.models.sync.SuccessResult
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -73,11 +69,6 @@ object ApiModule {
     fun moshi() = Moshi.Builder()
         .add(OffsetDateTimeAdapter())
         .add(DateAdapter())
-        .add(
-            PolymorphicJsonAdapterFactory.of(ActionResult::class.java, "success")
-                .withSubtype(SuccessResult::class.java, "true")
-                .withSubtype(ErrorResult::class.java, "false")
-        )
         .build()
 
     @Provides

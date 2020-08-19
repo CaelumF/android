@@ -1,9 +1,6 @@
 package com.toggl.api.network.deserializers
 
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
-import com.toggl.api.network.adapters.OffsetDateTimeAdapter
-import com.toggl.api.network.models.sync.ActionResult
 import com.toggl.api.network.models.sync.ErrorResult
 import com.toggl.api.network.models.sync.PushResponseJsonAdapter
 import com.toggl.api.network.models.sync.SuccessResult
@@ -13,16 +10,12 @@ import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 
 class PushResponseDeserializerTest {
+
+    private val moshi = Moshi.Builder()
+        .build()
+
     @Test
     fun `the push response is properly serialized`() {
-        val moshi = Moshi.Builder()
-            .add(OffsetDateTimeAdapter())
-            .add(
-                PolymorphicJsonAdapterFactory.of(ActionResult::class.java, "success")
-                    .withSubtype(SuccessResult::class.java, "true")
-                    .withSubtype(ErrorResult::class.java, "false")
-            ).build()
-
         val deserializedPushResponse = PushResponseJsonAdapter(moshi).fromJson(pushResponseJson)!!
         with(deserializedPushResponse) {
 
@@ -51,7 +44,6 @@ class PushResponseDeserializerTest {
 
     @Test
     fun `the push response is properly deserialized when it contains errors`() {
-        val moshi = Moshi.Builder().add(OffsetDateTimeAdapter()).build()
         val deserializedPushResponse = PushResponseJsonAdapter(moshi).fromJson(pushResponseWithErrorsJson)!!
         with(deserializedPushResponse) {
             clients shouldHaveSize 3
