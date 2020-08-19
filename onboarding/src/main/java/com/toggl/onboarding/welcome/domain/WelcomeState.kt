@@ -7,19 +7,22 @@ import com.toggl.onboarding.common.domain.OnboardingState
 
 data class WelcomeState(
     val user: Loadable<User>,
-    val backStack: BackStack
+    val backStack: BackStack,
+    val configuration: WelcomeScreenConfiguration
 ) {
     companion object {
         fun fromOnboardingState(onboardingState: OnboardingState) =
             WelcomeState(
                 onboardingState.user,
-                onboardingState.backStack
+                onboardingState.backStack,
+                onboardingState.localState.welcomeScreenConfiguration
             )
 
         fun toOnboardingState(onboardingState: OnboardingState, welcomeState: WelcomeState) =
             onboardingState.copy(
                 user = welcomeState.user,
-                backStack = welcomeState.backStack
+                backStack = welcomeState.backStack,
+                localState = onboardingState.localState.copy(welcomeScreenConfiguration = welcomeState.configuration)
             )
     }
 }

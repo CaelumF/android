@@ -18,5 +18,6 @@ class WelcomeReducer @Inject constructor() : Reducer<WelcomeState, WelcomeAction
                 state.mutateWithoutEffects { copy(backStack = backStack.push(Route.Login)) }
             WelcomeAction.ContinueWithGoogleButtonTapped -> TODO()
             WelcomeAction.LoginWithSsoButtonTapped -> TODO()
+            WelcomeAction.CancelButtonTapped -> state.mutateWithoutEffects { copy(configuration = WelcomeScreenConfiguration.Regular) }
         }
 }

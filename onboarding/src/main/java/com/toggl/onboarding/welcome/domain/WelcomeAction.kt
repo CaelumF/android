@@ -4,6 +4,7 @@ sealed class WelcomeAction {
     object ContinueWithEmailButtonTapped : WelcomeAction()
     object ContinueWithGoogleButtonTapped : WelcomeAction()
     object LoginWithSsoButtonTapped : WelcomeAction()
+    object CancelButtonTapped : WelcomeAction()
 
     companion object
 }
@@ -13,4 +14,5 @@ fun WelcomeAction.formatForDebug() =
         WelcomeAction.ContinueWithEmailButtonTapped -> "Continue with email button tapped"
         WelcomeAction.ContinueWithGoogleButtonTapped -> "Continue with google button tapped"
         WelcomeAction.LoginWithSsoButtonTapped -> "Continue with sso button tapped"
+        WelcomeAction.CancelButtonTapped -> "Cancel button tapped"
     }
