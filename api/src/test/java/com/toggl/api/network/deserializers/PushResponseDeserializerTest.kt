@@ -263,6 +263,23 @@ class PushResponseDeserializerTest {
         private const val pushResponseWithErrorsJson =
             """
         {
+            "projects": [],
+            "tasks": [],
+            "tags": [],
+            "workspaces": [],
+            "time_entries": [],
+            "user": {
+                "success": true,
+                "result": {
+                    "fullname": "User A"
+                }
+            },
+            "preferences": {
+                "success": true,
+                "result": {
+                    "duration_format": "classic"
+                }
+            },
             "clients": [
                 {
                     "type": "create",
