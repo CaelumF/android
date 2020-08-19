@@ -1,8 +1,7 @@
-package com.toggl.repository
+package com.toggl.sync
 
 import com.toggl.database.properties.LongSyncProperty
 import com.toggl.database.properties.PropertySyncStatus
-import com.toggl.repository.sync.resolve
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

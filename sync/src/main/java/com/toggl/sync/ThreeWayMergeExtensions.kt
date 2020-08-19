@@ -1,4 +1,4 @@
-package com.toggl.repository.sync
+package com.toggl.sync
 
 import com.toggl.database.properties.BooleanSyncProperty
 import com.toggl.database.properties.DurationSyncProperty

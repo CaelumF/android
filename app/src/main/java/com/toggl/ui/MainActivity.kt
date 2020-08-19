@@ -25,6 +25,7 @@ import com.toggl.common.feature.navigation.handleBackPressesEmitting
 import com.toggl.domain.AppAction
 import com.toggl.domain.AppState
 import com.toggl.domain.Tab
+import com.toggl.sync.SyncLauncher
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.main_activity.*
 import kotlinx.coroutines.channels.BroadcastChannel
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
     @Inject lateinit var router: Router
     @Inject lateinit var store: Store<AppState, AppAction>
     @Inject lateinit var bottomSheetNavigator: BottomSheetNavigator
+    @Inject lateinit var syncLauncher: SyncLauncher
 
     private val backButtonPressedChannel = BroadcastChannel<Unit>(1)
     private val updateBottomBarVisibilityListener = NavController.OnDestinationChangedListener { _, destination, _ ->
@@ -131,7 +133,11 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
                 }
             )
         )
-
+        when (menuItem.itemId) {
+            R.id.reports -> syncLauncher.enqueueSync()
+            R.id.calendar -> syncLauncher.freezeSync()
+            else -> { }
+        }
         return true
     }
 

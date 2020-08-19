@@ -77,15 +77,19 @@ dependencies {
     implementation project(':reports')
     implementation project(':repository')
     implementation project(':timer')
+    implementation project(':sync')
 
     implementation Libs.Android.customTabs
     implementation Libs.AndroidX.Preference.core
     implementation Libs.AndroidX.Preference.ktx
+    implementation Libs.AndroidX.Work.runtime
+    implementation Libs.AndroidX.Work.runtimeKtx
     implementation Libs.AndroidX.Hilt.viewModel
+    implementation Libs.AndroidX.Hilt.work
     kapt Libs.AndroidX.Hilt.compiler
-    implementation Libs.Kotlin.stdlib
     implementation Libs.Hilt.hilt
     kapt Libs.Hilt.compiler
+    implementation Libs.Kotlin.stdlib
     implementation Libs.Google.firebaseCore
     implementation Libs.Google.firebaseCrashlytics
     implementation Libs.Google.firebasePerformance

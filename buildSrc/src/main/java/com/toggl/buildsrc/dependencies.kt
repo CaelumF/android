@@ -92,8 +92,15 @@ object Libs {
 
         object Hilt {
             private const val version = "1.0.0-alpha02"
-            const val viewModel = "androidx.hilt:hilt-lifecycle-viewmodel:$version"
             const val compiler = "androidx.hilt:hilt-compiler:$version"
+            const val viewModel = "androidx.hilt:hilt-lifecycle-viewmodel:$version"
+            const val work = "androidx.hilt:hilt-work:$version"
+        }
+
+        object Work {
+            private const val version = "2.4.0"
+            const val runtime = "androidx.work:work-runtime:$version"
+            const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
         }
 
         object Preference {
