@@ -7,6 +7,7 @@
     <string name="deep_link_reports" translatable="false">toggl://reports</string>
     <string name="deep_link_calendar" translatable="false">toggl://calendar</string>
     <string name="deep_link_welcome" translatable="false">toggl://welcome</string>
+    <string name="deep_link_terms" translatable="false">toggl://terms</string>
     <string name="deep_link_contextual_menu" translatable="false">toggl://contextualMenu</string>
     <string name="deep_link_settings" translatable="false">toggl://settings</string>
     <string name="deep_link_settings_calendar_settings" translatable="false">toggl://settings/calendarsettings</string>

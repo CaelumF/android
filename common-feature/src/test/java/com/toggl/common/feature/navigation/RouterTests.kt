@@ -16,24 +16,7 @@ import org.junit.jupiter.api.Test
 @DisplayName("The Router")
 class RouterTests : CoroutineTest() {
 
-    private val deepLinks = DeepLinkUrls(
-        mockk(),
-        mockk(),
-        mockk(),
-        mockk(),
-        mockk(),
-        mockk(),
-        mockk(),
-        mockk(),
-        mockk(),
-        mockk(),
-        mockk(),
-        mockk(),
-        mockk(),
-        mockk(),
-        mockk(),
-        mockk()
-    )
+    private val deepLinks = mockk<DeepLinkUrls>(relaxed = true)
 
     private val router = Router(deepLinks)
     private val navController = mockk<NavController> {

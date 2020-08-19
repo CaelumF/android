@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/authentication_background"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true"
+    android:scrollbars="none">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/grid_4"
+        android:layout_marginEnd="@dimen/grid_4"
+        android:focusableInTouchMode="true">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/toggl_icon"
+            android:layout_width="@dimen/authentication_icon_size"
+            android:layout_height="@dimen/authentication_icon_size"
+            android:layout_marginTop="@dimen/grid_4"
+            android:src="@drawable/ic_toggltrack_small"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/terms_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/grid_3"
+            android:lineSpacingExtra="@dimen/big_header_line_spacing_extra"
+            android:text="@string/terms_and_conditions_header"
+            android:textAlignment="center"
+            android:textColor="@color/authentication_text"
+            android:textSize="@dimen/big_header_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toggl_icon" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/hand_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/grid_4"
+            android:src="@drawable/terms_and_conditions_hand"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/terms_header" />
+
+        <TextView
+            android:id="@+id/terms_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/grid_4"
+            android:gravity="start"
+            android:text="@string/terms_and_conditions_content"
+            android:textColor="@color/authentication_text"
+            android:textColorLink="@color/authentication_text"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hand_icon"
+            tools:text="By tapping next you agree to agree to everything there is to agree to. Furthermore you agree to more stuff." />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/get_started_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/grid_4"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/get_started"
+            android:textColor="@color/authentication_button_text"
+            app:backgroundTint="@color/primary_dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/terms_text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

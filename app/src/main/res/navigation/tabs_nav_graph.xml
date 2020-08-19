@@ -42,6 +42,15 @@
     </fragment>
 
     <fragment
+        android:id="@+id/terms"
+        android:name="com.toggl.onboarding.common.ui.TermsFragment"
+        android:label="TermsFragment"
+        tools:layout="@layout/fragment_terms"
+        app:launchSingleTop="true"  >
+        <deepLink app:uri="@string/deep_link_terms" />
+    </fragment>
+
+    <fragment
         android:id="@+id/time_entries_log"
         tools:layout="@layout/fragment_time_entries_log"
         android:name="com.toggl.timer.log.ui.TimeEntriesLogFragment"

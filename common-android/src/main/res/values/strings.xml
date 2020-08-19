@@ -138,4 +138,7 @@
     <string name="projects">Projects</string>
     <string name="tracked_hours">Tracked Hours</string>
     <string name="total">Total</string>
+    <string name="terms_and_conditions_header">Welcome to $\nGet tracking.</string>
+    <string name="terms_and_conditions_content">By tapping “%1$s”, you understand and agree to Toggl’s %2$s and %3$s.</string>
+    <string name="get_started">Get started</string>
 </resources>

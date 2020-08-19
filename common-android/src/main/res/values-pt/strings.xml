@@ -119,4 +119,5 @@
     <string name="unit_second">s</string>
     <string name="unit_hour">h</string>
     <string name="unit_minute">min</string>
+    <string name="terms_and_conditions_content">Ao clicar em \"%1$s\", você entende e concorda com os %2$s e %3$s do Toggl</string>
 </resources>

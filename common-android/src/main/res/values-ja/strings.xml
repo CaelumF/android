@@ -111,4 +111,5 @@
     <string name="unit_second">秒</string>
     <string name="unit_hour">時間</string>
     <string name="unit_minute">分</string>
+    <string name="terms_and_conditions_content">「%1$s」をタップすることにより、Togglの%2$sと%3$sを理解し同意したことになります</string>
 </resources>
