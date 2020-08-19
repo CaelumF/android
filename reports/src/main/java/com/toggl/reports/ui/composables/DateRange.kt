@@ -1,6 +1,6 @@
 package com.toggl.reports.ui.composables
 
-import androidx.compose.foundation.Border
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Box
 import androidx.compose.foundation.ContentGravity
 import androidx.compose.foundation.Image
@@ -33,7 +33,7 @@ fun DateRange(formattedDate: String, dispatcher: (ReportsAction) -> Unit) {
         Box(
             shape = RoundedCornerShape(16.dp),
             gravity = ContentGravity.Center,
-            border = Border(1.dp, MaterialTheme.colors.onBackground),
+            border = BorderStroke(1.dp, MaterialTheme.colors.onBackground),
             modifier = Modifier
                 .padding(vertical = grid_3)
                 .clickable(indication = RippleIndication()) { dispatcher(ReportsAction.OpenDateRangePickerButtonTapped) }

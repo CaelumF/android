@@ -76,9 +76,9 @@ object Libs {
         const val activityKtx = "androidx.activity:activity-ktx:1.2.0-alpha06"
 
         object Compose {
-            const val version = "0.1.0-dev16"
+            const val version = "0.1.0-dev17"
             const val runtime = "androidx.compose.runtime:runtime:$version"
-            const val compiler = "1.4.0-rc"
+            const val compiler = "1.4.0"
             object UI {
                 const val core = "androidx.compose.ui:ui:$version"
                 const val layout = "androidx.compose.foundation:foundation-layout:$version"

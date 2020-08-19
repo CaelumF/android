@@ -23,8 +23,9 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.state
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -85,7 +86,7 @@ fun FeedbackForm(
         Text(text = stringResource(R.string.feedback_note))
         Spacer(modifier = Modifier.height(grid_2))
 
-        var textState by state { TextFieldValue("") }
+        var textState by remember { mutableStateOf(TextFieldValue("")) }
         Stack(modifier = Modifier.fillMaxWidth().preferredHeight(140.dp)) {
             OutlinedTextField(
                 value = textState,

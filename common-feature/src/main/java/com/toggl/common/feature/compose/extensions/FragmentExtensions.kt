@@ -7,9 +7,10 @@ import android.widget.FrameLayout
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.onCommit
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.state
 import androidx.compose.ui.platform.ViewAmbient
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.Dp
@@ -22,8 +23,8 @@ fun Fragment.createComposeView(
 ): ViewGroup = blankFrameLayout().apply {
     setContent(Recomposer.current()) {
 
-        var topInsets by state { 0.dp }
-        var bottomInsets by state { 0.dp }
+        var topInsets by remember { mutableStateOf(0.dp) }
+        var bottomInsets by remember { mutableStateOf(0.dp) }
 
         val view = ViewAmbient.current
 

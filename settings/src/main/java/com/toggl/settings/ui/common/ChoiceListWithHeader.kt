@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.preferredHeight
 import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
-import androidx.compose.material.RadioGroup
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -43,7 +42,7 @@ internal fun SingleChoiceDialogWithHeader(
     if (observableItems == SingleChoiceSettingViewModel.Empty) return
 
     Dialog(
-        onCloseRequest = {
+        onDismissRequest = {
             observableItems.closeAction?.run(dispatcher)
         }
     ) {
@@ -95,20 +94,18 @@ internal fun SingleChoiceListWithHeader(
                 modifier = Modifier.preferredHeight(grid_8)
             )
         }
-        RadioGroup {
-            items.forEach { item ->
-                Box(modifier = Modifier.clickable(onClick = { dispatchOnSelected(item) })) {
-                    Row(
-                        modifier = Modifier.preferredHeight(grid_6).fillMaxWidth().clickable { dispatchOnSelected(item) }
-                    ) {
-                        RadioButton(selected = item.isSelected, onClick = { dispatchOnSelected(item) })
-                        Spacer(modifier = Modifier.preferredWidth(grid_4))
-                        Text(
-                            text = item.label,
-                            style = MaterialTheme.typography.body1,
-                            color = MaterialTheme.colors.onBackground
-                        )
-                    }
+        items.forEach { item ->
+            Box(modifier = Modifier.clickable(onClick = { dispatchOnSelected(item) })) {
+                Row(
+                    modifier = Modifier.preferredHeight(grid_6).fillMaxWidth().clickable { dispatchOnSelected(item) }
+                ) {
+                    RadioButton(selected = item.isSelected, onClick = { dispatchOnSelected(item) })
+                    Spacer(modifier = Modifier.preferredWidth(grid_4))
+                    Text(
+                        text = item.label,
+                        style = MaterialTheme.typography.body1,
+                        color = MaterialTheme.colors.onBackground
+                    )
                 }
             }
         }
