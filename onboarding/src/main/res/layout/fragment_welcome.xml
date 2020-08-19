@@ -59,7 +59,7 @@
         android:layout_width="76dp"
         android:layout_height="24dp"
         android:layout_marginStart="@dimen/grid_4"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="96dp"
         android:src="@drawable/ic_toggl_logo"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -89,6 +89,7 @@
         android:text="@string/sign_in_with_google"
         app:icon="@drawable/logo_google"
         style="@style/OnboardingButton"
+        android:layout_marginTop="@dimen/grid_3"
         app:layout_constraintTop_toBottomOf="@+id/sso_login_message"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -97,6 +98,7 @@
         android:id="@+id/sso_continue_with_email"
         android:visibility="gone"
         android:text="@string/continue_with_email"
+        android:layout_marginTop="@dimen/grid_1"
         style="@style/OutlinedOnboardingButton"
         app:layout_constraintTop_toBottomOf="@+id/sso_continue_with_google_button"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -104,17 +106,9 @@
 
     <Button
         android:id="@+id/sso_cancel"
+        style="@style/TextOnboardingButton"
         android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginLeft="@dimen/grid_4"
-        android:layout_marginRight="@dimen/grid_4"
-        android:layout_marginBottom="@dimen/grid_1"
-        android:background="@null"
-        android:letterSpacing="0.02"
-        android:textAllCaps="true"
-        android:textColor="@color/onboarding_outline_button_text"
-        android:textSize="14sp"
+        android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
