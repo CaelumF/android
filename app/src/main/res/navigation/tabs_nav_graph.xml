@@ -51,6 +51,15 @@
     </fragment>
 
     <fragment
+        android:id="@+id/sso_link"
+        android:name="com.toggl.onboarding.sso.ui.SsoLinkFragment"
+        android:label="SsoLinkFragment"
+        tools:layout="@layout/fragment_ssolink"
+        app:launchSingleTop="true"  >
+        <deepLink app:uri="@string/deep_link_ssolink" />
+    </fragment>
+
+    <fragment
         android:id="@+id/time_entries_log"
         tools:layout="@layout/fragment_time_entries_log"
         android:name="com.toggl.timer.log.ui.TimeEntriesLogFragment"

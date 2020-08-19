@@ -141,4 +141,7 @@
     <string name="terms_and_conditions_header">Welcome to $\nGet tracking.</string>
     <string name="terms_and_conditions_content">By tapping “%1$s”, you understand and agree to Toggl’s %2$s and %3$s.</string>
     <string name="get_started">Get started</string>
+    <string name="account_with_email_already_exists">An account with this email already exists</string>
+    <string name="to_enable_login_with_sso_login_with_existing_credentials">To enable login with SSO for this account, please log in with your existing credentials.</string>
+    <string name="login_to_enable_sso">Log in to enable SSO</string>
 </resources>

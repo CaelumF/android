@@ -15,6 +15,7 @@ sealed class Route {
     object Login : Route()
     object SignUp : Route()
     object Terms : Route()
+    object SsoLink : Route()
 
     object Timer : Route()
     data class StartEdit(override val parameter: EditableTimeEntry) : Route(), ParameterRoute<EditableTimeEntry>
@@ -44,6 +45,7 @@ fun Route.isSameTypeAs(otherRoute: Route) =
         Route.Login -> otherRoute is Route.Login
         Route.SignUp -> otherRoute is Route.SignUp
         Route.Terms -> otherRoute is Route.Terms
+        Route.SsoLink -> otherRoute is Route.SsoLink
         Route.Timer -> otherRoute is Route.Timer
         Route.Reports -> otherRoute is Route.Reports
         Route.Calendar -> otherRoute is Route.Calendar
@@ -101,6 +103,7 @@ fun Route.navigationOptions(): NavOptions? =
         Route.SignUp -> defaultOptions
         Route.Terms -> defaultOptions
         Route.PasswordReset -> defaultOptions
+        Route.SsoLink -> defaultOptions
         is Route.Project -> null
         Route.Timer -> rootFragmentOptions
         is Route.StartEdit -> null
@@ -121,6 +124,7 @@ fun Route.deepLink(deepLinks: DeepLinkUrls): Uri =
         Route.Login -> deepLinks.login
         Route.SignUp -> deepLinks.signUp
         Route.Terms -> deepLinks.terms
+        Route.SsoLink -> deepLinks.ssoLink
         Route.Timer -> deepLinks.timeEntriesLog
         Route.Reports -> deepLinks.reports
         Route.Calendar -> deepLinks.calendar

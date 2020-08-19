@@ -112,4 +112,7 @@
     <string name="unit_hour">時間</string>
     <string name="unit_minute">分</string>
     <string name="terms_and_conditions_content">「%1$s」をタップすることにより、Togglの%2$sと%3$sを理解し同意したことになります</string>
+    <string name="login_to_enable_sso">SSOを可能にするため、ログイン</string>
+    <string name="account_with_email_already_exists">このメールはもうあるアカウントに利用しています</string>
+    <string name="to_enable_login_with_sso_login_with_existing_credentials">このアカウントにSSOを可能にするために、在り認証情報でログインしてください。</string>
 </resources>
