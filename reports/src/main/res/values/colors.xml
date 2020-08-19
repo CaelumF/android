@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="reports_bar_chart_empty_bar">#FFCECECE</color>
+    <color name="reports_bar_chart_horizontal_line">#FFEBE7EB</color>
+    <color name="reports_bar_chart_hour_text">#FF2C1338</color>
+    <color name="reports_bar_chart_x_legend">#FF2C1338</color>
+    <color name="reports_bar_chart_filled_bar">#FFE57CD8</color>
+    <color name="reports_bar_chart_regular_bar">#FFF2BDEC</color>
+</resources>
