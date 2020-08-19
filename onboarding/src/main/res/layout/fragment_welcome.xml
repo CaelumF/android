@@ -146,27 +146,27 @@
         app:layout_constraintRight_toRightOf="parent"/>
 
     <androidx.constraintlayout.widget.Group
-        android:id="@+id/notLoadingViewsViewGroup"
+        android:id="@+id/not_loading_views_view_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="toggl_logo,view_pager,continue_with_google,continue_with_email,continue_with_sso" />
 
     <androidx.constraintlayout.widget.Group
-        android:id="@+id/ssoNotLoadingViewsViewGroup"
+        android:id="@+id/sso_not_loading_views_view_group"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:constraint_referenced_ids="sso_background,sso_toggl_logo,sso_login_message,sso_cancel,sso_continue_with_google_button,sso_continue_with_email" />
 
     <androidx.constraintlayout.widget.Group
-        android:id="@+id/loadingViewsViewGroup"
+        android:id="@+id/loading_views_view_group"
         android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="loadingBackground,loadingIndicator" />
+        app:constraint_referenced_ids="loading_background,loading_indicator" />
 
     <FrameLayout
-        android:id="@+id/loadingBackground"
+        android:id="@+id/loading_background"
         android:visibility="gone"
         android:background="@color/onboarding_first_slide_background"
         android:layout_width="0dp"
@@ -177,7 +177,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/loadingIndicator"
+        android:id="@+id/loading_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
