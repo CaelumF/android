@@ -62,7 +62,7 @@ fun ReportsContent(
                     is ReportsViewModel.Total -> Total(viewModel.total)
                     is ReportsViewModel.Billable -> Billable(viewModel.billableData)
                     is ReportsViewModel.Amounts -> Amounts(viewModel.amounts)
-                    is ReportsViewModel.BarChart -> BarChart(viewModel, dispatcher)
+                    is ReportsViewModel.BarChart -> BarChart(viewModel)
                     is ReportsViewModel.DonutChart -> DonutChart(viewModel.slices)
                     is ReportsViewModel.DonutChartLegend -> DonutChartLegend(viewModel.legend)
                     is ReportsViewModel.Error -> Error(viewModel.errorMessage)
