@@ -6,6 +6,7 @@ import com.toggl.architecture.core.Selector
 import com.toggl.common.feature.formatting.DurationFormatter
 import com.toggl.reports.models.ReportData
 import java.time.Duration
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,12 +15,25 @@ class ReportsSelector @Inject constructor(
     private val durationFormatter: DurationFormatter
 ) : Selector<ReportsState, List<ReportsViewModel>> {
     override suspend fun select(state: ReportsState): List<ReportsViewModel> =
-        when (val loadable = state.localState.reportData) {
+        datePicker(state) + when (val loadable = state.localState.reportData) {
             Loadable.Uninitialized,
             Loadable.Loading -> emptyList()
             is Loadable.Error -> createReportsViewModelsFromFailure(loadable.failure)
             is Loadable.Loaded -> createReportsViewModelsFromData(state, loadable.value)
         }
+
+    private fun datePicker(state: ReportsState) = state.let {
+        val dateRange = it.localState.dateRange
+        val formatter = DateTimeFormatter.ofPattern(it.preferences.dateFormat.formatterPattern)
+        val formattedStart = formatter.format(dateRange.start)
+
+        listOf(
+            ReportsViewModel.DatePicker(
+                if (dateRange.end == null) formattedStart
+                else "$formattedStart - ${formatter.format(dateRange.end)}"
+            )
+        )
+    }
 
     private fun createReportsViewModelsFromFailure(failure: Failure): List<ReportsViewModel> =
         listOf(ReportsViewModel.Error(failure.errorMessage))

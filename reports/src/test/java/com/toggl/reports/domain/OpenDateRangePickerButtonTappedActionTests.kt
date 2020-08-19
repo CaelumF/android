@@ -1,9 +1,7 @@
 package com.toggl.reports.domain
 
 import com.toggl.api.clients.ReportsApiClient
-import com.toggl.api.exceptions.OfflineException
-import com.toggl.architecture.Failure
-import com.toggl.architecture.Loadable
+import com.toggl.common.Either
 import com.toggl.reports.common.CoroutineTest
 import io.kotest.matchers.shouldBe
 import io.mockk.mockk
@@ -11,8 +9,8 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-@DisplayName("The ReportsFailed action")
-class ReportFailedActionTests : CoroutineTest() {
+@DisplayName("The OpenDateRangePickerButtonTapped action")
+class OpenDateRangePickerButtonTappedActionTests : CoroutineTest() {
 
     private val initialState = createInitialState()
     private val reportsApiClient = mockk<ReportsApiClient>()
@@ -30,22 +28,18 @@ class ReportFailedActionTests : CoroutineTest() {
     )
 
     @Test
-    fun `sets the report data to error`() = runBlockingTest {
-        val failure = Failure(OfflineException(), "")
-
-        reducer.testReduceState(initialState, ReportsAction.ReportFailed(failure)) { state ->
+    fun `sets the selection to the current date`() = runBlockingTest {
+        reducer.testReduceState(initialState, ReportsAction.OpenDateRangePickerButtonTapped) { state ->
             state shouldBe initialState.copy(
                 localState = initialState.localState.copy(
-                    reportData = Loadable.Error(failure)
+                    selection = Either.Left(initialState.localState.dateRange)
                 )
             )
         }
     }
 
     @Test
-    fun `returns no effects`() = runBlockingTest {
-        val failure = Failure(OfflineException(), "")
-
-        reducer.testReduceNoEffects(initialState, ReportsAction.ReportFailed(failure))
+    fun `does not return effects`() = runBlockingTest {
+        reducer.testReduceNoEffects(initialState, ReportsAction.OpenDateRangePickerButtonTapped)
     }
 }

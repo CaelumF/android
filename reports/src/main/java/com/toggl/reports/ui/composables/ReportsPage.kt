@@ -58,6 +58,7 @@ fun ReportsContent(
                 modifier = Modifier.padding(start = grid_2, end = grid_2)
             ) { viewModel ->
                 when (viewModel) {
+                    is ReportsViewModel.DatePicker -> DateRange(viewModel.formattedDate, dispatcher)
                     is ReportsViewModel.Total -> Total(viewModel.total)
                     is ReportsViewModel.Billable -> Billable(viewModel.billableData)
                     is ReportsViewModel.Amounts -> Amounts(viewModel.amounts)

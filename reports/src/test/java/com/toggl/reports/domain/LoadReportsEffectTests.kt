@@ -8,6 +8,7 @@ import com.toggl.api.models.Resolution
 import com.toggl.api.network.models.reports.GraphItem
 import com.toggl.api.network.models.reports.RateInfo
 import com.toggl.api.network.models.reports.TotalsResponse
+import com.toggl.models.common.DateRange
 import com.toggl.models.domain.Project
 import com.toggl.reports.common.CoroutineTest
 import com.toggl.reports.models.Amount
@@ -84,8 +85,7 @@ class LoadReportsEffectTests : CoroutineTest() {
             clients = clients,
             workspaceId = workspaceId,
             dateRangeSelection = DateRangeSelection(
-                OffsetDateTime.now(),
-                OffsetDateTime.now().minusDays(10),
+                DateRange(OffsetDateTime.now(), OffsetDateTime.now().minusDays(10)),
                 SelectionSource.Initial
             )
         ).execute()

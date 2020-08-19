@@ -1,6 +1,7 @@
 package com.toggl.reports.domain
 
 sealed class ReportsViewModel {
+    data class DatePicker(val formattedDate: String) : ReportsViewModel()
     data class Total(val total: String) : ReportsViewModel()
     data class Billable(val billableData: BillableData) : ReportsViewModel()
     data class Amounts(val amounts: List<AmountsData>) : ReportsViewModel()

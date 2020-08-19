@@ -42,16 +42,16 @@ class LoadReportsEffect(
             reportsApiClient.getTotals(
                 user.id,
                 workspaceId,
-                dateRangeSelection.startDate,
-                dateRangeSelection.endDate
+                dateRangeSelection.dateRange.start,
+                dateRangeSelection.dateRange.end
             ).let { assembleTotalsReport(it) }
         }
 
         val summary = scope.async {
             reportsApiClient.getProjectSummary(
                 workspaceId,
-                dateRangeSelection.startDate,
-                dateRangeSelection.endDate
+                dateRangeSelection.dateRange.start,
+                dateRangeSelection.dateRange.end
             ).let { assembleProjectsReport(it) }
         }
 
@@ -82,7 +82,7 @@ class LoadReportsEffect(
             groups = response.graph.map { graphItem ->
                 ReportsTotalsGroup(
                     total = Duration.ofSeconds(graphItem.seconds),
-                    billable = Duration.ofSeconds(graphItem.byRate?.let { it.values.sum() } ?: 0)
+                    billable = Duration.ofSeconds(graphItem.byRate?.values?.sum() ?: 0)
                 )
             }
         )

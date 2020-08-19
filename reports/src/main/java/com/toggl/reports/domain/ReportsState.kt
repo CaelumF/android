@@ -1,6 +1,8 @@
 package com.toggl.reports.domain
 
 import com.toggl.architecture.Loadable
+import com.toggl.common.Either
+import com.toggl.models.common.DateRange
 import com.toggl.models.domain.Client
 import com.toggl.models.domain.Project
 import com.toggl.models.domain.User
@@ -18,15 +20,15 @@ data class ReportsState(
     val localState: LocalState
 ) {
     data class LocalState(
-        internal val startDate: OffsetDateTime,
-        internal val endDate: OffsetDateTime?,
+        internal val dateRange: DateRange,
         internal val reportData: Loadable<ReportData>,
+        internal val selection: Either<DateRange, ReportsShortcut>?,
         internal val selectedWorkspaceId: Long?
     ) {
         constructor() : this(
-            OffsetDateTime.now().minusDays(7),
-            OffsetDateTime.now(),
+            DateRange(OffsetDateTime.now().minusDays(7), OffsetDateTime.now()),
             Loadable.Uninitialized,
+            null,
             null
         )
     }

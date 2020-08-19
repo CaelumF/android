@@ -31,13 +31,13 @@ data class UserPreferences(
     }
 }
 
-enum class DateFormat(val label: String) {
-    @Json(name = "MM/DD/YYYY") MMDDYYYY_slash("MM/DD/YYYY"),
-    @Json(name = "DD-MM-YYYY") DDMMYYYY_dash("DD-MM-YYYY"),
-    @Json(name = "MM-DD-YYYY") MMDDYYYY_dash("MM-DD-YYYY"),
-    @Json(name = "YYYY-MM-DD") YYYYMMDD_dash("YYYY-MM-DD"),
-    @Json(name = "DD/MM/YYYY") DDMMYYYY_slash("DD/MM/YYYY"),
-    @Json(name = "DD.MM.YYYY") DDMMYYYY_dot("DD.MM.YYYY")
+enum class DateFormat(val label: String, val formatterPattern: String) {
+    @Json(name = "MM/DD/YYYY") MMDDYYYY_slash("MM/DD/YYYY", "MM/dd/yyyy"),
+    @Json(name = "DD-MM-YYYY") DDMMYYYY_dash("DD-MM-YYYY", "dd-MM-yyyy"),
+    @Json(name = "MM-DD-YYYY") MMDDYYYY_dash("MM-DD-YYYY", "MM-dd-yyyy"),
+    @Json(name = "YYYY-MM-DD") YYYYMMDD_dash("YYYY-MM-DD", "yyyy-MM-dd"),
+    @Json(name = "DD/MM/YYYY") DDMMYYYY_slash("DD/MM/YYYY", "dd/MM/yyyy"),
+    @Json(name = "DD.MM.YYYY") DDMMYYYY_dot("DD.MM.YYYY", "dd.MM.yyyy")
 }
 
 enum class DurationFormat {
