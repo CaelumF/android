@@ -312,7 +312,7 @@ private fun calculateFilledTop(barsBottom: Float, filledBarHeight: Float, barHas
 }
 
 private fun calculateRegularTop(filledTop: Float, regularBarHeight: Float, barHasRegularPercentage: Boolean): Float {
-    //Regular top doesn't need the extra Y translation because the filledTop accounts for it.
+    // Regular top doesn't need the extra Y translation because the filledTop accounts for it.
     val regularTop = filledTop - regularBarHeight
     val barHasAtLeast1PixelInHeight = regularBarHeight >= minHeightForBarsWithPercentages
 

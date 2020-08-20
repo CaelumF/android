@@ -2,8 +2,6 @@ package com.toggl.common.feature.extensions
 
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import java.time.Duration
 
 internal class DurationExtensionsKtTest {

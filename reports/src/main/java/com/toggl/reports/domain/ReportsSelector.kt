@@ -165,8 +165,8 @@ class ReportsSelector @Inject constructor(
         fun createLabels(maxValue: Duration, unit: ChronoUnit) =
             BarChartYLabels(
                 durationFormatter.formatRoundingWithTimeUnit(maxValue, unit),
-                durationFormatter.formatRoundingWithTimeUnit (maxValue.dividedBy(2L), unit),
-                durationFormatter.formatRoundingWithTimeUnit (Duration.ZERO, unit)
+                durationFormatter.formatRoundingWithTimeUnit(maxValue.dividedBy(2L), unit),
+                durationFormatter.formatRoundingWithTimeUnit(Duration.ZERO, unit)
             )
         val maxTime = report.groups.maxOf { it.total }
         return when {
