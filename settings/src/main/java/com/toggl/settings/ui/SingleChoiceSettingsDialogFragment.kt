@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import com.toggl.architecture.extensions.select
-import com.toggl.settings.compose.extensions.createComposeFullscreenView
+import com.toggl.common.feature.compose.extensions.createComposeFullscreenView
 import com.toggl.settings.domain.SingleChoiceSettingSelector
 import com.toggl.settings.ui.common.SingleChoiceDialogWithHeader
 import dagger.hilt.android.AndroidEntryPoint

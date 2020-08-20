@@ -116,4 +116,8 @@
     <string name="no_project">Sem Projeto</string>
     <string name="reports_error_offline">Falha na conexão de rede</string>
     <string name="reports_error_generic">Algo deu errado</string>
+    <string name="unit_second">s</string>
+    <string name="unit_hour">h</string>
+    <string name="unit_minute">min</string>
+    <string name="terms_and_conditions_content">Ao clicar em \"%1$s\", você entende e concorda com os %2$s e %3$s do Toggl</string>
 </resources>

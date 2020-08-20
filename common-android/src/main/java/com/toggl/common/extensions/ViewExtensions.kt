@@ -21,14 +21,6 @@ fun View.adjustPaddingToStatusBarInsets() {
     }
 }
 
-fun View.doOnInsetsChanged(callback: (Int, Int) -> Unit) {
-    setOnApplyWindowInsetsListener { _, insets ->
-        callback(insets.systemWindowInsetTop, insets.systemWindowInsetBottom)
-        setOnApplyWindowInsetsListener(null)
-        insets
-    }
-}
-
 fun View.adjustMarginToNavigationBarInsets() {
     setOnApplyWindowInsetsListener { _, insets ->
         updateLayoutParams<ViewGroup.MarginLayoutParams> { bottomMargin += insets.systemWindowInsetBottom }

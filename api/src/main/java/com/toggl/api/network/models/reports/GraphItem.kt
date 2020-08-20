@@ -7,5 +7,5 @@ import com.squareup.moshi.JsonClass
 data class GraphItem(
     val seconds: Long,
     @Json(name = "by_rate")
-    val byRate: Map<String, Long>
+    val byRate: Map<String, Long>?
 )

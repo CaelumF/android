@@ -14,7 +14,6 @@ object Libs {
     object Android {
         const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.0.9"
         const val customTabs = "com.android.support:customtabs:23.3.0"
-
     }
 
     object Test {
@@ -77,9 +76,9 @@ object Libs {
         const val activityKtx = "androidx.activity:activity-ktx:1.2.0-alpha06"
 
         object Compose {
-            const val version = "0.1.0-dev15"
+            const val version = "0.1.0-dev16"
             const val runtime = "androidx.compose.runtime:runtime:$version"
-            const val compiler = "1.4.0-dev-withExperimentalGoogleExtensions-20200720"
+            const val compiler = "1.4.0-rc"
             object UI {
                 const val core = "androidx.compose.ui:ui:$version"
                 const val layout = "androidx.compose.foundation:foundation-layout:$version"
@@ -93,8 +92,15 @@ object Libs {
 
         object Hilt {
             private const val version = "1.0.0-alpha02"
-            const val viewModel = "androidx.hilt:hilt-lifecycle-viewmodel:$version"
             const val compiler = "androidx.hilt:hilt-compiler:$version"
+            const val viewModel = "androidx.hilt:hilt-lifecycle-viewmodel:$version"
+            const val work = "androidx.hilt:hilt-work:$version"
+        }
+
+        object Work {
+            private const val version = "2.4.0"
+            const val runtime = "androidx.work:work-runtime:$version"
+            const val runtimeKtx = "androidx.work:work-runtime-ktx:$version"
         }
 
         object Preference {

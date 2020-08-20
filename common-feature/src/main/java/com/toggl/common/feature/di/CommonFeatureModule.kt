@@ -9,6 +9,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.toggl.api.di.ApiModule
+import com.toggl.common.feature.R
+import com.toggl.common.feature.formatting.DurationFormatter
 import com.toggl.common.feature.services.analytics.AnalyticsService
 import com.toggl.common.feature.services.analytics.AppCenterAnalyticsService
 import com.toggl.common.feature.services.analytics.CompositeAnalyticsService
@@ -65,6 +67,14 @@ object CommonFeatureModule {
                 return calendarPermission == PackageManager.PERMISSION_GRANTED
             }
         }
+
+    @Provides
+    fun durationFormatterAssets(@ApplicationContext context: Context) =
+        DurationFormatter.Assets(
+            context.getString(R.string.unit_hour),
+            context.getString(R.string.unit_minute),
+            context.getString(R.string.unit_second)
+        )
 
     @Provides
     fun platformInfo(@ApplicationContext context: Context): PlatformInfo {

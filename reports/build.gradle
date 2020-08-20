@@ -48,8 +48,27 @@ android {
                 "-Xopt-in=kotlinx.coroutines.FlowPreview"
         ]
     }
+
+    buildFeatures {
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerVersion Libs.AndroidX.Compose.compiler
+        kotlinCompilerExtensionVersion Libs.AndroidX.Compose.version
+    }
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += [
+            "-Xallow-jvm-ir-dependencies",
+            "-Xskip-prerelease-check",
+            "-Xskip-metadata-version-check"
+        ]
+    }
+}
 
 dependencies {
     coreLibraryDesugaring Libs.Android.desugarJdkLibs
@@ -59,6 +78,14 @@ dependencies {
     implementation Libs.AndroidX.Lifecycle.extensions
     implementation Libs.AndroidX.Lifecycle.viewModel
     implementation Libs.AndroidX.Hilt.viewModel
+    implementation Libs.AndroidX.Compose.runtime
+    implementation Libs.AndroidX.Compose.UI.core
+    implementation Libs.AndroidX.Compose.UI.foundation
+    implementation Libs.AndroidX.Compose.UI.animation
+    implementation Libs.AndroidX.Compose.UI.icons
+    implementation Libs.AndroidX.Compose.UI.material
+    implementation Libs.AndroidX.Compose.UI.tooling
+    implementation Libs.AndroidX.Compose.UI.layout
     kapt Libs.AndroidX.Hilt.compiler
     implementation Libs.Hilt.hilt
     kapt Libs.Hilt.compiler
@@ -72,6 +99,7 @@ dependencies {
     testImplementation Libs.Test.kotlinTest
     testImplementation Libs.Test.kotlinTestJunit
     testImplementation Libs.Test.kotlinCoroutineTest
+    testImplementation Libs.Test.assertJ
 
     androidTestImplementation Libs.AndroidX.Test.runner
     androidTestImplementation Libs.AndroidX.Test.espressoCore

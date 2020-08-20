@@ -3,4 +3,6 @@
     <dimen name="authentication_icon_size">32dp</dimen>
     <dimen name="authentication_logo_height">32dp</dimen>
     <dimen name="authentication_logo_width">160dp</dimen>
+    <dimen name="big_header_text_size">24sp</dimen>
+    <dimen name="big_header_line_spacing_extra">5sp</dimen>
 </resources>

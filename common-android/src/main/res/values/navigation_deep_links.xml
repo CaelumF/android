@@ -7,6 +7,7 @@
     <string name="deep_link_reports" translatable="false">toggl://reports</string>
     <string name="deep_link_calendar" translatable="false">toggl://calendar</string>
     <string name="deep_link_welcome" translatable="false">toggl://welcome</string>
+    <string name="deep_link_terms" translatable="false">toggl://terms</string>
     <string name="deep_link_contextual_menu" translatable="false">toggl://contextualMenu</string>
     <string name="deep_link_settings" translatable="false">toggl://settings</string>
     <string name="deep_link_settings_calendar_settings" translatable="false">toggl://settings/calendarsettings</string>
@@ -16,5 +17,6 @@
     <string name="deep_link_settings_single_choice" translatable="false">toggl://settings/singlechoice</string>
     <string name="deep_link_login" translatable="false">toggl://login</string>
     <string name="deep_link_sign_up" translatable="false">toggl://signUp</string>
+    <string name="deep_link_ssolink" translatable="false">toggl://ssoLink</string>
     <string name="deep_link_password_reset" translatable="false">"toggl://passwordreset"</string>
 </resources>

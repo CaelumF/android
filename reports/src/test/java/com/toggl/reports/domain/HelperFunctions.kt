@@ -8,6 +8,7 @@ import com.toggl.common.feature.timeentry.TimeEntryActionHolder
 import com.toggl.models.domain.Client
 import com.toggl.models.domain.Project
 import com.toggl.models.domain.User
+import com.toggl.models.domain.UserPreferences
 import com.toggl.models.domain.Workspace
 import com.toggl.models.validation.ApiToken
 import com.toggl.models.validation.Email
@@ -77,12 +78,14 @@ val validUser = User(
 
 fun createInitialState(
     user: User = validUser,
+    userPreferences: UserPreferences = UserPreferences.default,
     clients: List<Client> = emptyList(),
     projects: List<Project> = emptyList(),
     workspaces: List<Workspace> = emptyList(),
     localState: ReportsState.LocalState = ReportsState.LocalState()
 ) = ReportsState(
     user,
+    userPreferences,
     clients.associateBy { it.id },
     projects.associateBy { it.id },
     workspaces.associateBy { it.id },

@@ -23,6 +23,7 @@ class ReportFailedActionTests : CoroutineTest() {
         "error"
     )
     private val reducer = ReportsReducer(
+        timeService = mockk(),
         dispatcherProvider = dispatcherProvider,
         reportsApiClient = reportsApiClient,
         assets = assets

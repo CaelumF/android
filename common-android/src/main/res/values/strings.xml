@@ -128,4 +128,20 @@
     <string name="no_project">No project</string>
     <string name="reports_error_offline">Network connection failed</string>
     <string name="reports_error_generic">Something went wrong</string>
+    <string name="unit_second">s</string>
+    <string name="unit_hour">h</string>
+    <string name="unit_minute">min</string>
+    <string name="amount">Amount</string>
+    <string name="advanced_reports">Advanced Reports</string>
+    <string name="advanced_reports_message">Create saved reports\nSchedule your reports\nSet billable hours\nExport PDF, CSV &amp; XLS</string>
+    <string name="available_on_other_plans">Available on other plans</string>
+    <string name="projects">Projects</string>
+    <string name="tracked_hours">Tracked Hours</string>
+    <string name="total">Total</string>
+    <string name="terms_and_conditions_header">Welcome to $\nGet tracking.</string>
+    <string name="terms_and_conditions_content">By tapping “%1$s”, you understand and agree to Toggl’s %2$s and %3$s.</string>
+    <string name="get_started">Get started</string>
+    <string name="account_with_email_already_exists">An account with this email already exists</string>
+    <string name="to_enable_login_with_sso_login_with_existing_credentials">To enable login with SSO for this account, please log in with your existing credentials.</string>
+    <string name="login_to_enable_sso">Log in to enable SSO</string>
 </resources>

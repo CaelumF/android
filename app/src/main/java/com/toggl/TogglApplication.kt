@@ -1,6 +1,8 @@
 package com.toggl
 
 import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import com.toggl.architecture.DispatcherProvider
 import com.toggl.architecture.StoreScopeProvider
 import com.toggl.architecture.core.Store
@@ -14,11 +16,12 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 @HiltAndroidApp
-class TogglApplication : Application(), CoroutineScope, StoreScopeProvider {
+class TogglApplication : Application(), CoroutineScope, StoreScopeProvider, Configuration.Provider {
 
     @Inject lateinit var appInitializers: AppInitializers
     @Inject lateinit var dispatchersProviders: DispatcherProvider
     @Inject lateinit var store: Store<AppState, AppAction>
+    @Inject lateinit var workerFactory: HiltWorkerFactory
 
     override val coroutineContext: CoroutineContext by lazy {
         dispatchersProviders.main
@@ -32,4 +35,9 @@ class TogglApplication : Application(), CoroutineScope, StoreScopeProvider {
 
     override fun getStoreScope(): CoroutineScope =
         this
+
+    override fun getWorkManagerConfiguration() =
+        Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
 }

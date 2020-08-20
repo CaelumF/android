@@ -11,4 +11,6 @@
     <dimen name="suggestions_popup_item_height">50dp</dimen>
     <dimen name="suggestions_popup_item_horizontal_padding">10dp</dimen>
     <dimen name="autocomplete_dot_size">10dp</dimen>
+
+    <dimen name="reports_donut_chat_percentage">11sp</dimen>
 </resources>

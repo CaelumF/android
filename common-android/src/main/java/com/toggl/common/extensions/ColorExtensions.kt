@@ -17,14 +17,20 @@ fun Int.getHSV(): Triple<Float, Float, Float> {
     )
 }
 
-fun String.adjustForUserTheme(context: Context): Int =
-    Color.parseColor(this).adjustForUserTheme(context)
+fun String.toLabelColor(context: Context) = toLabelColor(context.isInDarkMode)
+fun String.adjustForUserTheme(context: Context) = adjustForUserTheme(context.isInDarkMode)
 
-fun String.toLabelColor(context: Context): Int =
-    Color.parseColor(this).toLabelColor(context)
+fun Int.toLabelColor(context: Context) = toLabelColor(context.isInDarkMode)
+fun Int.adjustForUserTheme(context: Context) = adjustForUserTheme(context.isInDarkMode)
 
-fun Int.adjustForUserTheme(context: Context): Int {
-    if (!context.isInDarkMode)
+fun String.adjustForUserTheme(isInDarkMode: Boolean): Int =
+    Color.parseColor(this).adjustForUserTheme(isInDarkMode)
+
+fun String.toLabelColor(isInDarkMode: Boolean): Int =
+    Color.parseColor(this).toLabelColor(isInDarkMode)
+
+fun Int.adjustForUserTheme(isInDarkMode: Boolean): Int {
+    if (!isInDarkMode)
         return this
 
     val (hue, saturation, value) = getHSV()
@@ -36,12 +42,11 @@ fun Int.adjustForUserTheme(context: Context): Int {
     return Color.HSVToColor(hsv)
 }
 
-fun Int.toLabelColor(context: Context): Int {
+fun Int.toLabelColor(isInDarkMode: Boolean): Int {
     val (hue, saturation, value) = getHSV()
 
-    val isUsingDarkMode = context.isInDarkMode
     val (newSaturation, newValue) =
-        if (isUsingDarkMode) adjustSaturationToDarkMode(saturation, value) to min(adjustValueToDarkMode(value) + .05F, 1.0F)
+        if (isInDarkMode) adjustSaturationToDarkMode(saturation, value) to min(adjustValueToDarkMode(value) + .05F, 1.0F)
         else saturation to max(value - .15F, 0F)
 
     val hsv = floatArrayOf(hue, newSaturation, newValue)

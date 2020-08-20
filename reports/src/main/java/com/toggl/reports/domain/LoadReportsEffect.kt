@@ -13,6 +13,7 @@ import com.toggl.common.mapRight
 import com.toggl.models.domain.Client
 import com.toggl.models.domain.Project
 import com.toggl.models.domain.User
+import com.toggl.reports.models.Amount
 import com.toggl.reports.models.ChartSegment
 import com.toggl.reports.models.ProjectSummaryReport
 import com.toggl.reports.models.ReportData
@@ -41,16 +42,16 @@ class LoadReportsEffect(
             reportsApiClient.getTotals(
                 user.id,
                 workspaceId,
-                dateRangeSelection.startDate,
-                dateRangeSelection.endDate
+                dateRangeSelection.dateRange.start,
+                dateRangeSelection.dateRange.end
             ).let { assembleTotalsReport(it) }
         }
 
         val summary = scope.async {
             reportsApiClient.getProjectSummary(
                 workspaceId,
-                dateRangeSelection.startDate,
-                dateRangeSelection.endDate
+                dateRangeSelection.dateRange.start,
+                dateRangeSelection.dateRange.end
             ).let { assembleProjectsReport(it) }
         }
 
@@ -72,10 +73,16 @@ class LoadReportsEffect(
     private fun assembleTotalsReport(response: TotalsResponse) =
         TotalsReport(
             resolution = response.resolution,
+            amounts = response.rates?.map {
+                val billableHours = it.billableSeconds / 60F
+                val amountInCents = billableHours * it.hourlyRateInCents
+                val actualAmount = amountInCents / 100F
+                Amount(actualAmount, it.currency)
+            } ?: emptyList(),
             groups = response.graph.map { graphItem ->
                 ReportsTotalsGroup(
                     total = Duration.ofSeconds(graphItem.seconds),
-                    billable = Duration.ofSeconds(graphItem.byRate.values.sum())
+                    billable = Duration.ofSeconds(graphItem.byRate?.values?.sum() ?: 0)
                 )
             }
         )
@@ -89,6 +96,7 @@ class LoadReportsEffect(
         val projectsInReport = searchProjects(workspaceId, projectIds)
         return ProjectSummaryReport(
             totalSeconds = Duration.ofSeconds(totalSeconds),
+            billableSeconds = Duration.ofSeconds(billableSeconds),
             billablePercentage = billablePercentage,
             segments = projectsSummaries
                 .map { toSegment(it, totalSeconds, projectsInReport) }

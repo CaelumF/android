@@ -1,7 +1,10 @@
 package com.toggl.common.feature.navigation
 
 import android.net.Uri
+import androidx.navigation.NavOptions
+import androidx.navigation.navOptions
 import com.toggl.common.DeepLinkUrls
+import com.toggl.common.feature.R
 import com.toggl.common.feature.models.SelectedCalendarItem
 import com.toggl.models.domain.EditableProject
 import com.toggl.models.domain.EditableTimeEntry
@@ -11,6 +14,8 @@ sealed class Route {
     object Welcome : Route()
     object Login : Route()
     object SignUp : Route()
+    object Terms : Route()
+    object SsoLink : Route()
 
     object Timer : Route()
     data class StartEdit(override val parameter: EditableTimeEntry) : Route(), ParameterRoute<EditableTimeEntry>
@@ -39,6 +44,8 @@ fun Route.isSameTypeAs(otherRoute: Route) =
         Route.Welcome -> otherRoute is Route.Welcome
         Route.Login -> otherRoute is Route.Login
         Route.SignUp -> otherRoute is Route.SignUp
+        Route.Terms -> otherRoute is Route.Terms
+        Route.SsoLink -> otherRoute is Route.SsoLink
         Route.Timer -> otherRoute is Route.Timer
         Route.Reports -> otherRoute is Route.Reports
         Route.Calendar -> otherRoute is Route.Calendar
@@ -54,11 +61,70 @@ fun Route.isSameTypeAs(otherRoute: Route) =
         Route.Licences -> otherRoute is Route.Licences
     }
 
-fun Route.deepLink(deepLinks: DeepLinkUrls): Uri {
-    return when (this) {
+private val defaultOptions = navOptions {
+    anim {
+        enter = R.anim.fragment_open_enter
+        exit = R.anim.fragment_open_exit
+        popEnter = R.anim.fragment_close_enter
+        popExit = R.anim.fragment_close_exit
+    }
+}
+
+private val reportsOptions = navOptions {
+    anim {
+        enter = R.anim.fragment_open_enter
+        exit = R.anim.fragment_open_exit
+        popEnter = R.anim.fragment_open_enter
+        popExit = R.anim.fragment_open_exit
+    }
+}
+
+private val calendarOptions = navOptions {
+    anim {
+        popEnter = R.anim.fragment_open_enter
+        popExit = R.anim.fragment_open_exit
+    }
+}
+
+private val rootFragmentOptions = navOptions {
+    launchSingleTop = true
+    anim {
+        enter = R.anim.fragment_open_enter
+        exit = R.anim.fragment_open_exit
+        popEnter = R.anim.fragment_close_enter
+        popExit = R.anim.fragment_close_exit
+    }
+}
+
+fun Route.navigationOptions(): NavOptions? =
+    when (this) {
+        Route.Welcome -> rootFragmentOptions
+        Route.Login -> defaultOptions
+        Route.SignUp -> defaultOptions
+        Route.Terms -> defaultOptions
+        Route.PasswordReset -> defaultOptions
+        Route.SsoLink -> defaultOptions
+        is Route.Project -> null
+        Route.Timer -> rootFragmentOptions
+        is Route.StartEdit -> null
+        Route.Reports -> reportsOptions
+        Route.Calendar -> calendarOptions
+        is Route.ContextualMenu -> null
+        Route.Settings -> defaultOptions
+        is Route.SettingsDialog -> null
+        Route.CalendarSettings -> defaultOptions
+        Route.Feedback -> defaultOptions
+        Route.About -> defaultOptions
+        Route.Licences -> defaultOptions
+    }
+
+fun Route.deepLink(deepLinks: DeepLinkUrls): Uri =
+    when (this) {
         Route.Welcome -> deepLinks.welcome
         Route.Login -> deepLinks.login
         Route.SignUp -> deepLinks.signUp
+        Route.Terms -> deepLinks.terms
+        Route.SsoLink -> deepLinks.ssoLink
         Route.Timer -> deepLinks.timeEntriesLog
         Route.Reports -> deepLinks.reports
         Route.Calendar -> deepLinks.calendar
@@ -73,4 +139,3 @@ fun Route.deepLink(deepLinks: DeepLinkUrls): Uri {
         Route.About -> deepLinks.about
         Route.Licences -> deepLinks.licences
     }
-}

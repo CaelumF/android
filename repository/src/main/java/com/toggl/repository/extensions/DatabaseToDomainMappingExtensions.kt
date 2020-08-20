@@ -96,13 +96,13 @@ fun DatabaseProject.toModel() = Project(
 
 fun DatabaseTag.toModel() = Tag(
     id,
-    name,
-    workspaceId
+    name.current,
+    workspaceId.current
 )
 
 fun DatabaseWorkspace.toModel() = Workspace(
     id,
-    name,
+    name.current,
     features
 )
 

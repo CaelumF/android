@@ -8,6 +8,7 @@ import com.toggl.api.exceptions.ApiException
 import com.toggl.api.exceptions.ForbiddenException.Companion.remainingLoginAttemptsHeaderName
 import com.toggl.api.exceptions.OfflineException
 import com.toggl.api.exceptions.ReportsRangeTooLongException
+import com.toggl.api.extensions.toModel
 import com.toggl.api.models.ProjectSummary
 import com.toggl.api.network.ReportsApi
 import com.toggl.api.network.SyncApi
@@ -109,7 +110,7 @@ internal class ErrorHandlingProxyClient @Inject constructor(
     override suspend fun searchProjects(workspaceId: Long, idsToSearch: List<Long>): List<Project> {
         try {
             val body = SearchProjectsBody(idsToSearch)
-            return reportsApi.searchProjects(workspaceId, body)
+            return reportsApi.searchProjects(workspaceId, body).map { it.toModel() }
         } catch (exception: Exception) {
             throw handledException(exception)
         }
