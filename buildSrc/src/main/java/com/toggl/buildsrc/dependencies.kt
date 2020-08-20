@@ -24,9 +24,9 @@ object Libs {
         const val junit5Plugin = "de.mannodermaus.gradle.plugins:android-junit5:1.6.2.0"
         const val kotestMatchers = "io.kotest:kotest-assertions-core-jvm:${kotestVersion}"
         const val kotestProperties = "io.kotest:kotest-property-jvm:${kotestVersion}"
-        const val kotlinTest = "org.jetbrains.kotlin:kotlin-test:1.4.0-rc"
+        const val kotlinTest = "org.jetbrains.kotlin:kotlin-test:1.4.0"
         const val kotlinCoroutineTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.8-1.4.0-rc"
-        const val kotlinTestJunit = "org.jetbrains.kotlin:kotlin-test-junit5:1.4.0-rc"
+        const val kotlinTestJunit = "org.jetbrains.kotlin:kotlin-test-junit5:1.4.0"
         const val mockk = "io.mockk:mockk:1.10.0"
         const val assertJ = "org.assertj:assertj-core:3.16.1"
 
@@ -55,9 +55,8 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.4.0-rc"
+        private const val version = "1.4.0"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
-        const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
     }
