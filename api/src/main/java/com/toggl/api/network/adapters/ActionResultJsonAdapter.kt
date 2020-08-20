@@ -28,7 +28,7 @@ class ActionResultJsonAdapterFactory : JsonAdapter.Factory {
         ) as Class<out JsonAdapter<*>?>
 
         val typeArgs = parameterizedType.actualTypeArguments
-        val constructor =  adapterClass.getDeclaredConstructor(Moshi::class.java, Array<Type>::class.java)
+        val constructor = adapterClass.getDeclaredConstructor(Moshi::class.java, Array<Type>::class.java)
         val args = arrayOf(moshi, typeArgs)
 
         constructor.isAccessible = true
@@ -46,7 +46,8 @@ class ActionResultJsonAdapter<T>(
     private val payloadAdapter: JsonAdapter<T> = moshi.adapter(types[0], emptySet(), "result")
 
     override fun toString(): String = buildString(33) {
-        append("GeneratedJsonAdapter(").append("ErrorResult").append(')') }
+        append("GeneratedJsonAdapter(").append("ErrorResult").append(')')
+    }
 
     override fun fromJson(reader: JsonReader): ActionResult<T> {
         val peeked = reader.peekJson()
@@ -90,7 +91,6 @@ class ActionResultJsonAdapter<T>(
                     it.skipValue()
                     continue
                 }
-
 
                 result = it.nextBoolean()
             }

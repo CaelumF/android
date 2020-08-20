@@ -1,14 +1,7 @@
 package com.toggl.api.network.models.sync
 
 import com.squareup.moshi.Json
-import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonClass
-import com.squareup.moshi.JsonReader
-import com.squareup.moshi.JsonWriter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.internal.Util
-import java.lang.IllegalStateException
-import java.lang.reflect.Type
 
 sealed class ActionResult<out T> {
     open class SuccessResult<out T> : ActionResult<T>()
