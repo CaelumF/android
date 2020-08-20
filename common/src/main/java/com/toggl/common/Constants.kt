@@ -38,6 +38,7 @@ object Constants {
         const val hoursInTheDay: Int = 24
         const val minutesInAnHour: Int = 60
         const val secondsInAMinute: Int = 60
+        const val secondsInAnHour: Int = 3600
     }
 
     object DefaultCustomColor {

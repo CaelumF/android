@@ -1,7 +1,10 @@
 package com.toggl.common.feature.formatting
 
+import com.toggl.common.feature.extensions.totalHours
+import com.toggl.common.feature.extensions.totalMinutes
 import com.toggl.models.domain.DurationFormat
 import java.time.Duration
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.ceil
@@ -19,6 +22,15 @@ class DurationFormatter @Inject constructor(
             DurationFormat.Improved -> convertToImprovedFormat(duration)
             DurationFormat.Decimal -> convertToDecimalFormat(duration)
         }
+
+    fun formatRoundingWithTimeUnit(value: Duration, timeUnit: ChronoUnit): String {
+        fun Float.roundedWithUnit(unit: String) = String.format("%.0f $unit", this)
+        if (timeUnit == ChronoUnit.HOURS)
+            return value.totalHours.roundedWithUnit(assets.hourIndicator)
+        if (timeUnit == ChronoUnit.MINUTES)
+            return value.totalMinutes.roundedWithUnit(assets.minuteIndicator)
+        return value.seconds.toFloat().roundedWithUnit(assets.secondsIndicator)
+    }
 
     private fun convertToDecimalFormat(value: Duration): String {
         val hours = value.toHours()
