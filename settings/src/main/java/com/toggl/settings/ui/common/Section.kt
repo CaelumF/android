@@ -93,7 +93,7 @@ internal fun SettingsRow(
         verticalGravity = Alignment.CenterVertically
     ) {
         when (setting) {
-            is SettingsViewModel.Toggle -> ToggleSetting(setting, onClick ?: {})
+            is SettingsViewModel.Toggle -> ToggleSetting(setting)
             is SettingsViewModel.ListChoice -> ListChoiceSetting(setting)
             is SettingsViewModel.SubPage -> SubPageSetting(setting)
             is SettingsViewModel.ActionRow -> ActionSetting(setting)

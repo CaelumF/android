@@ -14,10 +14,7 @@ import com.toggl.models.domain.SettingsType
 import com.toggl.settings.domain.SettingsViewModel
 
 @Composable
-internal fun ToggleSetting(
-    model: SettingsViewModel.Toggle,
-    onClickAction: () -> Unit
-) {
+internal fun ToggleSetting(model: SettingsViewModel.Toggle) {
     Text(
         modifier = Modifier.padding(start = grid_2),
         text = model.label,
@@ -27,7 +24,7 @@ internal fun ToggleSetting(
         modifier = Modifier.padding(end = grid_2),
         checked = model.toggled,
         color = MaterialTheme.colors.primary,
-        onCheckedChange = { onClickAction() }
+        onCheckedChange = { }
     )
 }
 
