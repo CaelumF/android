@@ -11,6 +11,7 @@ import com.toggl.api.network.AuthenticationApi
 import com.toggl.api.network.FeedbackApi
 import com.toggl.api.network.ReportsApi
 import com.toggl.api.network.SyncApi
+import com.toggl.api.network.adapters.ActionResultJsonAdapterFactory
 import com.toggl.api.network.adapters.DateAdapter
 import com.toggl.api.network.adapters.OffsetDateTimeAdapter
 import com.toggl.api.network.interceptors.AuthInterceptor
@@ -69,6 +70,7 @@ object ApiModule {
     fun moshi() = Moshi.Builder()
         .add(OffsetDateTimeAdapter())
         .add(DateAdapter())
+        .add(ActionResultJsonAdapterFactory())
         .build()
 
     @Provides

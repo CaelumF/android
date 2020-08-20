@@ -1,6 +1,7 @@
 package com.toggl.api.network.deserializers
 
 import com.squareup.moshi.Moshi
+import com.toggl.api.network.adapters.ActionResultJsonAdapterFactory
 import com.toggl.api.network.adapters.DateAdapter
 import com.toggl.api.network.adapters.OffsetDateTimeAdapter
 import com.toggl.api.network.models.sync.ActionResult
@@ -16,6 +17,7 @@ class PushResponseDeserializerTest {
     private val moshi = Moshi.Builder()
         .add(OffsetDateTimeAdapter())
         .add(DateAdapter())
+        .add(ActionResultJsonAdapterFactory())
         .build()
 
     @Test
